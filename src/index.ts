@@ -9,11 +9,11 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 5000;
+
 app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
 app.use(morgan("tiny"));
-// show image
 
 // categories routes
 app.use("/api/category", categoriesRoute);
