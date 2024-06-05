@@ -4,6 +4,7 @@ import cors from "cors";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import { categoriesRoute } from "./routes/category-route";
+import { errorHandler, notFound } from "./middleware";
 
 dotenv.config();
 
@@ -17,6 +18,10 @@ app.use(morgan("tiny"));
 
 // categories routes
 app.use("/api/category", categoriesRoute);
+
+// error handler
+app.use(notFound);
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);

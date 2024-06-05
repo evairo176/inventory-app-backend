@@ -26,12 +26,24 @@ const createCategory = async (req: Request, res: Response) => {
       },
     });
 
-    return sendResponse(res, 200, "Create category successfully", {
-      data: category,
-    });
+    return sendResponse(res, 200, "Create category successfully", category);
   } catch (error) {
-    return sendResponse(res, 500, "INTERNAL ERROR", error);
+    return sendResponse(res, 500, "[CREATE_CATEGORY]: Internal Error", error);
   }
 };
 
-export { createCategory };
+const getAllCategory = async (req: Request, res: Response) => {
+  try {
+    const category = await db.category.findMany({});
+
+    if (!category) {
+      return sendResponse(res, 400, "Category not found");
+    }
+
+    return sendResponse(res, 200, "Get all category successfully", category);
+  } catch (error) {
+    return sendResponse(res, 500, "[GET_ALL_CATEGORY]: Internal Error", error);
+  }
+};
+
+export { createCategory, getAllCategory };
