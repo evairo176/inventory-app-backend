@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createCategory = void 0;
+exports.getAllCategory = exports.createCategory = void 0;
 const send_response_1 = require("../utils/send-response");
 const db_1 = require("../lib/db");
 const createCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -33,12 +33,23 @@ const createCategory = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 imageUrl: body === null || body === void 0 ? void 0 : body.imageUrl,
             },
         });
-        return (0, send_response_1.sendResponse)(res, 200, "Create category successfully", {
-            data: category,
-        });
+        return (0, send_response_1.sendResponse)(res, 200, "Create category successfully", category);
     }
     catch (error) {
-        return (0, send_response_1.sendResponse)(res, 500, "INTERNAL ERROR", error);
+        return (0, send_response_1.sendResponse)(res, 500, "[CREATE_CATEGORY]: Internal Error", error);
     }
 });
 exports.createCategory = createCategory;
+const getAllCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const category = yield db_1.db.category.findMany({});
+        if (!category) {
+            return (0, send_response_1.sendResponse)(res, 400, "Category not found");
+        }
+        return (0, send_response_1.sendResponse)(res, 200, "Get all category successfully", category);
+    }
+    catch (error) {
+        return (0, send_response_1.sendResponse)(res, 500, "[GET_ALL_CATEGORY]: Internal Error", error);
+    }
+});
+exports.getAllCategory = getAllCategory;

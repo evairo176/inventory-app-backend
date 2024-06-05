@@ -9,3 +9,4 @@ const category_controller_1 = require("../controller/category-controller");
 exports.categoriesRoute = express_1.default.Router();
 // fetch category by slug
 exports.categoriesRoute.post("/", category_controller_1.createCategory);
+exports.categoriesRoute.get("/", category_controller_1.getAllCategory);
