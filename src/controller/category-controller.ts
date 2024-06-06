@@ -1,14 +1,17 @@
 import { Request, Response } from "express";
 import { sendResponse } from "../utils/send-response";
 import { db } from "../lib/db";
+import { generateSlug } from "../utils/generate-slug";
+import { ExcelCategoryProps } from "../types";
 
-const createCategory = async (req: Request, res: Response) => {
+const addCategoryController = async (req: Request, res: Response) => {
   const body = req?.body;
-  console.log(body);
+
   try {
+    const slug = generateSlug(body?.title);
     const checkSlug = await db.category.findFirst({
       where: {
-        slug: body?.slug,
+        slug: slug,
       },
     });
 
@@ -21,7 +24,7 @@ const createCategory = async (req: Request, res: Response) => {
         title: body?.title,
         description: body?.description,
         status: body?.status,
-        slug: body?.slug,
+        slug: slug,
         imageUrl: body?.imageUrl,
       },
     });
@@ -32,9 +35,13 @@ const createCategory = async (req: Request, res: Response) => {
   }
 };
 
-const getAllCategory = async (req: Request, res: Response) => {
+const getAllCategoryController = async (req: Request, res: Response) => {
   try {
-    const category = await db.category.findMany({});
+    const category = await db.category.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
 
     if (!category) {
       return sendResponse(res, 400, "Category not found");
@@ -46,4 +53,61 @@ const getAllCategory = async (req: Request, res: Response) => {
   }
 };
 
-export { createCategory, getAllCategory };
+const createBulkCategories = async (req: Request, res: Response) => {
+  try {
+    const body = req?.body;
+    console.log({ body });
+    let categories = [];
+
+    for (const category of body?.categories) {
+      const newCategory = await addCategory(category);
+      categories.push(newCategory);
+    }
+
+    return sendResponse(
+      res,
+      200,
+      "Create Bulk category successfully",
+      categories
+    );
+  } catch (error) {
+    return sendResponse(res, 500, "[GET_ALL_CATEGORY]: Internal Error", error);
+  }
+};
+
+const addCategory = async (data: ExcelCategoryProps) => {
+  try {
+    const slug = generateSlug(data?.title);
+    const checkSlug = await db.category.findFirst({
+      where: {
+        slug: slug,
+      },
+    });
+
+    if (checkSlug) {
+      return {
+        title: data.title,
+        status_upload: "Error",
+      };
+    }
+
+    const category = await db.category.create({
+      data: {
+        title: data?.title,
+        slug: slug,
+        imageUrl: data?.image,
+        status: "ACTIVE",
+      },
+    });
+
+    return category;
+  } catch (error) {
+    return null;
+  }
+};
+
+export {
+  addCategoryController,
+  getAllCategoryController,
+  createBulkCategories,
+};

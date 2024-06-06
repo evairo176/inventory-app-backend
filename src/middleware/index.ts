@@ -16,9 +16,12 @@ export const errorHandler = (
   next: NextFunction
 ) => {
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
-  sendResponse(res, statusCode, err?.message, {
-    stack: process.env.NODE_ENV === "production" ? null : err.stack,
-  });
+  sendResponse(
+    res,
+    statusCode,
+    err?.message,
+    process.env.NODE_ENV === "production" ? null : err.stack
+  );
 };
 
 // validate request
@@ -27,8 +30,6 @@ export const validate = (schema: any) => (req: any, res: any, next: any) => {
     schema.parse(req.body);
     next();
   } catch (err: any) {
-    return sendResponse(res, 400, "Invalid request", {
-      error: err.errors,
-    });
+    return sendResponse(res, 400, "Invalid request", err.errors);
   }
 };
