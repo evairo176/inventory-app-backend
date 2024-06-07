@@ -9,16 +9,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllCategory = exports.createCategory = void 0;
+exports.createBulkCategories = exports.getAllCategoryController = exports.addCategoryController = void 0;
 const send_response_1 = require("../utils/send-response");
 const db_1 = require("../lib/db");
-const createCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const generate_slug_1 = require("../utils/generate-slug");
+const addCategoryController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = req === null || req === void 0 ? void 0 : req.body;
-    console.log(body);
     try {
+        const slug = (0, generate_slug_1.generateSlug)(body === null || body === void 0 ? void 0 : body.title);
         const checkSlug = yield db_1.db.category.findFirst({
             where: {
-                slug: body === null || body === void 0 ? void 0 : body.slug,
+                slug: slug,
             },
         });
         if (checkSlug) {
@@ -29,7 +30,7 @@ const createCategory = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 title: body === null || body === void 0 ? void 0 : body.title,
                 description: body === null || body === void 0 ? void 0 : body.description,
                 status: body === null || body === void 0 ? void 0 : body.status,
-                slug: body === null || body === void 0 ? void 0 : body.slug,
+                slug: slug,
                 imageUrl: body === null || body === void 0 ? void 0 : body.imageUrl,
             },
         });
@@ -39,10 +40,14 @@ const createCategory = (req, res) => __awaiter(void 0, void 0, void 0, function*
         return (0, send_response_1.sendResponse)(res, 500, "[CREATE_CATEGORY]: Internal Error", error);
     }
 });
-exports.createCategory = createCategory;
-const getAllCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.addCategoryController = addCategoryController;
+const getAllCategoryController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const category = yield db_1.db.category.findMany({});
+        const category = yield db_1.db.category.findMany({
+            orderBy: {
+                createdAt: "desc",
+            },
+        });
         if (!category) {
             return (0, send_response_1.sendResponse)(res, 400, "Category not found");
         }
@@ -52,4 +57,48 @@ const getAllCategory = (req, res) => __awaiter(void 0, void 0, void 0, function*
         return (0, send_response_1.sendResponse)(res, 500, "[GET_ALL_CATEGORY]: Internal Error", error);
     }
 });
-exports.getAllCategory = getAllCategory;
+exports.getAllCategoryController = getAllCategoryController;
+const createBulkCategories = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const body = req === null || req === void 0 ? void 0 : req.body;
+        console.log({ body });
+        let categories = [];
+        for (const category of body === null || body === void 0 ? void 0 : body.categories) {
+            const newCategory = yield addCategory(category);
+            categories.push(newCategory);
+        }
+        return (0, send_response_1.sendResponse)(res, 200, "Create Bulk category successfully", categories);
+    }
+    catch (error) {
+        return (0, send_response_1.sendResponse)(res, 500, "[GET_ALL_CATEGORY]: Internal Error", error);
+    }
+});
+exports.createBulkCategories = createBulkCategories;
+const addCategory = (data) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const slug = (0, generate_slug_1.generateSlug)(data === null || data === void 0 ? void 0 : data.title);
+        const checkSlug = yield db_1.db.category.findFirst({
+            where: {
+                slug: slug,
+            },
+        });
+        if (checkSlug) {
+            return {
+                title: data.title,
+                status_upload: "Error",
+            };
+        }
+        const category = yield db_1.db.category.create({
+            data: {
+                title: data === null || data === void 0 ? void 0 : data.title,
+                slug: slug,
+                imageUrl: data === null || data === void 0 ? void 0 : data.image,
+                status: "ACTIVE",
+            },
+        });
+        return category;
+    }
+    catch (error) {
+        return null;
+    }
+});

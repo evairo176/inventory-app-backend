@@ -12,9 +12,7 @@ exports.notFound = notFound;
 // error handling
 const errorHandler = (err, req, res, next) => {
     const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
-    (0, send_response_1.sendResponse)(res, statusCode, err === null || err === void 0 ? void 0 : err.message, {
-        stack: process.env.NODE_ENV === "production" ? null : err.stack,
-    });
+    (0, send_response_1.sendResponse)(res, statusCode, err === null || err === void 0 ? void 0 : err.message, process.env.NODE_ENV === "production" ? null : err.stack);
 };
 exports.errorHandler = errorHandler;
 // validate request
@@ -24,9 +22,7 @@ const validate = (schema) => (req, res, next) => {
         next();
     }
     catch (err) {
-        return (0, send_response_1.sendResponse)(res, 400, "Invalid request", {
-            error: err.errors,
-        });
+        return (0, send_response_1.sendResponse)(res, 400, "Invalid request", err.errors);
     }
 };
 exports.validate = validate;
