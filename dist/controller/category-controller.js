@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createBulkCategories = exports.getAllCategoryController = exports.addCategoryController = void 0;
+exports.deleteCategoryByIdController = exports.createBulkCategoriesController = exports.getAllCategoryController = exports.addCategoryController = void 0;
 const send_response_1 = require("../utils/send-response");
 const db_1 = require("../lib/db");
 const generate_slug_1 = require("../utils/generate-slug");
@@ -47,9 +47,14 @@ const getAllCategoryController = (req, res) => __awaiter(void 0, void 0, void 0,
             orderBy: {
                 createdAt: "desc",
             },
+            where: {
+                status: {
+                    not: "DELETED",
+                },
+            },
         });
         if (!category) {
-            return (0, send_response_1.sendResponse)(res, 400, "Category not found");
+            return (0, send_response_1.sendResponse)(res, 400, "Category not found!");
         }
         return (0, send_response_1.sendResponse)(res, 200, "Get all category successfully", category);
     }
@@ -58,7 +63,7 @@ const getAllCategoryController = (req, res) => __awaiter(void 0, void 0, void 0,
     }
 });
 exports.getAllCategoryController = getAllCategoryController;
-const createBulkCategories = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const createBulkCategoriesController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const body = req === null || req === void 0 ? void 0 : req.body;
         console.log({ body });
@@ -73,7 +78,7 @@ const createBulkCategories = (req, res) => __awaiter(void 0, void 0, void 0, fun
         return (0, send_response_1.sendResponse)(res, 500, "[GET_ALL_CATEGORY]: Internal Error", error);
     }
 });
-exports.createBulkCategories = createBulkCategories;
+exports.createBulkCategoriesController = createBulkCategoriesController;
 const addCategory = (data) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const slug = (0, generate_slug_1.generateSlug)(data === null || data === void 0 ? void 0 : data.title);
@@ -102,3 +107,32 @@ const addCategory = (data) => __awaiter(void 0, void 0, void 0, function* () {
         return null;
     }
 });
+const deleteCategoryByIdController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const params = req === null || req === void 0 ? void 0 : req.params;
+    try {
+        if (!params.id) {
+            return (0, send_response_1.sendResponse)(res, 400, "Category Id not found");
+        }
+        const category = yield db_1.db.category.findFirst({
+            where: {
+                id: params.id,
+            },
+        });
+        if (!category) {
+            return (0, send_response_1.sendResponse)(res, 400, "Category not found");
+        }
+        const deleteCategory = yield db_1.db.category.update({
+            where: {
+                id: params.id,
+            },
+            data: {
+                status: "DELETED",
+            },
+        });
+        return (0, send_response_1.sendResponse)(res, 200, "Delete category successfully", deleteCategory);
+    }
+    catch (error) {
+        return (0, send_response_1.sendResponse)(res, 500, "[DELETE_CATEGORY_CATEGORY]: Internal Error", error);
+    }
+});
+exports.deleteCategoryByIdController = deleteCategoryByIdController;

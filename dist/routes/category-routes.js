@@ -11,5 +11,6 @@ const validation_request_schema_1 = require("../lib/validation-request-schema");
 exports.categoriesRoute = express_1.default.Router();
 // fetch category by slug
 exports.categoriesRoute.post("/", (0, middleware_1.validate)(validation_request_schema_1.addCategorySchema), category_controller_1.addCategoryController);
-exports.categoriesRoute.post("/bulk", category_controller_1.createBulkCategories);
+exports.categoriesRoute.post("/bulk", category_controller_1.createBulkCategoriesController);
 exports.categoriesRoute.get("/", category_controller_1.getAllCategoryController);
+exports.categoriesRoute.delete("/:id", category_controller_1.deleteCategoryByIdController);
