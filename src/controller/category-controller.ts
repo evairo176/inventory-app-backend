@@ -144,10 +144,94 @@ const deleteCategoryByIdController = async (req: Request, res: Response) => {
       deleteCategory
     );
   } catch (error) {
+    return sendResponse(res, 500, "[DELETE_CATEGORY]: Internal Error", error);
+  }
+};
+
+const getCategoryByIdController = async (req: Request, res: Response) => {
+  const params = req?.params;
+  try {
+    if (!params.id) {
+      return sendResponse(res, 400, "Category Id not found");
+    }
+
+    const category = await db.category.findFirst({
+      where: {
+        id: params.id,
+      },
+    });
+
+    if (!category) {
+      return sendResponse(res, 400, "Category not found");
+    }
+
+    return sendResponse(res, 200, "Get category by id successfully", category);
+  } catch (error) {
     return sendResponse(
       res,
       500,
-      "[DELETE_CATEGORY_CATEGORY]: Internal Error",
+      "[GET_CATEGORY_BY_ID]: Internal Error",
+      error
+    );
+  }
+};
+
+const updateCategoryByIdController = async (req: Request, res: Response) => {
+  const params = req?.params;
+  const body = req?.body;
+  try {
+    if (!params.id) {
+      return sendResponse(res, 400, "Category Id not found");
+    }
+
+    const category = await db.category.findFirst({
+      where: {
+        id: params.id,
+      },
+    });
+
+    if (!category) {
+      return sendResponse(res, 400, "Category not found");
+    }
+
+    const slug = generateSlug(body?.title);
+    const checkSlug = await db.category.findFirst({
+      where: {
+        slug: slug,
+        NOT: {
+          id: params.id, // Exclude the current category from the check
+        },
+      },
+    });
+
+    if (checkSlug) {
+      return sendResponse(res, 400, "Slug is already exist");
+    }
+
+    const categoryUpdate = await db.category.update({
+      where: {
+        id: params.id,
+      },
+      data: {
+        title: body?.title,
+        description: body?.description,
+        slug: slug,
+        imageUrl: body?.imageUrl,
+        status: body?.status,
+      },
+    });
+
+    return sendResponse(
+      res,
+      200,
+      "Update category by id successfully",
+      categoryUpdate
+    );
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      "[UPDATE_CATEGORY_BY_ID]: Internal Error",
       error
     );
   }
@@ -158,4 +242,6 @@ export {
   getAllCategoryController,
   createBulkCategoriesController,
   deleteCategoryByIdController,
+  getCategoryByIdController,
+  updateCategoryByIdController,
 };
