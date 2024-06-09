@@ -1,7 +1,8 @@
 import express from "express";
 import {
   addCategoryController,
-  createBulkCategories,
+  createBulkCategoriesController,
+  deleteCategoryByIdController,
   getAllCategoryController,
 } from "../controller/category-controller";
 import { validate } from "../middleware";
@@ -12,5 +13,6 @@ export const categoriesRoute = express.Router();
 // fetch category by slug
 
 categoriesRoute.post("/", validate(addCategorySchema), addCategoryController);
-categoriesRoute.post("/bulk", createBulkCategories);
+categoriesRoute.post("/bulk", createBulkCategoriesController);
 categoriesRoute.get("/", getAllCategoryController);
+categoriesRoute.delete("/:id", deleteCategoryByIdController);

@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
-import { categoriesRoute } from "./routes/category-route";
+import { categoriesRoute } from "./routes/category-routes";
 import { errorHandler, notFound } from "./middleware";
 
 dotenv.config();

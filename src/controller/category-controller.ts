@@ -41,6 +41,11 @@ const getAllCategoryController = async (req: Request, res: Response) => {
       orderBy: {
         createdAt: "desc",
       },
+      where: {
+        status: {
+          not: "DELETED",
+        },
+      },
     });
 
     if (!category) {
@@ -53,7 +58,7 @@ const getAllCategoryController = async (req: Request, res: Response) => {
   }
 };
 
-const createBulkCategories = async (req: Request, res: Response) => {
+const createBulkCategoriesController = async (req: Request, res: Response) => {
   try {
     const body = req?.body;
     console.log({ body });
@@ -106,8 +111,51 @@ const addCategory = async (data: ExcelCategoryProps) => {
   }
 };
 
+const deleteCategoryByIdController = async (req: Request, res: Response) => {
+  const params = req?.params;
+  try {
+    if (!params.id) {
+      return sendResponse(res, 400, "Category Id not found");
+    }
+
+    const category = await db.category.findFirst({
+      where: {
+        id: params.id,
+      },
+    });
+
+    if (!category) {
+      return sendResponse(res, 400, "Category not found");
+    }
+
+    const deleteCategory = await db.category.update({
+      where: {
+        id: params.id,
+      },
+      data: {
+        status: "DELETED",
+      },
+    });
+
+    return sendResponse(
+      res,
+      200,
+      "Delete category successfully",
+      deleteCategory
+    );
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      "[DELETE_CATEGORY_CATEGORY]: Internal Error",
+      error
+    );
+  }
+};
+
 export {
   addCategoryController,
   getAllCategoryController,
-  createBulkCategories,
+  createBulkCategoriesController,
+  deleteCategoryByIdController,
 };
