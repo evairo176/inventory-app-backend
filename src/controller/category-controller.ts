@@ -49,7 +49,7 @@ const getAllCategoryController = async (req: Request, res: Response) => {
     });
 
     if (!category) {
-      return sendResponse(res, 400, "Category not found");
+      return sendResponse(res, 400, "Category not found!");
     }
 
     return sendResponse(res, 200, "Get all category successfully", category);
