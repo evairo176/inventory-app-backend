@@ -8,8 +8,9 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const morgan_1 = __importDefault(require("morgan"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
-const category_routes_1 = require("./routes/category-routes");
 const middleware_1 = require("./middleware");
+const brand_routes_1 = require("./routes/brand-routes");
+const category_routes_1 = require("./routes/category-routes");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 5000;
@@ -19,7 +20,9 @@ app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use((0, morgan_1.default)("tiny"));
 // categories routes
-app.use("/api/category", category_routes_1.categoriesRoute);
+app.use("/api/category", category_routes_1.categoriesRoutes);
+// brands routes
+app.use("/api/brand", brand_routes_1.brandsRoutes);
 // error handler
 app.use(middleware_1.notFound);
 app.use(middleware_1.errorHandler);

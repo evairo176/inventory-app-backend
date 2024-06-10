@@ -39,7 +39,7 @@ const getAllCategoryController = async (req: Request, res: Response) => {
   try {
     const category = await db.category.findMany({
       orderBy: {
-        createdAt: "desc",
+        updatedAt: "desc",
       },
       where: {
         status: {

@@ -9,11 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateCategoryByIdController = exports.getCategoryByIdController = exports.deleteCategoryByIdController = exports.createBulkCategoriesController = exports.getAllCategoryController = exports.addCategoryController = void 0;
+exports.updateBrandByIdController = exports.getBrandByIdController = exports.deleteBrandByIdController = exports.createBulkBrandsController = exports.getAllBrandController = exports.addBrandController = void 0;
 const send_response_1 = require("../utils/send-response");
 const db_1 = require("../lib/db");
 const generate_slug_1 = require("../utils/generate-slug");
-const addCategoryController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const addBrandController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = req === null || req === void 0 ? void 0 : req.body;
     try {
         const slug = (0, generate_slug_1.generateSlug)(body === null || body === void 0 ? void 0 : body.title);
@@ -25,25 +25,24 @@ const addCategoryController = (req, res) => __awaiter(void 0, void 0, void 0, fu
         if (checkSlug) {
             return (0, send_response_1.sendResponse)(res, 400, "Slug is already exist");
         }
-        const category = yield db_1.db.category.create({
+        const brand = yield db_1.db.brand.create({
             data: {
                 title: body === null || body === void 0 ? void 0 : body.title,
-                description: body === null || body === void 0 ? void 0 : body.description,
                 status: body === null || body === void 0 ? void 0 : body.status,
                 slug: slug,
                 imageUrl: body === null || body === void 0 ? void 0 : body.imageUrl,
             },
         });
-        return (0, send_response_1.sendResponse)(res, 200, "Create category successfully", category);
+        return (0, send_response_1.sendResponse)(res, 200, "Create brand successfully", brand);
     }
     catch (error) {
-        return (0, send_response_1.sendResponse)(res, 500, "[CREATE_CATEGORY]: Internal Error", error);
+        return (0, send_response_1.sendResponse)(res, 500, "[CREATE_BRAND]: Internal Error", error);
     }
 });
-exports.addCategoryController = addCategoryController;
-const getAllCategoryController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.addBrandController = addBrandController;
+const getAllBrandController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const category = yield db_1.db.category.findMany({
+        const brand = yield db_1.db.brand.findMany({
             orderBy: {
                 updatedAt: "desc",
             },
@@ -53,36 +52,36 @@ const getAllCategoryController = (req, res) => __awaiter(void 0, void 0, void 0,
                 },
             },
         });
-        if (!category) {
-            return (0, send_response_1.sendResponse)(res, 400, "Category not found!");
+        if (!brand) {
+            return (0, send_response_1.sendResponse)(res, 400, "Brand not found!");
         }
-        return (0, send_response_1.sendResponse)(res, 200, "Get all category successfully", category);
+        return (0, send_response_1.sendResponse)(res, 200, "Get all category successfully", brand);
     }
     catch (error) {
-        return (0, send_response_1.sendResponse)(res, 500, "[GET_ALL_CATEGORY]: Internal Error", error);
+        return (0, send_response_1.sendResponse)(res, 500, "[GET_ALL_BRAND]: Internal Error", error);
     }
 });
-exports.getAllCategoryController = getAllCategoryController;
-const createBulkCategoriesController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getAllBrandController = getAllBrandController;
+const createBulkBrandsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const body = req === null || req === void 0 ? void 0 : req.body;
         console.log({ body });
-        let categories = [];
-        for (const category of body === null || body === void 0 ? void 0 : body.categories) {
-            const newCategory = yield addCategory(category);
-            categories.push(newCategory);
+        let brands = [];
+        for (const brand of body === null || body === void 0 ? void 0 : body.brands) {
+            const newBrand = yield addBrand(brand);
+            brands.push(newBrand);
         }
-        return (0, send_response_1.sendResponse)(res, 200, "Create Bulk category successfully", categories);
+        return (0, send_response_1.sendResponse)(res, 200, "Create Bulk brand successfully", brands);
     }
     catch (error) {
-        return (0, send_response_1.sendResponse)(res, 500, "[GET_ALL_CATEGORY]: Internal Error", error);
+        return (0, send_response_1.sendResponse)(res, 500, "[CREATE_BULK_BRAND]: Internal Error", error);
     }
 });
-exports.createBulkCategoriesController = createBulkCategoriesController;
-const addCategory = (data) => __awaiter(void 0, void 0, void 0, function* () {
+exports.createBulkBrandsController = createBulkBrandsController;
+const addBrand = (data) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const slug = (0, generate_slug_1.generateSlug)(data === null || data === void 0 ? void 0 : data.title);
-        const checkSlug = yield db_1.db.category.findFirst({
+        const checkSlug = yield db_1.db.brand.findFirst({
             where: {
                 slug: slug,
             },
@@ -93,7 +92,7 @@ const addCategory = (data) => __awaiter(void 0, void 0, void 0, function* () {
                 status_upload: "Error",
             };
         }
-        const category = yield db_1.db.category.create({
+        const brand = yield db_1.db.brand.create({
             data: {
                 title: data === null || data === void 0 ? void 0 : data.title,
                 slug: slug,
@@ -101,27 +100,27 @@ const addCategory = (data) => __awaiter(void 0, void 0, void 0, function* () {
                 status: "ACTIVE",
             },
         });
-        return category;
+        return brand;
     }
     catch (error) {
         return null;
     }
 });
-const deleteCategoryByIdController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const deleteBrandByIdController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const params = req === null || req === void 0 ? void 0 : req.params;
     try {
         if (!params.id) {
-            return (0, send_response_1.sendResponse)(res, 400, "Category Id not found");
+            return (0, send_response_1.sendResponse)(res, 400, "Brand Id not found");
         }
-        const category = yield db_1.db.category.findFirst({
+        const brand = yield db_1.db.brand.findFirst({
             where: {
                 id: params.id,
             },
         });
-        if (!category) {
-            return (0, send_response_1.sendResponse)(res, 400, "Category not found");
+        if (!brand) {
+            return (0, send_response_1.sendResponse)(res, 400, "Brand not found");
         }
-        const deleteCategory = yield db_1.db.category.update({
+        const deleteBrand = yield db_1.db.brand.update({
             where: {
                 id: params.id,
             },
@@ -129,51 +128,51 @@ const deleteCategoryByIdController = (req, res) => __awaiter(void 0, void 0, voi
                 status: "DELETED",
             },
         });
-        return (0, send_response_1.sendResponse)(res, 200, "Delete category successfully", deleteCategory);
+        return (0, send_response_1.sendResponse)(res, 200, "Delete brand successfully", deleteBrand);
     }
     catch (error) {
-        return (0, send_response_1.sendResponse)(res, 500, "[DELETE_CATEGORY]: Internal Error", error);
+        return (0, send_response_1.sendResponse)(res, 500, "[DELETE_BRAND]: Internal Error", error);
     }
 });
-exports.deleteCategoryByIdController = deleteCategoryByIdController;
-const getCategoryByIdController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.deleteBrandByIdController = deleteBrandByIdController;
+const getBrandByIdController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const params = req === null || req === void 0 ? void 0 : req.params;
     try {
         if (!params.id) {
-            return (0, send_response_1.sendResponse)(res, 400, "Category Id not found");
+            return (0, send_response_1.sendResponse)(res, 400, "Brand Id not found");
         }
-        const category = yield db_1.db.category.findFirst({
+        const brand = yield db_1.db.brand.findFirst({
             where: {
                 id: params.id,
             },
         });
-        if (!category) {
-            return (0, send_response_1.sendResponse)(res, 400, "Category not found");
+        if (!brand) {
+            return (0, send_response_1.sendResponse)(res, 400, "Brand not found");
         }
-        return (0, send_response_1.sendResponse)(res, 200, "Get category by id successfully", category);
+        return (0, send_response_1.sendResponse)(res, 200, "Get brand by id successfully", brand);
     }
     catch (error) {
-        return (0, send_response_1.sendResponse)(res, 500, "[GET_CATEGORY_BY_ID]: Internal Error", error);
+        return (0, send_response_1.sendResponse)(res, 500, "[GET_BRAND_BY_ID]: Internal Error", error);
     }
 });
-exports.getCategoryByIdController = getCategoryByIdController;
-const updateCategoryByIdController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getBrandByIdController = getBrandByIdController;
+const updateBrandByIdController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const params = req === null || req === void 0 ? void 0 : req.params;
     const body = req === null || req === void 0 ? void 0 : req.body;
     try {
         if (!params.id) {
-            return (0, send_response_1.sendResponse)(res, 400, "Category Id not found");
+            return (0, send_response_1.sendResponse)(res, 400, "Brand Id not found");
         }
-        const category = yield db_1.db.category.findFirst({
+        const brand = yield db_1.db.brand.findFirst({
             where: {
                 id: params.id,
             },
         });
-        if (!category) {
-            return (0, send_response_1.sendResponse)(res, 400, "Category not found");
+        if (!brand) {
+            return (0, send_response_1.sendResponse)(res, 400, "Brand not found");
         }
         const slug = (0, generate_slug_1.generateSlug)(body === null || body === void 0 ? void 0 : body.title);
-        const checkSlug = yield db_1.db.category.findFirst({
+        const checkSlug = yield db_1.db.brand.findFirst({
             where: {
                 slug: slug,
                 NOT: {
@@ -184,22 +183,21 @@ const updateCategoryByIdController = (req, res) => __awaiter(void 0, void 0, voi
         if (checkSlug) {
             return (0, send_response_1.sendResponse)(res, 400, "Slug is already exist");
         }
-        const categoryUpdate = yield db_1.db.category.update({
+        const brandUpdate = yield db_1.db.brand.update({
             where: {
                 id: params.id,
             },
             data: {
                 title: body === null || body === void 0 ? void 0 : body.title,
-                description: body === null || body === void 0 ? void 0 : body.description,
                 slug: slug,
                 imageUrl: body === null || body === void 0 ? void 0 : body.imageUrl,
                 status: body === null || body === void 0 ? void 0 : body.status,
             },
         });
-        return (0, send_response_1.sendResponse)(res, 200, "Update category by id successfully", categoryUpdate);
+        return (0, send_response_1.sendResponse)(res, 200, "Update brand by id successfully", brandUpdate);
     }
     catch (error) {
-        return (0, send_response_1.sendResponse)(res, 500, "[UPDATE_CATEGORY_BY_ID]: Internal Error", error);
+        return (0, send_response_1.sendResponse)(res, 500, "[UPDATE_BRAND_BY_ID]: Internal Error", error);
     }
 });
-exports.updateCategoryByIdController = updateCategoryByIdController;
+exports.updateBrandByIdController = updateBrandByIdController;

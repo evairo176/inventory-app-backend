@@ -13,25 +13,25 @@ import {
   updateCategorySchema,
 } from "../lib/validation-request-schema";
 
-export const categoriesRoute = express.Router();
+export const categoriesRoutes = express.Router();
 
 // create category
-categoriesRoute.post("/", validate(addCategorySchema), addCategoryController);
+categoriesRoutes.post("/", validate(addCategorySchema), addCategoryController);
 
 // create bulk category
-categoriesRoute.post("/bulk", createBulkCategoriesController);
+categoriesRoutes.post("/bulk", createBulkCategoriesController);
 
 // get all category
-categoriesRoute.get("/", getAllCategoryController);
+categoriesRoutes.get("/", getAllCategoryController);
 
 // delete category
-categoriesRoute.delete("/:id", deleteCategoryByIdController);
+categoriesRoutes.delete("/:id", deleteCategoryByIdController);
 
 // get category by id
-categoriesRoute.get("/:id", getCategoryByIdController);
+categoriesRoutes.get("/:id", getCategoryByIdController);
 
 // update category by id
-categoriesRoute.put(
+categoriesRoutes.put(
   "/:id",
   validate(updateCategorySchema),
   updateCategoryByIdController

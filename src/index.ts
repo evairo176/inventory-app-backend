@@ -3,8 +3,9 @@ import dotenv from "dotenv";
 import cors from "cors";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
-import { categoriesRoute } from "./routes/category-routes";
 import { errorHandler, notFound } from "./middleware";
+import { brandsRoutes } from "./routes/brand-routes";
+import { categoriesRoutes } from "./routes/category-routes";
 
 dotenv.config();
 
@@ -17,7 +18,10 @@ app.use(express.json());
 app.use(morgan("tiny"));
 
 // categories routes
-app.use("/api/category", categoriesRoute);
+app.use("/api/category", categoriesRoutes);
+
+// brands routes
+app.use("/api/brand", brandsRoutes);
 
 // error handler
 app.use(notFound);
