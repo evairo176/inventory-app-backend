@@ -29,8 +29,13 @@ const addBrandController = async (req: Request, res: Response) => {
     });
 
     return sendResponse(res, 200, "Create brand successfully", brand);
-  } catch (error) {
-    return sendResponse(res, 500, "[CREATE_BRAND]: Internal Error", error);
+  } catch (error: any) {
+    return sendResponse(
+      res,
+      500,
+      "[CREATE_BRAND]: Internal Error",
+      error?.message
+    );
   }
 };
 
@@ -52,8 +57,13 @@ const getAllBrandController = async (req: Request, res: Response) => {
     }
 
     return sendResponse(res, 200, "Get all category successfully", brand);
-  } catch (error) {
-    return sendResponse(res, 500, "[GET_ALL_BRAND]: Internal Error", error);
+  } catch (error: any) {
+    return sendResponse(
+      res,
+      500,
+      "[GET_ALL_BRAND]: Internal Error",
+      error?.message
+    );
   }
 };
 
@@ -69,8 +79,13 @@ const createBulkBrandsController = async (req: Request, res: Response) => {
     }
 
     return sendResponse(res, 200, "Create Bulk brand successfully", brands);
-  } catch (error) {
-    return sendResponse(res, 500, "[CREATE_BULK_BRAND]: Internal Error", error);
+  } catch (error: any) {
+    return sendResponse(
+      res,
+      500,
+      "[CREATE_BULK_BRAND]: Internal Error",
+      error?.message
+    );
   }
 };
 
@@ -100,7 +115,7 @@ const addBrand = async (data: ExcelBrandProps) => {
     });
 
     return brand;
-  } catch (error) {
+  } catch (error: any) {
     return null;
   }
 };
@@ -122,18 +137,20 @@ const deleteBrandByIdController = async (req: Request, res: Response) => {
       return sendResponse(res, 400, "Brand not found");
     }
 
-    const deleteBrand = await db.brand.update({
+    const deleteBrand = await db.brand.delete({
       where: {
         id: params.id,
-      },
-      data: {
-        status: "DELETED",
       },
     });
 
     return sendResponse(res, 200, "Delete brand successfully", deleteBrand);
-  } catch (error) {
-    return sendResponse(res, 500, "[DELETE_BRAND]: Internal Error", error);
+  } catch (error: any) {
+    return sendResponse(
+      res,
+      500,
+      "[DELETE_BRAND]: Internal Error",
+      error?.message
+    );
   }
 };
 
@@ -155,8 +172,13 @@ const getBrandByIdController = async (req: Request, res: Response) => {
     }
 
     return sendResponse(res, 200, "Get brand by id successfully", brand);
-  } catch (error) {
-    return sendResponse(res, 500, "[GET_BRAND_BY_ID]: Internal Error", error);
+  } catch (error: any) {
+    return sendResponse(
+      res,
+      500,
+      "[GET_BRAND_BY_ID]: Internal Error",
+      error?.message
+    );
   }
 };
 
@@ -210,12 +232,12 @@ const updateBrandByIdController = async (req: Request, res: Response) => {
       "Update brand by id successfully",
       brandUpdate
     );
-  } catch (error) {
+  } catch (error: any) {
     return sendResponse(
       res,
       500,
       "[UPDATE_BRAND_BY_ID]: Internal Error",
-      error
+      error?.message
     );
   }
 };

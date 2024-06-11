@@ -36,7 +36,7 @@ const addBrandController = (req, res) => __awaiter(void 0, void 0, void 0, funct
         return (0, send_response_1.sendResponse)(res, 200, "Create brand successfully", brand);
     }
     catch (error) {
-        return (0, send_response_1.sendResponse)(res, 500, "[CREATE_BRAND]: Internal Error", error);
+        return (0, send_response_1.sendResponse)(res, 500, "[CREATE_BRAND]: Internal Error", error === null || error === void 0 ? void 0 : error.message);
     }
 });
 exports.addBrandController = addBrandController;
@@ -58,7 +58,7 @@ const getAllBrandController = (req, res) => __awaiter(void 0, void 0, void 0, fu
         return (0, send_response_1.sendResponse)(res, 200, "Get all category successfully", brand);
     }
     catch (error) {
-        return (0, send_response_1.sendResponse)(res, 500, "[GET_ALL_BRAND]: Internal Error", error);
+        return (0, send_response_1.sendResponse)(res, 500, "[GET_ALL_BRAND]: Internal Error", error === null || error === void 0 ? void 0 : error.message);
     }
 });
 exports.getAllBrandController = getAllBrandController;
@@ -74,7 +74,7 @@ const createBulkBrandsController = (req, res) => __awaiter(void 0, void 0, void 
         return (0, send_response_1.sendResponse)(res, 200, "Create Bulk brand successfully", brands);
     }
     catch (error) {
-        return (0, send_response_1.sendResponse)(res, 500, "[CREATE_BULK_BRAND]: Internal Error", error);
+        return (0, send_response_1.sendResponse)(res, 500, "[CREATE_BULK_BRAND]: Internal Error", error === null || error === void 0 ? void 0 : error.message);
     }
 });
 exports.createBulkBrandsController = createBulkBrandsController;
@@ -120,18 +120,15 @@ const deleteBrandByIdController = (req, res) => __awaiter(void 0, void 0, void 0
         if (!brand) {
             return (0, send_response_1.sendResponse)(res, 400, "Brand not found");
         }
-        const deleteBrand = yield db_1.db.brand.update({
+        const deleteBrand = yield db_1.db.brand.delete({
             where: {
                 id: params.id,
-            },
-            data: {
-                status: "DELETED",
             },
         });
         return (0, send_response_1.sendResponse)(res, 200, "Delete brand successfully", deleteBrand);
     }
     catch (error) {
-        return (0, send_response_1.sendResponse)(res, 500, "[DELETE_BRAND]: Internal Error", error);
+        return (0, send_response_1.sendResponse)(res, 500, "[DELETE_BRAND]: Internal Error", error === null || error === void 0 ? void 0 : error.message);
     }
 });
 exports.deleteBrandByIdController = deleteBrandByIdController;
@@ -152,7 +149,7 @@ const getBrandByIdController = (req, res) => __awaiter(void 0, void 0, void 0, f
         return (0, send_response_1.sendResponse)(res, 200, "Get brand by id successfully", brand);
     }
     catch (error) {
-        return (0, send_response_1.sendResponse)(res, 500, "[GET_BRAND_BY_ID]: Internal Error", error);
+        return (0, send_response_1.sendResponse)(res, 500, "[GET_BRAND_BY_ID]: Internal Error", error === null || error === void 0 ? void 0 : error.message);
     }
 });
 exports.getBrandByIdController = getBrandByIdController;
@@ -197,7 +194,7 @@ const updateBrandByIdController = (req, res) => __awaiter(void 0, void 0, void 0
         return (0, send_response_1.sendResponse)(res, 200, "Update brand by id successfully", brandUpdate);
     }
     catch (error) {
-        return (0, send_response_1.sendResponse)(res, 500, "[UPDATE_BRAND_BY_ID]: Internal Error", error);
+        return (0, send_response_1.sendResponse)(res, 500, "[UPDATE_BRAND_BY_ID]: Internal Error", error === null || error === void 0 ? void 0 : error.message);
     }
 });
 exports.updateBrandByIdController = updateBrandByIdController;

@@ -30,8 +30,13 @@ const addCategoryController = async (req: Request, res: Response) => {
     });
 
     return sendResponse(res, 200, "Create category successfully", category);
-  } catch (error) {
-    return sendResponse(res, 500, "[CREATE_CATEGORY]: Internal Error", error);
+  } catch (error: any) {
+    return sendResponse(
+      res,
+      500,
+      "[CREATE_CATEGORY]: Internal Error",
+      error?.message
+    );
   }
 };
 
@@ -53,8 +58,13 @@ const getAllCategoryController = async (req: Request, res: Response) => {
     }
 
     return sendResponse(res, 200, "Get all category successfully", category);
-  } catch (error) {
-    return sendResponse(res, 500, "[GET_ALL_CATEGORY]: Internal Error", error);
+  } catch (error: any) {
+    return sendResponse(
+      res,
+      500,
+      "[GET_ALL_CATEGORY]: Internal Error",
+      error?.message
+    );
   }
 };
 
@@ -75,8 +85,13 @@ const createBulkCategoriesController = async (req: Request, res: Response) => {
       "Create Bulk category successfully",
       categories
     );
-  } catch (error) {
-    return sendResponse(res, 500, "[GET_ALL_CATEGORY]: Internal Error", error);
+  } catch (error: any) {
+    return sendResponse(
+      res,
+      500,
+      "[CREATE_BULK_CATEGORY]: Internal Error",
+      error?.message
+    );
   }
 };
 
@@ -106,7 +121,7 @@ const addCategory = async (data: ExcelCategoryProps) => {
     });
 
     return category;
-  } catch (error) {
+  } catch (error: any) {
     return null;
   }
 };
@@ -128,12 +143,9 @@ const deleteCategoryByIdController = async (req: Request, res: Response) => {
       return sendResponse(res, 400, "Category not found");
     }
 
-    const deleteCategory = await db.category.update({
+    const deleteCategory = await db.category.delete({
       where: {
         id: params.id,
-      },
-      data: {
-        status: "DELETED",
       },
     });
 
@@ -143,8 +155,13 @@ const deleteCategoryByIdController = async (req: Request, res: Response) => {
       "Delete category successfully",
       deleteCategory
     );
-  } catch (error) {
-    return sendResponse(res, 500, "[DELETE_CATEGORY]: Internal Error", error);
+  } catch (error: any) {
+    return sendResponse(
+      res,
+      500,
+      "[DELETE_CATEGORY]: Internal Error",
+      error?.message
+    );
   }
 };
 
@@ -166,12 +183,12 @@ const getCategoryByIdController = async (req: Request, res: Response) => {
     }
 
     return sendResponse(res, 200, "Get category by id successfully", category);
-  } catch (error) {
+  } catch (error: any) {
     return sendResponse(
       res,
       500,
       "[GET_CATEGORY_BY_ID]: Internal Error",
-      error
+      error?.message
     );
   }
 };
@@ -227,12 +244,12 @@ const updateCategoryByIdController = async (req: Request, res: Response) => {
       "Update category by id successfully",
       categoryUpdate
     );
-  } catch (error) {
+  } catch (error: any) {
     return sendResponse(
       res,
       500,
       "[UPDATE_CATEGORY_BY_ID]: Internal Error",
-      error
+      error?.message
     );
   }
 };

@@ -37,7 +37,7 @@ const addCategoryController = (req, res) => __awaiter(void 0, void 0, void 0, fu
         return (0, send_response_1.sendResponse)(res, 200, "Create category successfully", category);
     }
     catch (error) {
-        return (0, send_response_1.sendResponse)(res, 500, "[CREATE_CATEGORY]: Internal Error", error);
+        return (0, send_response_1.sendResponse)(res, 500, "[CREATE_CATEGORY]: Internal Error", error === null || error === void 0 ? void 0 : error.message);
     }
 });
 exports.addCategoryController = addCategoryController;
@@ -59,7 +59,7 @@ const getAllCategoryController = (req, res) => __awaiter(void 0, void 0, void 0,
         return (0, send_response_1.sendResponse)(res, 200, "Get all category successfully", category);
     }
     catch (error) {
-        return (0, send_response_1.sendResponse)(res, 500, "[GET_ALL_CATEGORY]: Internal Error", error);
+        return (0, send_response_1.sendResponse)(res, 500, "[GET_ALL_CATEGORY]: Internal Error", error === null || error === void 0 ? void 0 : error.message);
     }
 });
 exports.getAllCategoryController = getAllCategoryController;
@@ -75,7 +75,7 @@ const createBulkCategoriesController = (req, res) => __awaiter(void 0, void 0, v
         return (0, send_response_1.sendResponse)(res, 200, "Create Bulk category successfully", categories);
     }
     catch (error) {
-        return (0, send_response_1.sendResponse)(res, 500, "[GET_ALL_CATEGORY]: Internal Error", error);
+        return (0, send_response_1.sendResponse)(res, 500, "[CREATE_BULK_CATEGORY]: Internal Error", error === null || error === void 0 ? void 0 : error.message);
     }
 });
 exports.createBulkCategoriesController = createBulkCategoriesController;
@@ -121,18 +121,15 @@ const deleteCategoryByIdController = (req, res) => __awaiter(void 0, void 0, voi
         if (!category) {
             return (0, send_response_1.sendResponse)(res, 400, "Category not found");
         }
-        const deleteCategory = yield db_1.db.category.update({
+        const deleteCategory = yield db_1.db.category.delete({
             where: {
                 id: params.id,
-            },
-            data: {
-                status: "DELETED",
             },
         });
         return (0, send_response_1.sendResponse)(res, 200, "Delete category successfully", deleteCategory);
     }
     catch (error) {
-        return (0, send_response_1.sendResponse)(res, 500, "[DELETE_CATEGORY]: Internal Error", error);
+        return (0, send_response_1.sendResponse)(res, 500, "[DELETE_CATEGORY]: Internal Error", error === null || error === void 0 ? void 0 : error.message);
     }
 });
 exports.deleteCategoryByIdController = deleteCategoryByIdController;
@@ -153,7 +150,7 @@ const getCategoryByIdController = (req, res) => __awaiter(void 0, void 0, void 0
         return (0, send_response_1.sendResponse)(res, 200, "Get category by id successfully", category);
     }
     catch (error) {
-        return (0, send_response_1.sendResponse)(res, 500, "[GET_CATEGORY_BY_ID]: Internal Error", error);
+        return (0, send_response_1.sendResponse)(res, 500, "[GET_CATEGORY_BY_ID]: Internal Error", error === null || error === void 0 ? void 0 : error.message);
     }
 });
 exports.getCategoryByIdController = getCategoryByIdController;
@@ -199,7 +196,7 @@ const updateCategoryByIdController = (req, res) => __awaiter(void 0, void 0, voi
         return (0, send_response_1.sendResponse)(res, 200, "Update category by id successfully", categoryUpdate);
     }
     catch (error) {
-        return (0, send_response_1.sendResponse)(res, 500, "[UPDATE_CATEGORY_BY_ID]: Internal Error", error);
+        return (0, send_response_1.sendResponse)(res, 500, "[UPDATE_CATEGORY_BY_ID]: Internal Error", error === null || error === void 0 ? void 0 : error.message);
     }
 });
 exports.updateCategoryByIdController = updateCategoryByIdController;

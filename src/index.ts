@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import { errorHandler, notFound } from "./middleware";
 import { brandsRoutes } from "./routes/brand-routes";
 import { categoriesRoutes } from "./routes/category-routes";
+import { warehousesRoutes } from "./routes/warehouse-routes";
 
 dotenv.config();
 
@@ -22,6 +23,9 @@ app.use("/api/category", categoriesRoutes);
 
 // brands routes
 app.use("/api/brand", brandsRoutes);
+
+// brands routes
+app.use("/api/warehouse", warehousesRoutes);
 
 // error handler
 app.use(notFound);

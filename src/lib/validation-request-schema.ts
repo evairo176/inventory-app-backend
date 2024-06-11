@@ -37,3 +37,65 @@ export const updateBrandSchema = z.object({
   status: z.enum(["ACTIVE", "DISABLED"]),
   imageUrl: z.string({ required_error: "Content is required" }).optional(),
 });
+
+export const addWarehouseSchema = z.object({
+  name: z.string().min(2, {
+    message: "name must be at least 2 characters.",
+  }),
+  country: z.string().min(2, {
+    message: "country must be at least 2 characters.",
+  }),
+  city: z.string().min(2, {
+    message: "city must be at least 2 characters.",
+  }),
+  phone: z.string().min(2, {
+    message: "phone must be at least 2 characters.",
+  }),
+  email: z
+    .string()
+    .min(2, {
+      message: "email must be at least 2 characters.",
+    })
+    .email(),
+  contactPerson: z.string().min(2, {
+    message: "contact person must be at least 2 characters.",
+  }),
+  zipCode: z.string().min(2, {
+    message: "zipCode must be at least 2 characters.",
+  }),
+  imageUrl: z.string().optional(),
+  status: z.string().min(2, {
+    message: "status must be at least 2 characters.",
+  }),
+});
+
+export const updateWarehouseSchema = z.object({
+  name: z.string().min(2, {
+    message: "name must be at least 2 characters.",
+  }),
+  country: z.string().min(2, {
+    message: "country must be at least 2 characters.",
+  }),
+  city: z.string().min(2, {
+    message: "city must be at least 2 characters.",
+  }),
+  phone: z.string().min(2, {
+    message: "phone must be at least 2 characters.",
+  }),
+  email: z
+    .string()
+    .min(2, {
+      message: "email must be at least 2 characters.",
+    })
+    .email(),
+  contactPerson: z.string().min(2, {
+    message: "contact person must be at least 2 characters.",
+  }),
+  zipCode: z.string().min(2, {
+    message: "zipCode must be at least 2 characters.",
+  }),
+  imageUrl: z.string().optional(),
+  status: z.string().min(2, {
+    message: "status must be at least 2 characters.",
+  }),
+});

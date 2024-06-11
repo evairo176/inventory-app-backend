@@ -58,8 +58,11 @@ model Warehouse {
   country   String
   city      String
   phone     String
+  contactPerson     String
   email     String
   zipCode   String
+  status String
+  imageUrl String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   
