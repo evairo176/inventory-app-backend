@@ -40,6 +40,9 @@ exports.addWarehouseSchema = zod_1.z.object({
     name: zod_1.z.string().min(2, {
         message: "name must be at least 2 characters.",
     }),
+    state: zod_1.z.string().min(2, {
+        message: "state must be at least 2 characters.",
+    }),
     country: zod_1.z.string().min(2, {
         message: "country must be at least 2 characters.",
     }),
@@ -69,6 +72,9 @@ exports.addWarehouseSchema = zod_1.z.object({
 exports.updateWarehouseSchema = zod_1.z.object({
     name: zod_1.z.string().min(2, {
         message: "name must be at least 2 characters.",
+    }),
+    state: zod_1.z.string().min(2, {
+        message: "state must be at least 2 characters.",
     }),
     country: zod_1.z.string().min(2, {
         message: "country must be at least 2 characters.",

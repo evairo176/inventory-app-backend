@@ -16,6 +16,7 @@ export type ExcelUnitProps = {
 export type ExcelWarehouseProps = {
   name: string;
   slug: string;
+  state: string;
   country: string;
   city: string;
   phone: string;

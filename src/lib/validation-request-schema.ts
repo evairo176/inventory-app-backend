@@ -42,6 +42,9 @@ export const addWarehouseSchema = z.object({
   name: z.string().min(2, {
     message: "name must be at least 2 characters.",
   }),
+  state: z.string().min(2, {
+    message: "state must be at least 2 characters.",
+  }),
   country: z.string().min(2, {
     message: "country must be at least 2 characters.",
   }),
@@ -72,6 +75,9 @@ export const addWarehouseSchema = z.object({
 export const updateWarehouseSchema = z.object({
   name: z.string().min(2, {
     message: "name must be at least 2 characters.",
+  }),
+  state: z.string().min(2, {
+    message: "state must be at least 2 characters.",
   }),
   country: z.string().min(2, {
     message: "country must be at least 2 characters.",
