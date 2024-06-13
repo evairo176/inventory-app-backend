@@ -8,6 +8,7 @@ import { brandsRoutes } from "./routes/brand-routes";
 import { categoriesRoutes } from "./routes/category-routes";
 import { warehousesRoutes } from "./routes/warehouse-routes";
 import { suppliersRoutes } from "./routes/supplier-routes";
+import { unitsRoutes } from "./routes/unit-routes";
 
 dotenv.config();
 
@@ -30,6 +31,9 @@ app.use("/api/warehouse", warehousesRoutes);
 
 // suppliers routes
 app.use("/api/supplier", suppliersRoutes);
+
+// suppliers routes
+app.use("/api/unit", unitsRoutes);
 
 // error handler
 app.use(notFound);

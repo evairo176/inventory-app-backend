@@ -2,21 +2,20 @@ import { Request, Response } from "express";
 import { sendResponse } from "../utils/send-response";
 import { db } from "../lib/db";
 import { generateSlug } from "../utils/generate-slug";
-import { ExcelUnitProps, ExcelCategoryProps } from "../types";
+import { ExcelUnitProps } from "../types";
 
 const addUnitController = async (req: Request, res: Response) => {
   const body = req?.body;
 
   try {
-    const slug = generateSlug(body?.title);
-    const checkSlug = await db.category.findFirst({
+    const checkAbbreviation = await db.unit.findFirst({
       where: {
-        slug: slug,
+        abbreviation: body?.abbreviation,
       },
     });
 
-    if (checkSlug) {
-      return sendResponse(res, 400, "Slug is already exist");
+    if (checkAbbreviation) {
+      return sendResponse(res, 400, "Abbreviation is already exist");
     }
 
     const unit = await db.unit.create({
@@ -49,7 +48,7 @@ const getAllUnitController = async (req: Request, res: Response) => {
       return sendResponse(res, 400, "Unit not found!");
     }
 
-    return sendResponse(res, 200, "Get all category successfully", unit);
+    return sendResponse(res, 200, "Get all unit successfully", unit);
   } catch (error: any) {
     return sendResponse(
       res,
@@ -63,7 +62,7 @@ const getAllUnitController = async (req: Request, res: Response) => {
 const createBulkUnitsController = async (req: Request, res: Response) => {
   try {
     const body = req?.body;
-    console.log({ body });
+
     let units = [];
 
     for (const unit of body?.units) {
@@ -84,19 +83,18 @@ const createBulkUnitsController = async (req: Request, res: Response) => {
 
 const addUnit = async (data: ExcelUnitProps) => {
   try {
-    const slug = generateSlug(data?.title);
-    // const checkSlug = await db.unit.findFirst({
-    //   where: {
-    //     slug: slug,
-    //   },
-    // });
+    const checkAbbreviation = await db.unit.findFirst({
+      where: {
+        abbreviation: data?.abbreviation,
+      },
+    });
 
-    // if (checkSlug) {
-    //   return {
-    //     title: data.title,
-    //     status_upload: "Error",
-    //   };
-    // }
+    if (checkAbbreviation) {
+      return {
+        title: data.title,
+        status_upload: "Error",
+      };
+    }
 
     const unit = await db.unit.create({
       data: {
@@ -191,19 +189,15 @@ const updateUnitByIdController = async (req: Request, res: Response) => {
       return sendResponse(res, 400, "Unit not found");
     }
 
-    const slug = generateSlug(body?.title);
-    // const checkSlug = await db.unit.findFirst({
-    //   where: {
-    //     slug: slug,
-    //     NOT: {
-    //       id: params.id, // Exclude the current category from the check
-    //     },
-    //   },
-    // });
+    const checkAbbreviation = await db.unit.findFirst({
+      where: {
+        abbreviation: body?.abbreviation,
+      },
+    });
 
-    // if (checkSlug) {
-    //   return sendResponse(res, 400, "Slug is already exist");
-    // }
+    if (checkAbbreviation) {
+      return sendResponse(res, 400, "Abbreviation is already exist");
+    }
 
     const unitUpdate = await db.unit.update({
       where: {

@@ -172,3 +172,18 @@ export const updateSupplierSchema = z.object({
   }),
   imageUrl: z.string().optional(),
 });
+export const addUnitSchema = z.object({
+  title: z.string().min(2, {
+    message: "title must be at least 2 characters.",
+  }),
+  abbreviation: z.string(),
+  status: z.string(),
+});
+
+export const updateUnitSchema = z.object({
+  title: z.string().min(2, {
+    message: "title must be at least 2 characters.",
+  }),
+  abbreviation: z.string(),
+  status: z.string(),
+});

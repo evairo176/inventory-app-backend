@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateSupplierSchema = exports.addSupplierSchema = exports.updateWarehouseSchema = exports.addWarehouseSchema = exports.updateBrandSchema = exports.addBrandSchema = exports.updateCategorySchema = exports.addCategorySchema = void 0;
+exports.updateUnitSchema = exports.addUnitSchema = exports.updateSupplierSchema = exports.addSupplierSchema = exports.updateWarehouseSchema = exports.addWarehouseSchema = exports.updateBrandSchema = exports.addBrandSchema = exports.updateCategorySchema = exports.addCategorySchema = void 0;
 const zod_1 = require("zod");
 exports.addCategorySchema = zod_1.z.object({
     title: zod_1.z
@@ -167,4 +167,18 @@ exports.updateSupplierSchema = zod_1.z.object({
         message: "postalCode must be at least 2 characters.",
     }),
     imageUrl: zod_1.z.string().optional(),
+});
+exports.addUnitSchema = zod_1.z.object({
+    title: zod_1.z.string().min(2, {
+        message: "title must be at least 2 characters.",
+    }),
+    abbreviation: zod_1.z.string(),
+    status: zod_1.z.string(),
+});
+exports.updateUnitSchema = zod_1.z.object({
+    title: zod_1.z.string().min(2, {
+        message: "title must be at least 2 characters.",
+    }),
+    abbreviation: zod_1.z.string(),
+    status: zod_1.z.string(),
 });

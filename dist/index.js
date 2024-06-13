@@ -13,6 +13,7 @@ const brand_routes_1 = require("./routes/brand-routes");
 const category_routes_1 = require("./routes/category-routes");
 const warehouse_routes_1 = require("./routes/warehouse-routes");
 const supplier_routes_1 = require("./routes/supplier-routes");
+const unit_routes_1 = require("./routes/unit-routes");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 5000;
@@ -29,6 +30,8 @@ app.use("/api/brand", brand_routes_1.brandsRoutes);
 app.use("/api/warehouse", warehouse_routes_1.warehousesRoutes);
 // suppliers routes
 app.use("/api/supplier", supplier_routes_1.suppliersRoutes);
+// suppliers routes
+app.use("/api/unit", unit_routes_1.unitsRoutes);
 // error handler
 app.use(middleware_1.notFound);
 app.use(middleware_1.errorHandler);

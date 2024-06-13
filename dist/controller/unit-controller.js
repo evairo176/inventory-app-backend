@@ -12,18 +12,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateUnitByIdController = exports.getUnitByIdController = exports.deleteUnitByIdController = exports.createBulkUnitsController = exports.getAllUnitController = exports.addUnitController = void 0;
 const send_response_1 = require("../utils/send-response");
 const db_1 = require("../lib/db");
-const generate_slug_1 = require("../utils/generate-slug");
 const addUnitController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = req === null || req === void 0 ? void 0 : req.body;
     try {
-        const slug = (0, generate_slug_1.generateSlug)(body === null || body === void 0 ? void 0 : body.title);
-        const checkSlug = yield db_1.db.category.findFirst({
+        const checkAbbreviation = yield db_1.db.unit.findFirst({
             where: {
-                slug: slug,
+                abbreviation: body === null || body === void 0 ? void 0 : body.abbreviation,
             },
         });
-        if (checkSlug) {
-            return (0, send_response_1.sendResponse)(res, 400, "Slug is already exist");
+        if (checkAbbreviation) {
+            return (0, send_response_1.sendResponse)(res, 400, "Abbreviation is already exist");
         }
         const unit = yield db_1.db.unit.create({
             data: {
@@ -48,7 +46,7 @@ const getAllUnitController = (req, res) => __awaiter(void 0, void 0, void 0, fun
         if (!unit) {
             return (0, send_response_1.sendResponse)(res, 400, "Unit not found!");
         }
-        return (0, send_response_1.sendResponse)(res, 200, "Get all category successfully", unit);
+        return (0, send_response_1.sendResponse)(res, 200, "Get all unit successfully", unit);
     }
     catch (error) {
         return (0, send_response_1.sendResponse)(res, 500, "[GET_ALL_UNIT]: Internal Error", error === null || error === void 0 ? void 0 : error.message);
@@ -58,7 +56,6 @@ exports.getAllUnitController = getAllUnitController;
 const createBulkUnitsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const body = req === null || req === void 0 ? void 0 : req.body;
-        console.log({ body });
         let units = [];
         for (const unit of body === null || body === void 0 ? void 0 : body.units) {
             const newUnit = yield addUnit(unit);
@@ -73,18 +70,17 @@ const createBulkUnitsController = (req, res) => __awaiter(void 0, void 0, void 0
 exports.createBulkUnitsController = createBulkUnitsController;
 const addUnit = (data) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const slug = (0, generate_slug_1.generateSlug)(data === null || data === void 0 ? void 0 : data.title);
-        // const checkSlug = await db.unit.findFirst({
-        //   where: {
-        //     slug: slug,
-        //   },
-        // });
-        // if (checkSlug) {
-        //   return {
-        //     title: data.title,
-        //     status_upload: "Error",
-        //   };
-        // }
+        const checkAbbreviation = yield db_1.db.unit.findFirst({
+            where: {
+                abbreviation: data === null || data === void 0 ? void 0 : data.abbreviation,
+            },
+        });
+        if (checkAbbreviation) {
+            return {
+                title: data.title,
+                status_upload: "Error",
+            };
+        }
         const unit = yield db_1.db.unit.create({
             data: {
                 title: data === null || data === void 0 ? void 0 : data.title,
@@ -159,18 +155,14 @@ const updateUnitByIdController = (req, res) => __awaiter(void 0, void 0, void 0,
         if (!unit) {
             return (0, send_response_1.sendResponse)(res, 400, "Unit not found");
         }
-        const slug = (0, generate_slug_1.generateSlug)(body === null || body === void 0 ? void 0 : body.title);
-        // const checkSlug = await db.unit.findFirst({
-        //   where: {
-        //     slug: slug,
-        //     NOT: {
-        //       id: params.id, // Exclude the current category from the check
-        //     },
-        //   },
-        // });
-        // if (checkSlug) {
-        //   return sendResponse(res, 400, "Slug is already exist");
-        // }
+        const checkAbbreviation = yield db_1.db.unit.findFirst({
+            where: {
+                abbreviation: body === null || body === void 0 ? void 0 : body.abbreviation,
+            },
+        });
+        if (checkAbbreviation) {
+            return (0, send_response_1.sendResponse)(res, 400, "Abbreviation is already exist");
+        }
         const unitUpdate = yield db_1.db.unit.update({
             where: {
                 id: params.id,

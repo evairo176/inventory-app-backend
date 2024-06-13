@@ -45,6 +45,7 @@ model Unit {
   id     String @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   abbreviation String  // Perbaiki ejaan dari "abrreviation" menjadi "abbreviation"
+  status    String @default("ACTIVE")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

@@ -224,19 +224,18 @@ const updateSupplierByIdController = async (req: Request, res: Response) => {
       return sendResponse(res, 400, "Supplier not found");
     }
 
-    // const slug = generateSlug(body?.name);
-    // const checkSlug = await db.supplier.findFirst({
-    //   where: {
-    //     slug: slug,
-    //     NOT: {
-    //       id: params.id, // Exclude the current supplier from the check
-    //     },
-    //   },
-    // });
+    const checkSupplierExist = await db.supplier.findFirst({
+      where: {
+        email: body?.email,
+        NOT: {
+          id: params.id, // Exclude the current supplier from the check
+        },
+      },
+    });
 
-    // if (checkSlug) {
-    //   return sendResponse(res, 400, "Slug is already exist");
-    // }
+    if (checkSupplierExist) {
+      return sendResponse(res, 400, "Slug is already exist");
+    }
 
     const supplierUpdate = await db.supplier.update({
       where: {
