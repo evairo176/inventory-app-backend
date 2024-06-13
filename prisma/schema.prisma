@@ -76,7 +76,7 @@ model Supplier {
   imageUrl    String
   companyName String
   vatNumber   String
-  email       String
+  email       String @unique
   phone       String
   address     String
   city        String

@@ -8,16 +8,15 @@ const addSupplierController = async (req: Request, res: Response) => {
   const body = req?.body;
 
   try {
-    // const slug = generateSlug(body?.name);
-    // const checkSlug = await db.supplier.findFirst({
-    //   where: {
-    //     slug: slug,
-    //   },
-    // });
+    const checkSupplierExist = await db.supplier.findFirst({
+      where: {
+        email: body?.email,
+      },
+    });
 
-    // if (checkSlug) {
-    //   return sendResponse(res, 400, "Slug is already exist");
-    // }
+    if (checkSupplierExist) {
+      return sendResponse(res, 400, "Email is already exist");
+    }
 
     const supplier = await db.supplier.create({
       data: {
@@ -104,19 +103,18 @@ const createBulkSuppliersController = async (req: Request, res: Response) => {
 
 const addSupplier = async (data: ExcelSupplierProps) => {
   try {
-    // const slug = generateSlug(data?.name);
-    // const checkSlug = await db.supplier.findFirst({
-    //   where: {
-    //     slug: slug,
-    //   },
-    // });
+    const checkSupplierExist = await db.supplier.findFirst({
+      where: {
+        email: data?.email,
+      },
+    });
 
-    // if (checkSlug) {
-    //   return {
-    //     name: data.name,
-    //     status_upload: "Error",
-    //   };
-    // }
+    if (checkSupplierExist) {
+      return {
+        name: data.name,
+        status_upload: "Error",
+      };
+    }
 
     const supplier = await db.supplier.create({
       data: {
