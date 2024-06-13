@@ -12,6 +12,7 @@ const middleware_1 = require("./middleware");
 const brand_routes_1 = require("./routes/brand-routes");
 const category_routes_1 = require("./routes/category-routes");
 const warehouse_routes_1 = require("./routes/warehouse-routes");
+const supplier_routes_1 = require("./routes/supplier-routes");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 5000;
@@ -26,6 +27,8 @@ app.use("/api/category", category_routes_1.categoriesRoutes);
 app.use("/api/brand", brand_routes_1.brandsRoutes);
 // brands routes
 app.use("/api/warehouse", warehouse_routes_1.warehousesRoutes);
+// suppliers routes
+app.use("/api/supplier", supplier_routes_1.suppliersRoutes);
 // error handler
 app.use(middleware_1.notFound);
 app.use(middleware_1.errorHandler);

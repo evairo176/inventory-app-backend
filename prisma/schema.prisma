@@ -21,7 +21,7 @@ model Category {
   slug   String @unique
   description  String?
   imageUrl String?
-  status String
+  status    String @default("ACTIVE")
 
   createdAt DateTime @default(now())
   updatedAt DateTime? @updatedAt
@@ -34,7 +34,7 @@ model Brand {
   title     String
   imageUrl  String
   slug      String @unique
-  status    String
+  status    String @default("ACTIVE")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -62,8 +62,8 @@ model Warehouse {
   contactPerson     String
   email     String
   zipCode   String
-  status String
-  imageUrl String
+  status    String @default("ACTIVE")
+  imageUrl  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   
@@ -71,7 +71,7 @@ model Warehouse {
 }
 
 model Supplier {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   imageUrl    String
   companyName String
@@ -83,6 +83,7 @@ model Supplier {
   state       String
   postalCode  String
   country     String
+  status    String @default("ACTIVE")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

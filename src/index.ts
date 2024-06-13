@@ -7,6 +7,7 @@ import { errorHandler, notFound } from "./middleware";
 import { brandsRoutes } from "./routes/brand-routes";
 import { categoriesRoutes } from "./routes/category-routes";
 import { warehousesRoutes } from "./routes/warehouse-routes";
+import { suppliersRoutes } from "./routes/supplier-routes";
 
 dotenv.config();
 
@@ -26,6 +27,9 @@ app.use("/api/brand", brandsRoutes);
 
 // brands routes
 app.use("/api/warehouse", warehousesRoutes);
+
+// suppliers routes
+app.use("/api/supplier", suppliersRoutes);
 
 // error handler
 app.use(notFound);

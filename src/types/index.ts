@@ -26,3 +26,18 @@ export type ExcelWarehouseProps = {
   status: string;
   imageUrl: string;
 };
+
+export type ExcelSupplierProps = {
+  name: string;
+  imageUrl: string;
+  companyName: string;
+  vatNumber: string;
+  email: string;
+  phone: string;
+  address: string;
+  country: string;
+  state: string;
+  city: string;
+  postalCode: string;
+  status: string;
+};

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateWarehouseSchema = exports.addWarehouseSchema = exports.updateBrandSchema = exports.addBrandSchema = exports.updateCategorySchema = exports.addCategorySchema = void 0;
+exports.updateSupplierSchema = exports.addSupplierSchema = exports.updateWarehouseSchema = exports.addWarehouseSchema = exports.updateBrandSchema = exports.addBrandSchema = exports.updateCategorySchema = exports.addCategorySchema = void 0;
 const zod_1 = require("zod");
 exports.addCategorySchema = zod_1.z.object({
     title: zod_1.z
@@ -101,4 +101,70 @@ exports.updateWarehouseSchema = zod_1.z.object({
     status: zod_1.z.string().min(2, {
         message: "status must be at least 2 characters.",
     }),
+});
+exports.addSupplierSchema = zod_1.z.object({
+    name: zod_1.z.string().min(2, {
+        message: "name must be at least 2 characters.",
+    }),
+    companyName: zod_1.z.string().min(2, {
+        message: "companyName must be at least 2 characters.",
+    }),
+    state: zod_1.z.string().min(2, {
+        message: "state must be at least 2 characters.",
+    }),
+    country: zod_1.z.string().min(2, {
+        message: "country must be at least 2 characters.",
+    }),
+    city: zod_1.z.string().min(2, {
+        message: "city must be at least 2 characters.",
+    }),
+    phone: zod_1.z.string().min(2, {
+        message: "phone must be at least 2 characters.",
+    }),
+    email: zod_1.z
+        .string()
+        .min(2, {
+        message: "email must be at least 2 characters.",
+    })
+        .email(),
+    address: zod_1.z.string().min(2, {
+        message: "address person must be at least 2 characters.",
+    }),
+    postalCode: zod_1.z.string().min(2, {
+        message: "postalCode must be at least 2 characters.",
+    }),
+    imageUrl: zod_1.z.string().optional(),
+});
+exports.updateSupplierSchema = zod_1.z.object({
+    name: zod_1.z.string().min(2, {
+        message: "name must be at least 2 characters.",
+    }),
+    companyName: zod_1.z.string().min(2, {
+        message: "companyName must be at least 2 characters.",
+    }),
+    state: zod_1.z.string().min(2, {
+        message: "state must be at least 2 characters.",
+    }),
+    country: zod_1.z.string().min(2, {
+        message: "country must be at least 2 characters.",
+    }),
+    city: zod_1.z.string().min(2, {
+        message: "city must be at least 2 characters.",
+    }),
+    phone: zod_1.z.string().min(2, {
+        message: "phone must be at least 2 characters.",
+    }),
+    email: zod_1.z
+        .string()
+        .min(2, {
+        message: "email must be at least 2 characters.",
+    })
+        .email(),
+    address: zod_1.z.string().min(2, {
+        message: "address person must be at least 2 characters.",
+    }),
+    postalCode: zod_1.z.string().min(2, {
+        message: "postalCode must be at least 2 characters.",
+    }),
+    imageUrl: zod_1.z.string().optional(),
 });
