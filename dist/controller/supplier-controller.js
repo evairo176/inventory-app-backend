@@ -15,15 +15,14 @@ const db_1 = require("../lib/db");
 const addSupplierController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = req === null || req === void 0 ? void 0 : req.body;
     try {
-        // const slug = generateSlug(body?.name);
-        // const checkSlug = await db.supplier.findFirst({
-        //   where: {
-        //     slug: slug,
-        //   },
-        // });
-        // if (checkSlug) {
-        //   return sendResponse(res, 400, "Slug is already exist");
-        // }
+        const checkSupplierExist = yield db_1.db.supplier.findFirst({
+            where: {
+                email: body === null || body === void 0 ? void 0 : body.email,
+            },
+        });
+        if (checkSupplierExist) {
+            return (0, send_response_1.sendResponse)(res, 400, "Email is already exist");
+        }
         const supplier = yield db_1.db.supplier.create({
             data: {
                 name: body === null || body === void 0 ? void 0 : body.name,
@@ -86,18 +85,17 @@ const createBulkSuppliersController = (req, res) => __awaiter(void 0, void 0, vo
 exports.createBulkSuppliersController = createBulkSuppliersController;
 const addSupplier = (data) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // const slug = generateSlug(data?.name);
-        // const checkSlug = await db.supplier.findFirst({
-        //   where: {
-        //     slug: slug,
-        //   },
-        // });
-        // if (checkSlug) {
-        //   return {
-        //     name: data.name,
-        //     status_upload: "Error",
-        //   };
-        // }
+        const checkSupplierExist = yield db_1.db.supplier.findFirst({
+            where: {
+                email: data === null || data === void 0 ? void 0 : data.email,
+            },
+        });
+        if (checkSupplierExist) {
+            return {
+                name: data.name,
+                status_upload: "Error",
+            };
+        }
         const supplier = yield db_1.db.supplier.create({
             data: {
                 name: data === null || data === void 0 ? void 0 : data.name,
