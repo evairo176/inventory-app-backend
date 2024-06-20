@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateUnitSchema = exports.addUnitSchema = exports.updateSupplierSchema = exports.addSupplierSchema = exports.updateWarehouseSchema = exports.addWarehouseSchema = exports.updateBrandSchema = exports.addBrandSchema = exports.updateCategorySchema = exports.addCategorySchema = void 0;
+exports.updateProductSchema = exports.addProductSchema = exports.updateUnitSchema = exports.addUnitSchema = exports.updateSupplierSchema = exports.addSupplierSchema = exports.updateWarehouseSchema = exports.addWarehouseSchema = exports.updateBrandSchema = exports.addBrandSchema = exports.updateCategorySchema = exports.addCategorySchema = void 0;
 const zod_1 = require("zod");
 exports.addCategorySchema = zod_1.z.object({
     title: zod_1.z
@@ -181,4 +181,48 @@ exports.updateUnitSchema = zod_1.z.object({
     }),
     abbreviation: zod_1.z.string(),
     status: zod_1.z.string(),
+});
+exports.addProductSchema = zod_1.z.object({
+    name: zod_1.z.string(),
+    slug: zod_1.z.string(),
+    productCode: zod_1.z.string(),
+    stockQty: zod_1.z.number(),
+    warehouseId: zod_1.z.string(),
+    supplierId: zod_1.z.string(),
+    brandId: zod_1.z.string(),
+    categoryId: zod_1.z.string(),
+    unitId: zod_1.z.string(),
+    productCost: zod_1.z.number(),
+    productPrice: zod_1.z.number(),
+    alertQty: zod_1.z.number(),
+    productTax: zod_1.z.number(),
+    taxMethod: zod_1.z.enum(["inclusive", "exclusive"]), // Assuming taxMethod can be "inclusive" or "exclusive"
+    productImages: zod_1.z.array(zod_1.z.string()),
+    productThumbnail: zod_1.z.string(),
+    productDetails: zod_1.z.string(),
+    status: zod_1.z.string().min(2, {
+        message: "status must be at least 2 characters.",
+    }),
+});
+exports.updateProductSchema = zod_1.z.object({
+    name: zod_1.z.string(),
+    slug: zod_1.z.string(),
+    productCode: zod_1.z.string(),
+    stockQty: zod_1.z.number(),
+    warehouseId: zod_1.z.string(),
+    supplierId: zod_1.z.string(),
+    brandId: zod_1.z.string(),
+    categoryId: zod_1.z.string(),
+    unitId: zod_1.z.string(),
+    productCost: zod_1.z.number(),
+    productPrice: zod_1.z.number(),
+    alertQty: zod_1.z.number(),
+    productTax: zod_1.z.number(),
+    taxMethod: zod_1.z.enum(["inclusive", "exclusive"]), // Assuming taxMethod can be "inclusive" or "exclusive"
+    productImages: zod_1.z.array(zod_1.z.string()),
+    productThumbnail: zod_1.z.string(),
+    productDetails: zod_1.z.string(),
+    status: zod_1.z.string().min(2, {
+        message: "status must be at least 2 characters.",
+    }),
 });

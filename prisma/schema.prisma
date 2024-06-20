@@ -68,7 +68,7 @@ model Warehouse {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   
-  products  WarehouseProduct[]
+  products  Product[]
 }
 
 model Supplier {
@@ -84,47 +84,50 @@ model Supplier {
   state       String
   postalCode  String
   country     String
-  status    String @default("ACTIVE")
+  status      String @default("ACTIVE")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   products Product[]
 }
 
+model Banner {
+  id             String @id @default(auto()) @map("_id") @db.ObjectId
+  imageUrl       String
+  bannerLink     String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
 
 model Product {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  id             String @id @default(auto()) @map("_id") @db.ObjectId
   name           String
   slug           String @unique
   productCode    String
   stockQty       Int
-  supplierId     String @db.ObjectId
-  brandId        String @db.ObjectId
-  categoryId     String @db.ObjectId
-  unitId         String @db.ObjectId
   productCost    Float
   productPrice   Float
   alertQty       Int
   productTax     Float
   taxMethod      String
   productImages  String[]
+  productThumbnail  String
   productDetails String
+  status      String @default("ACTIVE")
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  warehouses     WarehouseProduct[]
+  supplierId     String @db.ObjectId
+  brandId        String @db.ObjectId
+  categoryId     String @db.ObjectId
+  unitId         String @db.ObjectId
+  warehouseId    String @db.ObjectId
+
+  warehouse      Warehouse @relation(fields: [warehouseId], references: [id])
   supplier       Supplier  @relation(fields: [supplierId], references: [id])
   brand          Brand     @relation(fields: [brandId], references: [id])
   category       Category  @relation(fields: [categoryId], references: [id])
   unit           Unit      @relation(fields: [unitId], references: [id])
 }
 
-model WarehouseProduct {
-  id           String    @id @default(auto()) @map("_id") @db.ObjectId
-  warehouseId  String    @db.ObjectId
-  productId    String    @db.ObjectId
-  warehouse    Warehouse @relation(fields: [warehouseId], references: [id])
-  product      Product   @relation(fields: [productId], references: [id])
-
-  @@index([warehouseId, productId], name: "warehouse_product_idx")
-}

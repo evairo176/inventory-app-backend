@@ -187,3 +187,48 @@ export const updateUnitSchema = z.object({
   abbreviation: z.string(),
   status: z.string(),
 });
+export const addProductSchema = z.object({
+  name: z.string(),
+  slug: z.string(),
+  productCode: z.string(),
+  stockQty: z.number(),
+  warehouseId: z.string(),
+  supplierId: z.string(),
+  brandId: z.string(),
+  categoryId: z.string(),
+  unitId: z.string(),
+  productCost: z.number(),
+  productPrice: z.number(),
+  alertQty: z.number(),
+  productTax: z.number(),
+  taxMethod: z.enum(["inclusive", "exclusive"]), // Assuming taxMethod can be "inclusive" or "exclusive"
+  productImages: z.array(z.string()),
+  productThumbnail: z.string(),
+  productDetails: z.string(),
+  status: z.string().min(2, {
+    message: "status must be at least 2 characters.",
+  }),
+});
+
+export const updateProductSchema = z.object({
+  name: z.string(),
+  slug: z.string(),
+  productCode: z.string(),
+  stockQty: z.number(),
+  warehouseId: z.string(),
+  supplierId: z.string(),
+  brandId: z.string(),
+  categoryId: z.string(),
+  unitId: z.string(),
+  productCost: z.number(),
+  productPrice: z.number(),
+  alertQty: z.number(),
+  productTax: z.number(),
+  taxMethod: z.enum(["inclusive", "exclusive"]), // Assuming taxMethod can be "inclusive" or "exclusive"
+  productImages: z.array(z.string()),
+  productThumbnail: z.string(),
+  productDetails: z.string(),
+  status: z.string().min(2, {
+    message: "status must be at least 2 characters.",
+  }),
+});

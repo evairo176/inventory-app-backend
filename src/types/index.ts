@@ -41,3 +41,24 @@ export type ExcelSupplierProps = {
   postalCode: string;
   status: string;
 };
+
+export type ExcelProductProps = {
+  name: string;
+  slug: string;
+  productCode: string;
+  stockQty: number;
+  warehouseId: string;
+  supplierId: string;
+  brandId: string;
+  categoryId: string;
+  unitId: string;
+  productCost: number;
+  productPrice: number;
+  alertQty: number;
+  productTax: number;
+  taxMethod: string;
+  productImages: string[];
+  productThumbnail: string;
+  productDetails: string;
+  status: string;
+};
