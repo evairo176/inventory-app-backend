@@ -111,7 +111,7 @@ model Product {
   alertQty       Int
   productTax     Float
   taxMethod      String
-  productImages  String[]
+  productImageUrls  String[]
   productThumbnail  String
   productDetails String
   status      String @default("ACTIVE")

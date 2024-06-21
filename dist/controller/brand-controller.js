@@ -16,7 +16,7 @@ const generate_slug_1 = require("../utils/generate-slug");
 const addBrandController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = req === null || req === void 0 ? void 0 : req.body;
     try {
-        const slug = (0, generate_slug_1.generateSlug)(body === null || body === void 0 ? void 0 : body.title);
+        const slug = yield (0, generate_slug_1.generateSlug)(body === null || body === void 0 ? void 0 : body.title);
         const checkSlug = yield db_1.db.category.findFirst({
             where: {
                 slug: slug,
@@ -80,7 +80,7 @@ const createBulkBrandsController = (req, res) => __awaiter(void 0, void 0, void 
 exports.createBulkBrandsController = createBulkBrandsController;
 const addBrand = (data) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const slug = (0, generate_slug_1.generateSlug)(data === null || data === void 0 ? void 0 : data.title);
+        const slug = yield (0, generate_slug_1.generateSlug)(data === null || data === void 0 ? void 0 : data.title);
         const checkSlug = yield db_1.db.brand.findFirst({
             where: {
                 slug: slug,
@@ -96,14 +96,22 @@ const addBrand = (data) => __awaiter(void 0, void 0, void 0, function* () {
             data: {
                 title: data === null || data === void 0 ? void 0 : data.title,
                 slug: slug,
-                imageUrl: data === null || data === void 0 ? void 0 : data.image,
+                imageUrl: data === null || data === void 0 ? void 0 : data.imageUrl,
                 status: "ACTIVE",
             },
         });
-        return brand;
+        return {
+            title: brand.title,
+            status_upload: "",
+        };
     }
     catch (error) {
-        return null;
+        return {
+            title: "",
+            status_upload: "",
+            error: error === null || error === void 0 ? void 0 : error.message,
+            data: data,
+        };
     }
 });
 const deleteBrandByIdController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -168,7 +176,7 @@ const updateBrandByIdController = (req, res) => __awaiter(void 0, void 0, void 0
         if (!brand) {
             return (0, send_response_1.sendResponse)(res, 400, "Brand not found");
         }
-        const slug = (0, generate_slug_1.generateSlug)(body === null || body === void 0 ? void 0 : body.title);
+        const slug = yield (0, generate_slug_1.generateSlug)(body === null || body === void 0 ? void 0 : body.title);
         const checkSlug = yield db_1.db.brand.findFirst({
             where: {
                 slug: slug,

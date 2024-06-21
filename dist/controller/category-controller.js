@@ -16,7 +16,7 @@ const generate_slug_1 = require("../utils/generate-slug");
 const addCategoryController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = req === null || req === void 0 ? void 0 : req.body;
     try {
-        const slug = (0, generate_slug_1.generateSlug)(body === null || body === void 0 ? void 0 : body.title);
+        const slug = yield (0, generate_slug_1.generateSlug)(body === null || body === void 0 ? void 0 : body.title);
         const checkSlug = yield db_1.db.category.findFirst({
             where: {
                 slug: slug,
@@ -31,7 +31,7 @@ const addCategoryController = (req, res) => __awaiter(void 0, void 0, void 0, fu
                 description: body === null || body === void 0 ? void 0 : body.description,
                 status: body === null || body === void 0 ? void 0 : body.status,
                 slug: slug,
-                imageUrl: body === null || body === void 0 ? void 0 : body.imageUrl,
+                imageUrl: body === null || body === void 0 ? void 0 : body.imageurlUrl,
             },
         });
         return (0, send_response_1.sendResponse)(res, 200, "Create category successfully", category);
@@ -81,7 +81,7 @@ const createBulkCategoriesController = (req, res) => __awaiter(void 0, void 0, v
 exports.createBulkCategoriesController = createBulkCategoriesController;
 const addCategory = (data) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const slug = (0, generate_slug_1.generateSlug)(data === null || data === void 0 ? void 0 : data.title);
+        const slug = yield (0, generate_slug_1.generateSlug)(data === null || data === void 0 ? void 0 : data.title);
         const checkSlug = yield db_1.db.category.findFirst({
             where: {
                 slug: slug,
@@ -97,14 +97,22 @@ const addCategory = (data) => __awaiter(void 0, void 0, void 0, function* () {
             data: {
                 title: data === null || data === void 0 ? void 0 : data.title,
                 slug: slug,
-                imageUrl: data === null || data === void 0 ? void 0 : data.image,
+                imageUrl: data === null || data === void 0 ? void 0 : data.imageurl,
                 status: "ACTIVE",
             },
         });
-        return category;
+        return {
+            title: category.title,
+            status_upload: "",
+        };
     }
     catch (error) {
-        return null;
+        return {
+            title: "",
+            status_upload: "",
+            error: error === null || error === void 0 ? void 0 : error.message,
+            data: data,
+        };
     }
 });
 const deleteCategoryByIdController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -169,7 +177,7 @@ const updateCategoryByIdController = (req, res) => __awaiter(void 0, void 0, voi
         if (!category) {
             return (0, send_response_1.sendResponse)(res, 400, "Category not found");
         }
-        const slug = (0, generate_slug_1.generateSlug)(body === null || body === void 0 ? void 0 : body.title);
+        const slug = yield (0, generate_slug_1.generateSlug)(body === null || body === void 0 ? void 0 : body.title);
         const checkSlug = yield db_1.db.category.findFirst({
             where: {
                 slug: slug,
@@ -189,7 +197,7 @@ const updateCategoryByIdController = (req, res) => __awaiter(void 0, void 0, voi
                 title: body === null || body === void 0 ? void 0 : body.title,
                 description: body === null || body === void 0 ? void 0 : body.description,
                 slug: slug,
-                imageUrl: body === null || body === void 0 ? void 0 : body.imageUrl,
+                imageUrl: body === null || body === void 0 ? void 0 : body.imageurlUrl,
                 status: body === null || body === void 0 ? void 0 : body.status,
             },
         });

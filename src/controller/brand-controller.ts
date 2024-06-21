@@ -8,7 +8,7 @@ const addBrandController = async (req: Request, res: Response) => {
   const body = req?.body;
 
   try {
-    const slug = generateSlug(body?.title);
+    const slug = await generateSlug(body?.title);
     const checkSlug = await db.category.findFirst({
       where: {
         slug: slug,
@@ -91,7 +91,7 @@ const createBulkBrandsController = async (req: Request, res: Response) => {
 
 const addBrand = async (data: ExcelBrandProps) => {
   try {
-    const slug = generateSlug(data?.title);
+    const slug = await generateSlug(data?.title);
     const checkSlug = await db.brand.findFirst({
       where: {
         slug: slug,
@@ -109,14 +109,22 @@ const addBrand = async (data: ExcelBrandProps) => {
       data: {
         title: data?.title,
         slug: slug,
-        imageUrl: data?.image,
+        imageUrl: data?.imageUrl,
         status: "ACTIVE",
       },
     });
 
-    return brand;
+    return {
+      title: brand.title,
+      status_upload: "",
+    };
   } catch (error: any) {
-    return null;
+    return {
+      title: "",
+      status_upload: "",
+      error: error?.message,
+      data: data,
+    };
   }
 };
 
@@ -200,7 +208,7 @@ const updateBrandByIdController = async (req: Request, res: Response) => {
       return sendResponse(res, 400, "Brand not found");
     }
 
-    const slug = generateSlug(body?.title);
+    const slug = await generateSlug(body?.title);
     const checkSlug = await db.brand.findFirst({
       where: {
         slug: slug,

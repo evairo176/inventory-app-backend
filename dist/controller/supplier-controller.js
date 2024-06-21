@@ -112,10 +112,18 @@ const addSupplier = (data) => __awaiter(void 0, void 0, void 0, function* () {
                 status: data === null || data === void 0 ? void 0 : data.status,
             },
         });
-        return supplier;
+        return {
+            title: supplier.name,
+            status_upload: "",
+        };
     }
     catch (error) {
-        return null;
+        return {
+            title: "",
+            status_upload: "",
+            error: error === null || error === void 0 ? void 0 : error.message,
+            data: data,
+        };
     }
 });
 const deleteSupplierByIdController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

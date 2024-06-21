@@ -103,9 +103,17 @@ const addUnit = async (data: ExcelUnitProps) => {
       },
     });
 
-    return unit;
+    return {
+      title: unit.title,
+      status_upload: "",
+    };
   } catch (error: any) {
-    return null;
+    return {
+      title: "",
+      status_upload: "",
+      error: error?.message,
+      data: data,
+    };
   }
 };
 

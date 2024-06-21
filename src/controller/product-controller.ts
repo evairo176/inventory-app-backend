@@ -8,7 +8,7 @@ const addProductController = async (req: Request, res: Response) => {
   const body = req?.body;
 
   try {
-    const slug = generateSlug(body?.name);
+    const slug = await generateSlug(body?.name);
     const checkSlug = await db.product.findFirst({
       where: {
         slug: slug,
@@ -35,7 +35,7 @@ const addProductController = async (req: Request, res: Response) => {
         alertQty: body?.alertQty,
         productTax: body?.productTax,
         taxMethod: body?.taxMethod,
-        productImages: body?.productImages,
+        productImageUrls: body?.productImageUrls,
         productThumbnail: body?.productThumbnail,
         productDetails: body?.productDetails,
         status: body?.status,
@@ -105,7 +105,7 @@ const createBulkProductsController = async (req: Request, res: Response) => {
 
 const addProduct = async (data: ExcelProductProps) => {
   try {
-    const slug = generateSlug(data?.name);
+    const slug = await generateSlug(data?.name);
     const checkSlug = await db.product.findFirst({
       where: {
         slug: slug,
@@ -135,16 +135,24 @@ const addProduct = async (data: ExcelProductProps) => {
         alertQty: data?.alertQty,
         productTax: data?.productTax,
         taxMethod: data?.taxMethod,
-        productImages: data?.productImages,
+        productImageUrls: data?.productImageUrls,
         productThumbnail: data?.productThumbnail,
         productDetails: data?.productDetails,
         status: data?.status,
       },
     });
 
-    return product;
+    return {
+      title: product.name,
+      status_upload: "",
+    };
   } catch (error: any) {
-    return null;
+    return {
+      title: "",
+      status_upload: "",
+      error: error?.message,
+      data: data,
+    };
   }
 };
 
@@ -228,7 +236,7 @@ const updateProductByIdController = async (req: Request, res: Response) => {
       return sendResponse(res, 400, "Product not found");
     }
 
-    const slug = generateSlug(body?.name);
+    const slug = await generateSlug(body?.name);
     const checkSlug = await db.product.findFirst({
       where: {
         slug: slug,
@@ -261,7 +269,7 @@ const updateProductByIdController = async (req: Request, res: Response) => {
         alertQty: body?.alertQty,
         productTax: body?.productTax,
         taxMethod: body?.taxMethod,
-        productImages: body?.productImages,
+        productImageUrls: body?.productImageUrls,
         productThumbnail: body?.productThumbnail,
         productDetails: body?.productDetails,
         status: body?.status,

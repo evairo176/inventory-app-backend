@@ -87,10 +87,18 @@ const addUnit = (data) => __awaiter(void 0, void 0, void 0, function* () {
                 abbreviation: data === null || data === void 0 ? void 0 : data.abbreviation,
             },
         });
-        return unit;
+        return {
+            title: unit.title,
+            status_upload: "",
+        };
     }
     catch (error) {
-        return null;
+        return {
+            title: "",
+            status_upload: "",
+            error: error === null || error === void 0 ? void 0 : error.message,
+            data: data,
+        };
     }
 });
 const deleteUnitByIdController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

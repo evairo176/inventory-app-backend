@@ -16,7 +16,7 @@ const generate_slug_1 = require("../utils/generate-slug");
 const addProductController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = req === null || req === void 0 ? void 0 : req.body;
     try {
-        const slug = (0, generate_slug_1.generateSlug)(body === null || body === void 0 ? void 0 : body.name);
+        const slug = yield (0, generate_slug_1.generateSlug)(body === null || body === void 0 ? void 0 : body.name);
         const checkSlug = yield db_1.db.product.findFirst({
             where: {
                 slug: slug,
@@ -41,7 +41,7 @@ const addProductController = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 alertQty: body === null || body === void 0 ? void 0 : body.alertQty,
                 productTax: body === null || body === void 0 ? void 0 : body.productTax,
                 taxMethod: body === null || body === void 0 ? void 0 : body.taxMethod,
-                productImages: body === null || body === void 0 ? void 0 : body.productImages,
+                productImageUrls: body === null || body === void 0 ? void 0 : body.productImageUrls,
                 productThumbnail: body === null || body === void 0 ? void 0 : body.productThumbnail,
                 productDetails: body === null || body === void 0 ? void 0 : body.productDetails,
                 status: body === null || body === void 0 ? void 0 : body.status,
@@ -94,7 +94,7 @@ const createBulkProductsController = (req, res) => __awaiter(void 0, void 0, voi
 exports.createBulkProductsController = createBulkProductsController;
 const addProduct = (data) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const slug = (0, generate_slug_1.generateSlug)(data === null || data === void 0 ? void 0 : data.name);
+        const slug = yield (0, generate_slug_1.generateSlug)(data === null || data === void 0 ? void 0 : data.name);
         const checkSlug = yield db_1.db.product.findFirst({
             where: {
                 slug: slug,
@@ -122,16 +122,24 @@ const addProduct = (data) => __awaiter(void 0, void 0, void 0, function* () {
                 alertQty: data === null || data === void 0 ? void 0 : data.alertQty,
                 productTax: data === null || data === void 0 ? void 0 : data.productTax,
                 taxMethod: data === null || data === void 0 ? void 0 : data.taxMethod,
-                productImages: data === null || data === void 0 ? void 0 : data.productImages,
+                productImageUrls: data === null || data === void 0 ? void 0 : data.productImageUrls,
                 productThumbnail: data === null || data === void 0 ? void 0 : data.productThumbnail,
                 productDetails: data === null || data === void 0 ? void 0 : data.productDetails,
                 status: data === null || data === void 0 ? void 0 : data.status,
             },
         });
-        return product;
+        return {
+            title: product.name,
+            status_upload: "",
+        };
     }
     catch (error) {
-        return null;
+        return {
+            title: "",
+            status_upload: "",
+            error: error === null || error === void 0 ? void 0 : error.message,
+            data: data,
+        };
     }
 });
 const deleteProductByIdController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -196,7 +204,7 @@ const updateProductByIdController = (req, res) => __awaiter(void 0, void 0, void
         if (!product) {
             return (0, send_response_1.sendResponse)(res, 400, "Product not found");
         }
-        const slug = (0, generate_slug_1.generateSlug)(body === null || body === void 0 ? void 0 : body.name);
+        const slug = yield (0, generate_slug_1.generateSlug)(body === null || body === void 0 ? void 0 : body.name);
         const checkSlug = yield db_1.db.product.findFirst({
             where: {
                 slug: slug,
@@ -227,7 +235,7 @@ const updateProductByIdController = (req, res) => __awaiter(void 0, void 0, void
                 alertQty: body === null || body === void 0 ? void 0 : body.alertQty,
                 productTax: body === null || body === void 0 ? void 0 : body.productTax,
                 taxMethod: body === null || body === void 0 ? void 0 : body.taxMethod,
-                productImages: body === null || body === void 0 ? void 0 : body.productImages,
+                productImageUrls: body === null || body === void 0 ? void 0 : body.productImageUrls,
                 productThumbnail: body === null || body === void 0 ? void 0 : body.productThumbnail,
                 productDetails: body === null || body === void 0 ? void 0 : body.productDetails,
                 status: body === null || body === void 0 ? void 0 : body.status,

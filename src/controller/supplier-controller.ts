@@ -133,9 +133,17 @@ const addSupplier = async (data: ExcelSupplierProps) => {
       },
     });
 
-    return supplier;
+    return {
+      title: supplier.name,
+      status_upload: "",
+    };
   } catch (error: any) {
-    return null;
+    return {
+      title: "",
+      status_upload: "",
+      error: error?.message,
+      data: data,
+    };
   }
 };
 

@@ -1,10 +1,10 @@
 export type ExcelCategoryProps = {
-  image: string;
+  imageurl: string;
   title: string;
 };
 
 export type ExcelBrandProps = {
-  image: string;
+  imageUrl: string;
   title: string;
 };
 
@@ -57,7 +57,7 @@ export type ExcelProductProps = {
   alertQty: number;
   productTax: number;
   taxMethod: string;
-  productImages: string[];
+  productImageUrls: string[];
   productThumbnail: string;
   productDetails: string;
   status: string;

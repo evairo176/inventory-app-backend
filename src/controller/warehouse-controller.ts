@@ -8,7 +8,7 @@ const addWarehouseController = async (req: Request, res: Response) => {
   const body = req?.body;
 
   try {
-    const slug = generateSlug(body?.name);
+    const slug = await generateSlug(body?.name);
     const checkSlug = await db.warehouse.findFirst({
       where: {
         slug: slug,
@@ -103,7 +103,7 @@ const createBulkWarehousesController = async (req: Request, res: Response) => {
 
 const addWarehouse = async (data: ExcelWarehouseProps) => {
   try {
-    const slug = generateSlug(data?.name);
+    const slug = await generateSlug(data?.name);
     const checkSlug = await db.warehouse.findFirst({
       where: {
         slug: slug,
@@ -133,9 +133,17 @@ const addWarehouse = async (data: ExcelWarehouseProps) => {
       },
     });
 
-    return warehouse;
+    return {
+      title: warehouse.name,
+      status_upload: "",
+    };
   } catch (error: any) {
-    return null;
+    return {
+      title: "",
+      status_upload: "",
+      error: error?.message,
+      data: data,
+    };
   }
 };
 
@@ -229,7 +237,7 @@ const updateWarehouseByIdController = async (req: Request, res: Response) => {
       return sendResponse(res, 400, "Warehouse not found");
     }
 
-    const slug = generateSlug(body?.name);
+    const slug = await generateSlug(body?.name);
     const checkSlug = await db.warehouse.findFirst({
       where: {
         slug: slug,

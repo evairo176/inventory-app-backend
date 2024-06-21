@@ -16,7 +16,7 @@ const generate_slug_1 = require("../utils/generate-slug");
 const addWarehouseController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = req === null || req === void 0 ? void 0 : req.body;
     try {
-        const slug = (0, generate_slug_1.generateSlug)(body === null || body === void 0 ? void 0 : body.name);
+        const slug = yield (0, generate_slug_1.generateSlug)(body === null || body === void 0 ? void 0 : body.name);
         const checkSlug = yield db_1.db.warehouse.findFirst({
             where: {
                 slug: slug,
@@ -86,7 +86,7 @@ const createBulkWarehousesController = (req, res) => __awaiter(void 0, void 0, v
 exports.createBulkWarehousesController = createBulkWarehousesController;
 const addWarehouse = (data) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const slug = (0, generate_slug_1.generateSlug)(data === null || data === void 0 ? void 0 : data.name);
+        const slug = yield (0, generate_slug_1.generateSlug)(data === null || data === void 0 ? void 0 : data.name);
         const checkSlug = yield db_1.db.warehouse.findFirst({
             where: {
                 slug: slug,
@@ -113,10 +113,18 @@ const addWarehouse = (data) => __awaiter(void 0, void 0, void 0, function* () {
                 status: "ACTIVE",
             },
         });
-        return warehouse;
+        return {
+            title: warehouse.name,
+            status_upload: "",
+        };
     }
     catch (error) {
-        return null;
+        return {
+            title: "",
+            status_upload: "",
+            error: error === null || error === void 0 ? void 0 : error.message,
+            data: data,
+        };
     }
 });
 const deleteWarehouseByIdController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -181,7 +189,7 @@ const updateWarehouseByIdController = (req, res) => __awaiter(void 0, void 0, vo
         if (!warehouse) {
             return (0, send_response_1.sendResponse)(res, 400, "Warehouse not found");
         }
-        const slug = (0, generate_slug_1.generateSlug)(body === null || body === void 0 ? void 0 : body.name);
+        const slug = yield (0, generate_slug_1.generateSlug)(body === null || body === void 0 ? void 0 : body.name);
         const checkSlug = yield db_1.db.warehouse.findFirst({
             where: {
                 slug: slug,

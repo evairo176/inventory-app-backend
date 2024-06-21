@@ -8,7 +8,7 @@ const addCategoryController = async (req: Request, res: Response) => {
   const body = req?.body;
 
   try {
-    const slug = generateSlug(body?.title);
+    const slug = await generateSlug(body?.title);
     const checkSlug = await db.category.findFirst({
       where: {
         slug: slug,
@@ -25,7 +25,7 @@ const addCategoryController = async (req: Request, res: Response) => {
         description: body?.description,
         status: body?.status,
         slug: slug,
-        imageUrl: body?.imageUrl,
+        imageUrl: body?.imageurlUrl,
       },
     });
 
@@ -97,7 +97,7 @@ const createBulkCategoriesController = async (req: Request, res: Response) => {
 
 const addCategory = async (data: ExcelCategoryProps) => {
   try {
-    const slug = generateSlug(data?.title);
+    const slug = await generateSlug(data?.title);
     const checkSlug = await db.category.findFirst({
       where: {
         slug: slug,
@@ -115,14 +115,22 @@ const addCategory = async (data: ExcelCategoryProps) => {
       data: {
         title: data?.title,
         slug: slug,
-        imageUrl: data?.image,
+        imageUrl: data?.imageurl,
         status: "ACTIVE",
       },
     });
 
-    return category;
+    return {
+      title: category.title,
+      status_upload: "",
+    };
   } catch (error: any) {
-    return null;
+    return {
+      title: "",
+      status_upload: "",
+      error: error?.message,
+      data: data,
+    };
   }
 };
 
@@ -211,7 +219,7 @@ const updateCategoryByIdController = async (req: Request, res: Response) => {
       return sendResponse(res, 400, "Category not found");
     }
 
-    const slug = generateSlug(body?.title);
+    const slug = await generateSlug(body?.title);
     const checkSlug = await db.category.findFirst({
       where: {
         slug: slug,
@@ -233,7 +241,7 @@ const updateCategoryByIdController = async (req: Request, res: Response) => {
         title: body?.title,
         description: body?.description,
         slug: slug,
-        imageUrl: body?.imageUrl,
+        imageUrl: body?.imageurlUrl,
         status: body?.status,
       },
     });
