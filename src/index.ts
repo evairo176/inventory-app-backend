@@ -10,6 +10,7 @@ import { warehousesRoutes } from "./routes/warehouse-routes";
 import { suppliersRoutes } from "./routes/supplier-routes";
 import { unitsRoutes } from "./routes/unit-routes";
 import { productRoutes } from "./routes/product-routes";
+import Logger from "./utils/logger";
 
 dotenv.config();
 
@@ -44,5 +45,5 @@ app.use(notFound);
 app.use(errorHandler);
 
 app.listen(port, () => {
-  console.log(`[server]: Server is running at http://localhost:${port}`);
+  Logger.log(`[server]: Server is running at http://localhost:${port}`);
 });
