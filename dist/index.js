@@ -15,6 +15,7 @@ const warehouse_routes_1 = require("./routes/warehouse-routes");
 const supplier_routes_1 = require("./routes/supplier-routes");
 const unit_routes_1 = require("./routes/unit-routes");
 const product_routes_1 = require("./routes/product-routes");
+const logger_1 = __importDefault(require("./utils/logger"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 5000;
@@ -39,5 +40,5 @@ app.use("/api/product", product_routes_1.productRoutes);
 app.use(middleware_1.notFound);
 app.use(middleware_1.errorHandler);
 app.listen(port, () => {
-    console.log(`[server]: Server is running at http://localhost:${port}`);
+    logger_1.default.log(`[server]: Server is running at http://localhost:${port}`);
 });
