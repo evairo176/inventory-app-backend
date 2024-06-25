@@ -57,7 +57,7 @@ export type ExcelProductProps = {
   alertQty: number;
   productTax: number;
   taxMethod: string;
-  productImageUrls: string[];
+  productImages: string[];
   productThumbnail: string;
   productDetails: string;
   status: string;

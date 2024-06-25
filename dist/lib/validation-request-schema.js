@@ -184,7 +184,6 @@ exports.updateUnitSchema = zod_1.z.object({
 });
 exports.addProductSchema = zod_1.z.object({
     name: zod_1.z.string(),
-    slug: zod_1.z.string(),
     productCode: zod_1.z.string(),
     stockQty: zod_1.z.number(),
     warehouseId: zod_1.z.string(),
@@ -196,7 +195,7 @@ exports.addProductSchema = zod_1.z.object({
     productPrice: zod_1.z.number(),
     alertQty: zod_1.z.number(),
     productTax: zod_1.z.number(),
-    taxMethod: zod_1.z.enum(["inclusive", "exclusive"]), // Assuming taxMethod can be "inclusive" or "exclusive"
+    taxMethod: zod_1.z.enum(["INCLUSIVE", "EXCLUSIVE"]), // Assuming taxMethod can be "inclusive" or "exclusive"
     productImages: zod_1.z.array(zod_1.z.string()),
     productThumbnail: zod_1.z.string(),
     productDetails: zod_1.z.string(),
