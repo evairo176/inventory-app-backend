@@ -26,7 +26,6 @@ const addProductController = async (req: Request, res: Response) => {
         productCode: body?.productCode,
         stockQty: body?.stockQty,
         supplierId: body?.supplierId,
-        warehouseId: body?.warehouseId,
         brandId: body?.brandId,
         categoryId: body?.categoryId,
         unitId: body?.unitId,
@@ -84,7 +83,7 @@ const getAllProductController = async (req: Request, res: Response) => {
 const createBulkProductsController = async (req: Request, res: Response) => {
   try {
     const body = req?.body;
-    console.log({ body });
+
     let products = [];
 
     for (const product of body?.products) {
@@ -126,7 +125,6 @@ const addProduct = async (data: ExcelProductProps) => {
         productCode: data?.productCode,
         stockQty: data?.stockQty,
         supplierId: data?.supplierId,
-        warehouseId: data?.warehouseId,
         brandId: data?.brandId,
         categoryId: data?.categoryId,
         unitId: data?.unitId,
@@ -135,7 +133,7 @@ const addProduct = async (data: ExcelProductProps) => {
         alertQty: data?.alertQty,
         productTax: data?.productTax,
         taxMethod: data?.taxMethod,
-        productImages: data?.productImages,
+        productImages: [...data?.productThumbnail],
         productThumbnail: data?.productThumbnail,
         productDetails: data?.productDetails,
         status: data?.status,
@@ -260,7 +258,6 @@ const updateProductByIdController = async (req: Request, res: Response) => {
         productCode: body?.productCode,
         stockQty: body?.stockQty,
         supplierId: body?.supplierId,
-        warehouseId: body?.warehouseId,
         brandId: body?.brandId,
         categoryId: body?.categoryId,
         unitId: body?.unitId,

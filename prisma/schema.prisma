@@ -68,7 +68,7 @@ model Warehouse {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   
-  products  Product[]
+  // products  Product[]
 }
 
 model Supplier {
@@ -111,6 +111,9 @@ model Product {
   alertQty       Int
   productTax     Float
   taxMethod      String
+  expiryDate      DateTime?
+  batchNumber      String?
+  isFeatured      Boolean @default(false)
   productImages  String[]
   productThumbnail  String
   productDetails String
@@ -122,9 +125,9 @@ model Product {
   brandId        String @db.ObjectId
   categoryId     String @db.ObjectId
   unitId         String @db.ObjectId
-  warehouseId    String @db.ObjectId
+  // warehouseId    String @db.ObjectId
 
-  warehouse      Warehouse @relation(fields: [warehouseId], references: [id])
+  // warehouse      Warehouse @relation(fields: [warehouseId], references: [id])
   supplier       Supplier  @relation(fields: [supplierId], references: [id])
   brand          Brand     @relation(fields: [brandId], references: [id])
   category       Category  @relation(fields: [categoryId], references: [id])

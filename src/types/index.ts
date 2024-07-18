@@ -47,7 +47,6 @@ export type ExcelProductProps = {
   slug: string;
   productCode: string;
   stockQty: number;
-  warehouseId: string;
   supplierId: string;
   brandId: string;
   categoryId: string;
