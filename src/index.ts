@@ -11,6 +11,8 @@ import { suppliersRoutes } from "./routes/supplier-routes";
 import { unitsRoutes } from "./routes/unit-routes";
 import { productRoutes } from "./routes/product-routes";
 import Logger from "./utils/logger";
+import { rolesRoutes } from "./routes/role-routes";
+import { permissionsRoutes } from "./routes/permission-routes";
 
 dotenv.config();
 
@@ -39,6 +41,12 @@ app.use("/api/unit", unitsRoutes);
 
 // product routes
 app.use("/api/product", productRoutes);
+
+// product routes
+app.use("/api/role", rolesRoutes);
+
+// product routes
+app.use("/api/permission", permissionsRoutes);
 
 // error handler
 app.use(notFound);

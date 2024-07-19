@@ -134,3 +134,94 @@ model Product {
   unit           Unit      @relation(fields: [unitId], references: [id])
 }
 
+model User {
+  id             String @id @default(auto()) @map("_id") @db.ObjectId
+  email          String @unique
+  password       String
+  name           String?
+  
+  // Foreign key to Role
+  roleId         String @db.ObjectId
+  role           Role @relation(fields: [roleId], references: [id])
+
+  @@index([roleId], name: "idx_roleId")
+  
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Role {
+  id             String @id @default(auto()) @map("_id") @db.ObjectId
+  displayName    String // Human-friendly name for UI
+  roleName       String @unique // Programmatic name for code
+  description    String?
+  status      String @default("ACTIVE")
+
+  // Permissions
+  permissions    RolePermission[] 
+
+  // Relationships
+  users          User[]
+  roleMenus      RoleMenu[] // Add this line for the opposite relation
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Permission {
+  id             String @id @default(auto()) @map("_id") @db.ObjectId
+  module         String @default("default")
+  displayName    String // Human-friendly name for UI
+  permissionName       String @unique // Programmatic name for code
+  description    String?
+  status    String @default("ACTIVE")
+  
+  // RolePermission relation
+  roles          RolePermission[]
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model RolePermission {
+  id             String @id @default(auto()) @map("_id") @db.ObjectId
+  roleId         String @db.ObjectId
+  permissionId   String @db.ObjectId
+  role           Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission     Permission @relation(fields: [permissionId], references: [id])
+  
+  @@index([roleId, permissionId], name: "idx_role_permission")
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Menu {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  name     String // Name of the menu item
+  path     String // Path for routing
+  icon     String? // Optional icon for UI
+  parentId String? @db.ObjectId
+  parent   Menu? @relation("SubMenu", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  children Menu[] @relation("SubMenu")
+  status    String @default("ACTIVE")
+
+  // RoleMenu relation
+  roles    RoleMenu[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model RoleMenu {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  roleId   String @db.ObjectId
+  menuId   String @db.ObjectId
+  role     Role @relation(fields: [roleId], references: [id])
+  menu     Menu @relation(fields: [menuId], references: [id])
+  
+  @@index([roleId, menuId], name: "idx_role_menu")
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+

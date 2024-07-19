@@ -229,3 +229,45 @@ export const updateProductSchema = z.object({
     message: "status must be at least 2 characters.",
   }),
 });
+
+export const addRoleSchema = z.object({
+  displayName: z
+    .string({ required_error: "Display Name is required" })
+    .min(3, { message: "Display Name must be at least 3 characters" }),
+  roleName: z
+    .string({ required_error: "Role Name is required" })
+    .min(1, { message: "Role Name must be at least 1 characters" }),
+  description: z.string().optional(),
+  status: z.string(),
+});
+
+export const updateRoleSchema = z.object({
+  displayName: z
+    .string({ required_error: "Display Name is required" })
+    .min(3, { message: "Display Name must be at least 3 characters" }),
+  roleName: z
+    .string({ required_error: "Role Name is required" })
+    .min(1, { message: "Role Name must be at least 1 characters" }),
+  description: z.string().optional(),
+  status: z.string(),
+});
+
+export const addPermissionSchema = z.object({
+  displayName: z
+    .string({ required_error: "Display Name is required" })
+    .min(3, { message: "Display Name must be at least 3 characters" }),
+  permissionName: z.string(),
+  module: z.string().optional(),
+  description: z.string().optional(),
+  status: z.string(),
+});
+
+export const updatePermissionSchema = z.object({
+  displayName: z
+    .string({ required_error: "Display Name is required" })
+    .min(3, { message: "Display Name must be at least 3 characters" }),
+  permissionName: z.string(),
+  description: z.string().optional(),
+  module: z.string().optional(),
+  status: z.string(),
+});

@@ -2,232 +2,288 @@ import { Request, Response } from "express";
 import { sendResponse } from "../utils/send-response";
 import { db } from "../lib/db";
 import { generateSlug } from "../utils/generate-slug";
-import { ExcelUnitProps } from "../types";
+import { Role } from "../types";
+import { PrismaClientValidationError } from "@prisma/client/runtime/library";
 
-const addUnitController = async (req: Request, res: Response) => {
+const addRoleController = async (req: Request, res: Response) => {
   const body = req?.body;
 
   try {
-    const checkAbbreviation = await db.unit.findFirst({
+    const checkAbbreviation = await db.role.findFirst({
       where: {
-        abbreviation: body?.abbreviation,
+        roleName: body?.roleName,
       },
     });
 
     if (checkAbbreviation) {
-      return sendResponse(res, 400, "Abbreviation is already exist");
+      return sendResponse(res, 400, "Role Name is already exist");
     }
 
-    const unit = await db.unit.create({
+    const role = await db.role.create({
       data: {
-        title: body?.title,
-        abbreviation: body?.abbreviation,
+        displayName: body?.displayName,
+        roleName: body?.roleName,
+        description: body?.description,
+        status: body?.status,
+        permissions: {
+          create: body?.permissionIds.map((permissionId: string) => ({
+            permission: { connect: { id: permissionId } },
+          })),
+        },
       },
     });
 
-    return sendResponse(res, 200, "Create unit successfully", unit);
+    return sendResponse(res, 200, "Create role successfully", role);
   } catch (error: any) {
     return sendResponse(
       res,
       500,
-      "[CREATE_UNIT]: Internal Error",
+      "[CREATE_ROLE]: Internal Error",
       error?.message
     );
   }
 };
 
-const getAllUnitController = async (req: Request, res: Response) => {
+const getAllRoleController = async (req: Request, res: Response) => {
   try {
-    const unit = await db.unit.findMany({
+    const role = await db.role.findMany({
+      include: {
+        permissions: {
+          include: {
+            permission: true,
+          },
+        },
+        users: true,
+        roleMenus: true,
+      },
       orderBy: {
         updatedAt: "desc",
       },
     });
 
-    if (!unit) {
-      return sendResponse(res, 400, "Unit not found!");
-    }
-
-    return sendResponse(res, 200, "Get all unit successfully", unit);
+    return sendResponse(res, 200, "Get all role successfully", role);
   } catch (error: any) {
     return sendResponse(
       res,
       500,
-      "[GET_ALL_UNIT]: Internal Error",
+      "[GET_ALL_ROLE]: Internal Error",
       error?.message
     );
   }
 };
 
-const createBulkUnitsController = async (req: Request, res: Response) => {
-  try {
-    const body = req?.body;
+// const createBulkRolesController = async (req: Request, res: Response) => {
+//   try {
+//     const body = req?.body;
 
-    let units = [];
+//     let roles = [];
 
-    for (const unit of body?.units) {
-      const newUnit = await addUnit(unit);
-      units.push(newUnit);
-    }
+//     for (const role of body?.roles) {
+//       const newRole = await addRole(role);
+//       roles.push(newRole);
+//     }
 
-    return sendResponse(res, 200, "Create Bulk unit successfully", units);
-  } catch (error: any) {
-    return sendResponse(
-      res,
-      500,
-      "[CREATE_BULK_UNIT]: Internal Error",
-      error?.message
-    );
-  }
-};
+//     return sendResponse(res, 200, "Create Bulk role successfully", roles);
+//   } catch (error: any) {
+//     return sendResponse(
+//       res,
+//       500,
+//       "[CREATE_BULK_ROLE]: Internal Error",
+//       error?.message
+//     );
+//   }
+// };
 
-const addUnit = async (data: ExcelUnitProps) => {
-  try {
-    const checkAbbreviation = await db.unit.findFirst({
-      where: {
-        abbreviation: data?.abbreviation,
-      },
-    });
+// const addRole = async (data: ExcelRoleProps) => {
+//   try {
+//     const checkAbbreviation = await db.role.findFirst({
+//       where: {
+//         abbreviation: data?.abbreviation,
+//       },
+//     });
 
-    if (checkAbbreviation) {
-      return {
-        title: data.title,
-        status_upload: "Error",
-      };
-    }
+//     if (checkAbbreviation) {
+//       return {
+//         title: data.title,
+//         status_upload: "Error",
+//       };
+//     }
 
-    const unit = await db.unit.create({
-      data: {
-        title: data?.title,
-        abbreviation: data?.abbreviation,
-      },
-    });
+//     const role = await db.role.create({
+//       data: {
+//         title: data?.title,
+//         abbreviation: data?.abbreviation,
+//       },
+//     });
 
-    return {
-      title: unit.title,
-      status_upload: "",
-    };
-  } catch (error: any) {
-    return {
-      title: "",
-      status_upload: "",
-      error: error?.message,
-      data: data,
-    };
-  }
-};
+//     return {
+//       title: role.title,
+//       status_upload: "",
+//     };
+//   } catch (error: any) {
+//     return {
+//       title: "",
+//       status_upload: "",
+//       error: error?.message,
+//       data: data,
+//     };
+//   }
+// };
 
-const deleteUnitByIdController = async (req: Request, res: Response) => {
+const deleteRoleByIdController = async (req: Request, res: Response) => {
   const params = req?.params;
   try {
     if (!params.id) {
-      return sendResponse(res, 400, "Unit Id not found");
+      return sendResponse(res, 400, "Role Id not found");
     }
 
-    const unit = await db.unit.findFirst({
+    const role = await db.role.findFirst({
       where: {
         id: params.id,
       },
     });
 
-    if (!unit) {
-      return sendResponse(res, 400, "Unit not found");
+    if (!role) {
+      return sendResponse(res, 400, "Role not found");
     }
 
-    const deleteUnit = await db.unit.delete({
+    const deleteRole = await db.role.delete({
       where: {
         id: params.id,
       },
     });
 
-    return sendResponse(res, 200, "Delete unit successfully", deleteUnit);
+    return sendResponse(res, 200, "Delete role successfully", deleteRole);
   } catch (error: any) {
     return sendResponse(
       res,
       500,
-      "[DELETE_UNIT]: Internal Error",
+      "[DELETE_ROLE]: Internal Error",
       error?.message
     );
   }
 };
 
-const getUnitByIdController = async (req: Request, res: Response) => {
+const getRoleByIdController = async (req: Request, res: Response) => {
   const params = req?.params;
   try {
     if (!params.id) {
-      return sendResponse(res, 400, "Unit Id not found");
+      return sendResponse(res, 400, "Role Id not found");
     }
 
-    const unit = await db.unit.findFirst({
+    const role = await db.role.findFirst({
       where: {
         id: params.id,
       },
+      include: {
+        permissions: {
+          include: {
+            permission: true,
+          },
+        },
+        users: true,
+        roleMenus: true,
+      },
     });
 
-    if (!unit) {
-      return sendResponse(res, 400, "Unit not found");
+    if (!role) {
+      return sendResponse(res, 400, "Role not found");
     }
 
-    return sendResponse(res, 200, "Get unit by id successfully", unit);
+    return sendResponse(res, 200, "Get role by id successfully", role);
   } catch (error: any) {
     return sendResponse(
       res,
       500,
-      "[GET_UNIT_BY_ID]: Internal Error",
+      "[GET_ROLE_BY_ID]: Internal Error",
       error?.message
     );
   }
 };
 
-const updateUnitByIdController = async (req: Request, res: Response) => {
+const updateRoleByIdController = async (req: Request, res: Response) => {
   const params = req?.params;
   const body = req?.body;
   try {
     if (!params.id) {
-      return sendResponse(res, 400, "Unit Id not found");
+      return sendResponse(res, 400, "Role Id not found");
     }
 
-    const unit = await db.unit.findFirst({
+    const existingRole = await db.role.findFirst({
       where: {
         id: params.id,
       },
+      include: { permissions: true },
     });
 
-    if (!unit) {
-      return sendResponse(res, 400, "Unit not found");
+    if (!existingRole) {
+      return sendResponse(res, 400, "Role not found");
     }
 
-    const checkAbbreviation = await db.unit.findFirst({
+    if (existingRole.roleName !== body?.roleName) {
+      const checkRoleName = await db.role.findFirst({
+        where: {
+          roleName: body?.roleName,
+        },
+      });
+
+      if (checkRoleName) {
+        return sendResponse(res, 400, "Role Name is already exist");
+      }
+    }
+
+    // Remove existing RolePermission records
+    const removeRole = await db.rolePermission.deleteMany({
       where: {
-        abbreviation: body?.abbreviation,
+        roleId: params?.id,
       },
     });
 
-    if (checkAbbreviation) {
-      return sendResponse(res, 400, "Abbreviation is already exist");
-    }
+    // Create new RolePermission records
 
-    const unitUpdate = await db.unit.update({
-      where: {
-        id: params.id,
-      },
+    await Promise.all(
+      body?.permissionIds.map((permissionId: string) =>
+        db.rolePermission.create({
+          data: {
+            roleId: params?.id,
+            permissionId,
+          },
+        })
+      )
+    );
+
+    // Update the role without changing permissions directly
+    const updatedRole = await db.role.update({
+      where: { id: params?.id },
       data: {
-        title: body?.title,
-        abbreviation: body?.abbreviation,
+        displayName: body?.displayName,
+        roleName: body?.roleName,
+        description: body?.description,
+        status: body?.status,
       },
     });
 
-    return sendResponse(res, 200, "Update unit by id successfully", unitUpdate);
+    return sendResponse(res, 200, "Update role by id successfully", removeRole);
   } catch (error: any) {
-    return sendResponse(res, 500, "[UPDATE_UNIT_BY_ID]: Internal Error", error);
+    if (error instanceof PrismaClientValidationError) {
+      console.error("Prisma Client Validation Error:", error.message);
+    } else {
+      console.error("Unexpected Error:", error);
+    }
+    return sendResponse(
+      res,
+      500,
+      "[UPDATE_ROLE_BY_ID]: Internal Error",
+      error.message
+    );
   }
 };
 
 export {
-  addUnitController,
-  getAllUnitController,
-  createBulkUnitsController,
-  deleteUnitByIdController,
-  getUnitByIdController,
-  updateUnitByIdController,
+  addRoleController,
+  getAllRoleController,
+  // createBulkRolesController,
+  deleteRoleByIdController,
+  getRoleByIdController,
+  updateRoleByIdController,
 };

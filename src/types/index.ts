@@ -1,3 +1,11 @@
+import {
+  Role as PrismaRole,
+  User as PrismaUser,
+  Permission as PrismaPermission,
+  RolePermission as PrismaRolePermission,
+  RoleMenu as PrismaRoleMenu,
+} from "@prisma/client";
+
 export type ExcelCategoryProps = {
   imageurl: string;
   title: string;
@@ -60,4 +68,44 @@ export type ExcelProductProps = {
   productThumbnail: string;
   productDetails: string;
   status: string;
+};
+
+// Define the Role type with related fields
+export type Role = PrismaRole & {
+  permissions: RolePermission[];
+  users: User[];
+  roleMenus: RoleMenu[];
+};
+
+// Define the Permissions type with related fields
+export type Permissions = PrismaPermission & {
+  permissions: RolePermission[];
+};
+
+// Define the RolePermission type
+export type RolePermission = PrismaRolePermission & {
+  role: Role;
+};
+
+// Define the User type
+export type User = PrismaUser & {
+  role: Role;
+};
+
+// Define the RoleMenu type
+export type RoleMenu = PrismaRoleMenu & {
+  role: Role;
+  menu: Menu;
+};
+
+// Define the Menu type (you'll need to define the Menu model similarly)
+export type Menu = {
+  id: string;
+  name: string;
+  path: string;
+  icon?: string;
+  parentId?: string;
+  parent?: Menu;
+  children?: Menu[];
+  roles?: RoleMenu[];
 };
