@@ -202,7 +202,6 @@ const getUserByIdController = async (req: Request, res: Response) => {
         createdAt: true,
         updatedAt: true,
         status: true,
-        password: true,
         // Exclude the password field
       },
     });
@@ -251,7 +250,7 @@ const updateUserByIdController = async (req: Request, res: Response) => {
         return sendResponse(res, 400, "Email is already exist");
       }
     }
-    const password = await bcrypt.hash(body?.password, 12);
+
     const userUpdate = await db.user.update({
       where: {
         id: params.id,
@@ -261,8 +260,6 @@ const updateUserByIdController = async (req: Request, res: Response) => {
         lastName: body?.lastName,
         name: `${body.firstName} ${body.lastName}`,
         email: body?.email,
-        password: body?.password,
-        hashPassword: password,
         phone: body?.phone,
         roleId: body?.roleId,
         status: body?.status,

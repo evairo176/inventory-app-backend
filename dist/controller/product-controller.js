@@ -64,6 +64,9 @@ const getAllProductController = (req, res) => __awaiter(void 0, void 0, void 0, 
                     not: "DELETED",
                 },
             },
+            include: {
+                category: true,
+            },
         });
         if (!product) {
             return (0, send_response_1.sendResponse)(res, 400, "Product not found!");

@@ -63,6 +63,9 @@ const getAllProductController = async (req: Request, res: Response) => {
           not: "DELETED",
         },
       },
+      include: {
+        category: true,
+      },
     });
 
     if (!product) {

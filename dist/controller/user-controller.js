@@ -182,7 +182,6 @@ const getUserByIdController = (req, res) => __awaiter(void 0, void 0, void 0, fu
                 createdAt: true,
                 updatedAt: true,
                 status: true,
-                password: true,
                 // Exclude the password field
             },
         });
@@ -221,7 +220,6 @@ const updateUserByIdController = (req, res) => __awaiter(void 0, void 0, void 0,
                 return (0, send_response_1.sendResponse)(res, 400, "Email is already exist");
             }
         }
-        const password = yield bcrypt_1.default.hash(body === null || body === void 0 ? void 0 : body.password, 12);
         const userUpdate = yield db_1.db.user.update({
             where: {
                 id: params.id,
@@ -231,8 +229,6 @@ const updateUserByIdController = (req, res) => __awaiter(void 0, void 0, void 0,
                 lastName: body === null || body === void 0 ? void 0 : body.lastName,
                 name: `${body.firstName} ${body.lastName}`,
                 email: body === null || body === void 0 ? void 0 : body.email,
-                password: body === null || body === void 0 ? void 0 : body.password,
-                hashPassword: password,
                 phone: body === null || body === void 0 ? void 0 : body.phone,
                 roleId: body === null || body === void 0 ? void 0 : body.roleId,
                 status: body === null || body === void 0 ? void 0 : body.status,
