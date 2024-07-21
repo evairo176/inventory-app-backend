@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updatePermissionSchema = exports.addPermissionSchema = exports.updateRoleSchema = exports.addRoleSchema = exports.updateProductSchema = exports.addProductSchema = exports.updateUnitSchema = exports.addUnitSchema = exports.updateSupplierSchema = exports.addSupplierSchema = exports.updateWarehouseSchema = exports.addWarehouseSchema = exports.updateBrandSchema = exports.addBrandSchema = exports.updateCategorySchema = exports.addCategorySchema = void 0;
+exports.updateUserSchema = exports.addUserSchema = exports.updatePermissionSchema = exports.addPermissionSchema = exports.updateRoleSchema = exports.addRoleSchema = exports.updateProductSchema = exports.addProductSchema = exports.updateUnitSchema = exports.addUnitSchema = exports.updateSupplierSchema = exports.addSupplierSchema = exports.updateWarehouseSchema = exports.addWarehouseSchema = exports.updateBrandSchema = exports.addBrandSchema = exports.updateCategorySchema = exports.addCategorySchema = void 0;
 const zod_1 = require("zod");
 exports.addCategorySchema = zod_1.z.object({
     title: zod_1.z
@@ -260,4 +260,68 @@ exports.updatePermissionSchema = zod_1.z.object({
     description: zod_1.z.string().optional(),
     module: zod_1.z.string().optional(),
     status: zod_1.z.string(),
+});
+exports.addUserSchema = zod_1.z.object({
+    firstName: zod_1.z.string().min(2, {
+        message: "First Name must be at least 2 characters.",
+    }),
+    lastName: zod_1.z.string().min(2, {
+        message: "Last Name must be at least 2 characters.",
+    }),
+    email: zod_1.z.string().email(),
+    phone: zod_1.z.string(),
+    imageUrl: zod_1.z.string().optional(),
+    password: zod_1.z
+        .string()
+        .min(8, {
+        message: "Password must be at least 8 characters.",
+    })
+        .regex(/[A-Z]/, {
+        message: "Password must contain at least one uppercase letter.",
+    })
+        .regex(/[a-z]/, {
+        message: "Password must contain at least one lowercase letter.",
+    })
+        .regex(/[0-9]/, {
+        message: "Password must contain at least one number.",
+    })
+        .regex(/[^A-Za-z0-9]/, {
+        message: "Password must contain at least one symbol.",
+    }),
+    role: zod_1.z.string(),
+    status: zod_1.z.string().min(2, {
+        message: "status must be at least 2 characters.",
+    }),
+});
+exports.updateUserSchema = zod_1.z.object({
+    firstName: zod_1.z.string().min(2, {
+        message: "First Name must be at least 2 characters.",
+    }),
+    lastName: zod_1.z.string().min(2, {
+        message: "Last Name must be at least 2 characters.",
+    }),
+    email: zod_1.z.string().email(),
+    phone: zod_1.z.string(),
+    imageUrl: zod_1.z.string().optional(),
+    password: zod_1.z
+        .string()
+        .min(8, {
+        message: "Password must be at least 8 characters.",
+    })
+        .regex(/[A-Z]/, {
+        message: "Password must contain at least one uppercase letter.",
+    })
+        .regex(/[a-z]/, {
+        message: "Password must contain at least one lowercase letter.",
+    })
+        .regex(/[0-9]/, {
+        message: "Password must contain at least one number.",
+    })
+        .regex(/[^A-Za-z0-9]/, {
+        message: "Password must contain at least one symbol.",
+    }),
+    roleId: zod_1.z.string(),
+    status: zod_1.z.string().min(2, {
+        message: "status must be at least 2 characters.",
+    }),
 });
