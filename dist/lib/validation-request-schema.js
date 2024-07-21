@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateProductSchema = exports.addProductSchema = exports.updateUnitSchema = exports.addUnitSchema = exports.updateSupplierSchema = exports.addSupplierSchema = exports.updateWarehouseSchema = exports.addWarehouseSchema = exports.updateBrandSchema = exports.addBrandSchema = exports.updateCategorySchema = exports.addCategorySchema = void 0;
+exports.updatePermissionSchema = exports.addPermissionSchema = exports.updateRoleSchema = exports.addRoleSchema = exports.updateProductSchema = exports.addProductSchema = exports.updateUnitSchema = exports.addUnitSchema = exports.updateSupplierSchema = exports.addSupplierSchema = exports.updateWarehouseSchema = exports.addWarehouseSchema = exports.updateBrandSchema = exports.addBrandSchema = exports.updateCategorySchema = exports.addCategorySchema = void 0;
 const zod_1 = require("zod");
 exports.addCategorySchema = zod_1.z.object({
     title: zod_1.z
@@ -186,7 +186,6 @@ exports.addProductSchema = zod_1.z.object({
     name: zod_1.z.string(),
     productCode: zod_1.z.string(),
     stockQty: zod_1.z.number(),
-    warehouseId: zod_1.z.string(),
     supplierId: zod_1.z.string(),
     brandId: zod_1.z.string(),
     categoryId: zod_1.z.string(),
@@ -208,7 +207,6 @@ exports.updateProductSchema = zod_1.z.object({
     slug: zod_1.z.string(),
     productCode: zod_1.z.string(),
     stockQty: zod_1.z.number(),
-    warehouseId: zod_1.z.string(),
     supplierId: zod_1.z.string(),
     brandId: zod_1.z.string(),
     categoryId: zod_1.z.string(),
@@ -224,4 +222,42 @@ exports.updateProductSchema = zod_1.z.object({
     status: zod_1.z.string().min(2, {
         message: "status must be at least 2 characters.",
     }),
+});
+exports.addRoleSchema = zod_1.z.object({
+    displayName: zod_1.z
+        .string({ required_error: "Display Name is required" })
+        .min(3, { message: "Display Name must be at least 3 characters" }),
+    roleName: zod_1.z
+        .string({ required_error: "Role Name is required" })
+        .min(1, { message: "Role Name must be at least 1 characters" }),
+    description: zod_1.z.string().optional(),
+    status: zod_1.z.string(),
+});
+exports.updateRoleSchema = zod_1.z.object({
+    displayName: zod_1.z
+        .string({ required_error: "Display Name is required" })
+        .min(3, { message: "Display Name must be at least 3 characters" }),
+    roleName: zod_1.z
+        .string({ required_error: "Role Name is required" })
+        .min(1, { message: "Role Name must be at least 1 characters" }),
+    description: zod_1.z.string().optional(),
+    status: zod_1.z.string(),
+});
+exports.addPermissionSchema = zod_1.z.object({
+    displayName: zod_1.z
+        .string({ required_error: "Display Name is required" })
+        .min(3, { message: "Display Name must be at least 3 characters" }),
+    permissionName: zod_1.z.string(),
+    module: zod_1.z.string().optional(),
+    description: zod_1.z.string().optional(),
+    status: zod_1.z.string(),
+});
+exports.updatePermissionSchema = zod_1.z.object({
+    displayName: zod_1.z
+        .string({ required_error: "Display Name is required" })
+        .min(3, { message: "Display Name must be at least 3 characters" }),
+    permissionName: zod_1.z.string(),
+    description: zod_1.z.string().optional(),
+    module: zod_1.z.string().optional(),
+    status: zod_1.z.string(),
 });

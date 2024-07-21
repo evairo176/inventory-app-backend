@@ -32,7 +32,6 @@ const addProductController = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 productCode: body === null || body === void 0 ? void 0 : body.productCode,
                 stockQty: body === null || body === void 0 ? void 0 : body.stockQty,
                 supplierId: body === null || body === void 0 ? void 0 : body.supplierId,
-                warehouseId: body === null || body === void 0 ? void 0 : body.warehouseId,
                 brandId: body === null || body === void 0 ? void 0 : body.brandId,
                 categoryId: body === null || body === void 0 ? void 0 : body.categoryId,
                 unitId: body === null || body === void 0 ? void 0 : body.unitId,
@@ -79,7 +78,6 @@ exports.getAllProductController = getAllProductController;
 const createBulkProductsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const body = req === null || req === void 0 ? void 0 : req.body;
-        console.log({ body });
         let products = [];
         for (const product of body === null || body === void 0 ? void 0 : body.products) {
             const newProduct = yield addProduct(product);
@@ -113,7 +111,6 @@ const addProduct = (data) => __awaiter(void 0, void 0, void 0, function* () {
                 productCode: data === null || data === void 0 ? void 0 : data.productCode,
                 stockQty: data === null || data === void 0 ? void 0 : data.stockQty,
                 supplierId: data === null || data === void 0 ? void 0 : data.supplierId,
-                warehouseId: data === null || data === void 0 ? void 0 : data.warehouseId,
                 brandId: data === null || data === void 0 ? void 0 : data.brandId,
                 categoryId: data === null || data === void 0 ? void 0 : data.categoryId,
                 unitId: data === null || data === void 0 ? void 0 : data.unitId,
@@ -122,7 +119,7 @@ const addProduct = (data) => __awaiter(void 0, void 0, void 0, function* () {
                 alertQty: data === null || data === void 0 ? void 0 : data.alertQty,
                 productTax: data === null || data === void 0 ? void 0 : data.productTax,
                 taxMethod: data === null || data === void 0 ? void 0 : data.taxMethod,
-                productImages: data === null || data === void 0 ? void 0 : data.productImages,
+                productImages: [...data === null || data === void 0 ? void 0 : data.productThumbnail],
                 productThumbnail: data === null || data === void 0 ? void 0 : data.productThumbnail,
                 productDetails: data === null || data === void 0 ? void 0 : data.productDetails,
                 status: data === null || data === void 0 ? void 0 : data.status,
@@ -226,7 +223,6 @@ const updateProductByIdController = (req, res) => __awaiter(void 0, void 0, void
                 productCode: body === null || body === void 0 ? void 0 : body.productCode,
                 stockQty: body === null || body === void 0 ? void 0 : body.stockQty,
                 supplierId: body === null || body === void 0 ? void 0 : body.supplierId,
-                warehouseId: body === null || body === void 0 ? void 0 : body.warehouseId,
                 brandId: body === null || body === void 0 ? void 0 : body.brandId,
                 categoryId: body === null || body === void 0 ? void 0 : body.categoryId,
                 unitId: body === null || body === void 0 ? void 0 : body.unitId,

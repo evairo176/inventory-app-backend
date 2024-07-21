@@ -16,6 +16,8 @@ const supplier_routes_1 = require("./routes/supplier-routes");
 const unit_routes_1 = require("./routes/unit-routes");
 const product_routes_1 = require("./routes/product-routes");
 const logger_1 = __importDefault(require("./utils/logger"));
+const role_routes_1 = require("./routes/role-routes");
+const permission_routes_1 = require("./routes/permission-routes");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 5000;
@@ -36,6 +38,10 @@ app.use("/api/supplier", supplier_routes_1.suppliersRoutes);
 app.use("/api/unit", unit_routes_1.unitsRoutes);
 // product routes
 app.use("/api/product", product_routes_1.productRoutes);
+// product routes
+app.use("/api/role", role_routes_1.rolesRoutes);
+// product routes
+app.use("/api/permission", permission_routes_1.permissionsRoutes);
 // error handler
 app.use(middleware_1.notFound);
 app.use(middleware_1.errorHandler);
