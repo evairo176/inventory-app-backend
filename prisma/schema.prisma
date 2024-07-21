@@ -136,13 +136,18 @@ model Product {
 
 model User {
   id             String @id @default(auto()) @map("_id") @db.ObjectId
+  firstName      String
+  lastName       String
+  name           String?
   email          String @unique
   password       String
-  name           String?
+  hashPassword   String?
+  phone          String?
+  status         String @default("ACTIVE")
   
   // Foreign key to Role
-  roleId         String @db.ObjectId
-  role           Role @relation(fields: [roleId], references: [id])
+  roleId         String? @db.ObjectId
+  role           Role? @relation(fields: [roleId], references: [id])
 
   @@index([roleId], name: "idx_roleId")
   

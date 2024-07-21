@@ -13,6 +13,7 @@ import { productRoutes } from "./routes/product-routes";
 import Logger from "./utils/logger";
 import { rolesRoutes } from "./routes/role-routes";
 import { permissionsRoutes } from "./routes/permission-routes";
+import { usersRoutes } from "./routes/user-routes";
 
 dotenv.config();
 
@@ -36,17 +37,20 @@ app.use("/api/warehouse", warehousesRoutes);
 // suppliers routes
 app.use("/api/supplier", suppliersRoutes);
 
-// suppliers routes
+// units routes
 app.use("/api/unit", unitsRoutes);
 
-// product routes
+// products routes
 app.use("/api/product", productRoutes);
 
-// product routes
+// roles routes
 app.use("/api/role", rolesRoutes);
 
-// product routes
+// permissions routes
 app.use("/api/permission", permissionsRoutes);
+
+// user routes
+app.use("/api/user", usersRoutes);
 
 // error handler
 app.use(notFound);
