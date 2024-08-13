@@ -320,3 +320,7 @@ export const updateUserSchema = z.object({
     message: "status must be at least 2 characters.",
   }),
 });
+
+export const updateInviteSentSchema = z.object({
+  email: z.string().email(),
+});

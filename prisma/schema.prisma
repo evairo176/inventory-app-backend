@@ -144,6 +144,8 @@ model User {
   hashPassword   String?
   phone          String?
   status         String @default("ACTIVE")
+  inviteSent     Boolean @default(false)
+  imageUrl       String?
   
   // Foreign key to Role
   roleId         String? @db.ObjectId

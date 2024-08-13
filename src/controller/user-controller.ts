@@ -30,6 +30,7 @@ const addUserController = async (req: Request, res: Response) => {
         hashPassword: password,
         roleId: body?.roleId,
         status: body?.status,
+        imageUrl: body?.imageUrl,
       },
     });
 
@@ -62,6 +63,8 @@ const getAllUserController = async (req: Request, res: Response) => {
         createdAt: true,
         updatedAt: true,
         status: true,
+        imageUrl: true,
+        inviteSent: true,
         // Exclude the password field
       },
     });
@@ -128,6 +131,7 @@ const addUser = async (data: User) => {
         password: data?.password,
         hashPassword: password,
         roleId: data?.roleId,
+        imageUrl: data?.imageUrl,
       },
     });
 
@@ -202,6 +206,8 @@ const getUserByIdController = async (req: Request, res: Response) => {
         createdAt: true,
         updatedAt: true,
         status: true,
+        imageUrl: true,
+        inviteSent: true,
         // Exclude the password field
       },
     });
@@ -263,12 +269,46 @@ const updateUserByIdController = async (req: Request, res: Response) => {
         phone: body?.phone,
         roleId: body?.roleId,
         status: body?.status,
+        imageUrl: body?.imageUrl,
       },
     });
 
     return sendResponse(res, 200, "Update user by id successfully", userUpdate);
   } catch (error: any) {
     return sendResponse(res, 500, "[UPDATE_USER_BY_ID]: Internal Error", error);
+  }
+};
+
+const updateInviteSentUserController = async (req: Request, res: Response) => {
+  const body = req?.body;
+  try {
+    const user = await db.user.findFirst({
+      where: {
+        email: body?.email,
+      },
+    });
+
+    if (!user) {
+      return sendResponse(res, 400, "User not found");
+    }
+
+    const userUpdate = await db.user.update({
+      where: {
+        email: body.email,
+      },
+      data: {
+        inviteSent: true,
+      },
+    });
+
+    return sendResponse(res, 200, "Invite successfully", userUpdate);
+  } catch (error: any) {
+    return sendResponse(
+      res,
+      500,
+      "[UPDATE_SENT_EMAIL_USER]: Internal Error",
+      error
+    );
   }
 };
 
@@ -279,4 +319,5 @@ export {
   deleteUserByIdController,
   getUserByIdController,
   updateUserByIdController,
+  updateInviteSentUserController,
 };

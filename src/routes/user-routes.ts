@@ -3,6 +3,7 @@ import express from "express";
 import { validate } from "../middleware";
 import {
   addUserSchema,
+  updateInviteSentSchema,
   updateUserSchema,
 } from "../lib/validation-request-schema";
 import {
@@ -11,6 +12,7 @@ import {
   deleteUserByIdController,
   getAllUserController,
   getUserByIdController,
+  updateInviteSentUserController,
   updateUserByIdController,
 } from "../controller/user-controller";
 
@@ -33,3 +35,10 @@ usersRoutes.get("/:id", getUserByIdController);
 
 // update category by id
 usersRoutes.put("/:id", validate(updateUserSchema), updateUserByIdController);
+
+// update invite sent
+usersRoutes.put(
+  "/invite/email-sent",
+  validate(updateInviteSentSchema),
+  updateInviteSentUserController
+);
