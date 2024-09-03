@@ -299,7 +299,7 @@ export const addUserSchema = z.object({
     .regex(/[^A-Za-z0-9]/, {
       message: "Password must contain at least one symbol.",
     }),
-  role: z.string(),
+  roleId: z.string(),
   status: z.string().min(2, {
     message: "status must be at least 2 characters.",
   }),

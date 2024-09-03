@@ -21,3 +21,5 @@ exports.usersRoutes.delete("/:id", user_controller_1.deleteUserByIdController);
 exports.usersRoutes.get("/:id", user_controller_1.getUserByIdController);
 // update category by id
 exports.usersRoutes.put("/:id", (0, middleware_1.validate)(validation_request_schema_1.updateUserSchema), user_controller_1.updateUserByIdController);
+// update invite sent
+exports.usersRoutes.put("/invite/email-sent", (0, middleware_1.validate)(validation_request_schema_1.updateInviteSentSchema), user_controller_1.updateInviteSentUserController);

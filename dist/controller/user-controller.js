@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateUserByIdController = exports.getUserByIdController = exports.deleteUserByIdController = exports.createBulkUsersController = exports.getAllUserController = exports.addUserController = void 0;
+exports.updateInviteSentUserController = exports.updateUserByIdController = exports.getUserByIdController = exports.deleteUserByIdController = exports.createBulkUsersController = exports.getAllUserController = exports.addUserController = void 0;
 const send_response_1 = require("../utils/send-response");
 const db_1 = require("../lib/db");
 const bcrypt_1 = __importDefault(require("bcrypt"));
@@ -39,6 +39,7 @@ const addUserController = (req, res) => __awaiter(void 0, void 0, void 0, functi
                 hashPassword: password,
                 roleId: body === null || body === void 0 ? void 0 : body.roleId,
                 status: body === null || body === void 0 ? void 0 : body.status,
+                imageUrl: body === null || body === void 0 ? void 0 : body.imageUrl,
             },
         });
         return (0, send_response_1.sendResponse)(res, 200, "Create user successfully", user);
@@ -66,6 +67,9 @@ const getAllUserController = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 createdAt: true,
                 updatedAt: true,
                 status: true,
+                imageUrl: true,
+                inviteSent: true,
+                password: true,
                 // Exclude the password field
             },
         });
@@ -118,6 +122,7 @@ const addUser = (data) => __awaiter(void 0, void 0, void 0, function* () {
                 password: data === null || data === void 0 ? void 0 : data.password,
                 hashPassword: password,
                 roleId: data === null || data === void 0 ? void 0 : data.roleId,
+                imageUrl: data === null || data === void 0 ? void 0 : data.imageUrl,
             },
         });
         return {
@@ -182,6 +187,9 @@ const getUserByIdController = (req, res) => __awaiter(void 0, void 0, void 0, fu
                 createdAt: true,
                 updatedAt: true,
                 status: true,
+                imageUrl: true,
+                inviteSent: true,
+                password: true,
                 // Exclude the password field
             },
         });
@@ -232,6 +240,7 @@ const updateUserByIdController = (req, res) => __awaiter(void 0, void 0, void 0,
                 phone: body === null || body === void 0 ? void 0 : body.phone,
                 roleId: body === null || body === void 0 ? void 0 : body.roleId,
                 status: body === null || body === void 0 ? void 0 : body.status,
+                imageUrl: body === null || body === void 0 ? void 0 : body.imageUrl,
             },
         });
         return (0, send_response_1.sendResponse)(res, 200, "Update user by id successfully", userUpdate);
@@ -241,3 +250,29 @@ const updateUserByIdController = (req, res) => __awaiter(void 0, void 0, void 0,
     }
 });
 exports.updateUserByIdController = updateUserByIdController;
+const updateInviteSentUserController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const body = req === null || req === void 0 ? void 0 : req.body;
+    try {
+        const user = yield db_1.db.user.findFirst({
+            where: {
+                email: body === null || body === void 0 ? void 0 : body.email,
+            },
+        });
+        if (!user) {
+            return (0, send_response_1.sendResponse)(res, 400, "User not found");
+        }
+        const userUpdate = yield db_1.db.user.update({
+            where: {
+                email: body.email,
+            },
+            data: {
+                inviteSent: true,
+            },
+        });
+        return (0, send_response_1.sendResponse)(res, 200, "Invite successfully", userUpdate);
+    }
+    catch (error) {
+        return (0, send_response_1.sendResponse)(res, 500, "[UPDATE_SENT_EMAIL_USER]: Internal Error", error);
+    }
+});
+exports.updateInviteSentUserController = updateInviteSentUserController;

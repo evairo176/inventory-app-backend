@@ -19,6 +19,7 @@ const logger_1 = __importDefault(require("./utils/logger"));
 const role_routes_1 = require("./routes/role-routes");
 const permission_routes_1 = require("./routes/permission-routes");
 const user_routes_1 = require("./routes/user-routes");
+const auth_routes_1 = require("./routes/auth-routes");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 5000;
@@ -45,6 +46,8 @@ app.use("/api/role", role_routes_1.rolesRoutes);
 app.use("/api/permission", permission_routes_1.permissionsRoutes);
 // user routes
 app.use("/api/user", user_routes_1.usersRoutes);
+// auth routes
+app.use("/api/auth", auth_routes_1.authRoutes);
 // error handler
 app.use(middleware_1.notFound);
 app.use(middleware_1.errorHandler);

@@ -14,6 +14,7 @@ import Logger from "./utils/logger";
 import { rolesRoutes } from "./routes/role-routes";
 import { permissionsRoutes } from "./routes/permission-routes";
 import { usersRoutes } from "./routes/user-routes";
+import { authRoutes } from "./routes/auth-routes";
 
 dotenv.config();
 
@@ -51,6 +52,9 @@ app.use("/api/permission", permissionsRoutes);
 
 // user routes
 app.use("/api/user", usersRoutes);
+
+// auth routes
+app.use("/api/auth", authRoutes);
 
 // error handler
 app.use(notFound);

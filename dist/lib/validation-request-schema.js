@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateUserSchema = exports.addUserSchema = exports.updatePermissionSchema = exports.addPermissionSchema = exports.updateRoleSchema = exports.addRoleSchema = exports.updateProductSchema = exports.addProductSchema = exports.updateUnitSchema = exports.addUnitSchema = exports.updateSupplierSchema = exports.addSupplierSchema = exports.updateWarehouseSchema = exports.addWarehouseSchema = exports.updateBrandSchema = exports.addBrandSchema = exports.updateCategorySchema = exports.addCategorySchema = void 0;
+exports.updateInviteSentSchema = exports.updateUserSchema = exports.addUserSchema = exports.updatePermissionSchema = exports.addPermissionSchema = exports.updateRoleSchema = exports.addRoleSchema = exports.updateProductSchema = exports.addProductSchema = exports.updateUnitSchema = exports.addUnitSchema = exports.updateSupplierSchema = exports.addSupplierSchema = exports.updateWarehouseSchema = exports.addWarehouseSchema = exports.updateBrandSchema = exports.addBrandSchema = exports.updateCategorySchema = exports.addCategorySchema = void 0;
 const zod_1 = require("zod");
 exports.addCategorySchema = zod_1.z.object({
     title: zod_1.z
@@ -288,7 +288,7 @@ exports.addUserSchema = zod_1.z.object({
         .regex(/[^A-Za-z0-9]/, {
         message: "Password must contain at least one symbol.",
     }),
-    role: zod_1.z.string(),
+    roleId: zod_1.z.string(),
     status: zod_1.z.string().min(2, {
         message: "status must be at least 2 characters.",
     }),
@@ -307,4 +307,7 @@ exports.updateUserSchema = zod_1.z.object({
     status: zod_1.z.string().min(2, {
         message: "status must be at least 2 characters.",
     }),
+});
+exports.updateInviteSentSchema = zod_1.z.object({
+    email: zod_1.z.string().email(),
 });

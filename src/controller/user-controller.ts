@@ -19,6 +19,7 @@ const addUserController = async (req: Request, res: Response) => {
       return sendResponse(res, 400, "Email is already exist");
     }
     const password = await bcrypt.hash(body?.password, 12);
+
     const user = await db.user.create({
       data: {
         firstName: body?.firstName,
@@ -65,6 +66,7 @@ const getAllUserController = async (req: Request, res: Response) => {
         status: true,
         imageUrl: true,
         inviteSent: true,
+        password: true,
         // Exclude the password field
       },
     });
@@ -208,6 +210,7 @@ const getUserByIdController = async (req: Request, res: Response) => {
         status: true,
         imageUrl: true,
         inviteSent: true,
+        password: true,
         // Exclude the password field
       },
     });
