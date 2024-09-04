@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import { sendResponse } from "../utils/send-response";
 
 //----------------------------------------------
-// login
+// login controller
 //----------------------------------------------
 export const loginController = async (req: any, res: any) => {
   const { email, password } = req.body;
