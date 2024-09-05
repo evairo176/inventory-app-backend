@@ -4,17 +4,19 @@ import cors from "cors";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import { errorHandler, notFound } from "./middleware";
-import { brandsRoutes } from "./routes/brand-routes";
-import { categoriesRoutes } from "./routes/category-routes";
-import { warehousesRoutes } from "./routes/warehouse-routes";
-import { suppliersRoutes } from "./routes/supplier-routes";
-import { unitsRoutes } from "./routes/unit-routes";
-import { productRoutes } from "./routes/product-routes";
-import Logger from "./utils/logger";
-import { rolesRoutes } from "./routes/role-routes";
-import { permissionsRoutes } from "./routes/permission-routes";
-import { usersRoutes } from "./routes/user-routes";
-import { authRoutes } from "./routes/auth-routes";
+import {
+  authRoutes,
+  brandsRoutes,
+  categoriesRoutes,
+  permissionsRoutes,
+  productRoutes,
+  rolesRoutes,
+  suppliersRoutes,
+  unitsRoutes,
+  usersRoutes,
+  warehousesRoutes,
+} from "./routes";
+import { Logger } from "./utils";
 
 dotenv.config();
 
