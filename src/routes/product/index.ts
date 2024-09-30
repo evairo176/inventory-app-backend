@@ -9,7 +9,6 @@ import {
 } from "../../controller";
 import { validate } from "../../middleware";
 import { addProductSchema, updateProductSchema } from "../../form-schema";
-import { getProductByCategoryIdController } from "../../controller/product";
 
 export const productRoutes = express.Router();
 
@@ -27,9 +26,6 @@ productRoutes.delete("/:id", deleteProductByIdController);
 
 // get product by id
 productRoutes.get("/:id", getProductByIdController);
-
-// get product by id
-productRoutes.get("/category/:categoryId", getProductByCategoryIdController);
 
 // update product by id
 productRoutes.put(

@@ -198,51 +198,6 @@ const deleteProductByIdController = async (req: Request, res: Response) => {
   }
 };
 
-const getProductByCategoryIdController = async (
-  req: Request,
-  res: Response
-) => {
-  const params = req?.params;
-  try {
-    if (!params.categoryId) {
-      return sendResponse(res, 400, "Category Id not found");
-    }
-
-    const product = await db.product.findMany({
-      orderBy: {
-        updatedAt: "desc",
-      },
-      where: {
-        status: {
-          not: "DELETED",
-        },
-        categoryId: params.categoryId,
-      },
-      include: {
-        category: true,
-      },
-    });
-
-    if (!product) {
-      return sendResponse(res, 400, "Product not found!");
-    }
-
-    return sendResponse(
-      res,
-      200,
-      "Get product by category id successfully",
-      product
-    );
-  } catch (error: any) {
-    return sendResponse(
-      res,
-      500,
-      "[GET_PRODUCT_BY_ID]: Internal Error",
-      error?.message
-    );
-  }
-};
-
 const getProductByIdController = async (req: Request, res: Response) => {
   const params = req?.params;
   try {
@@ -350,6 +305,4 @@ export {
   createBulkProductsController,
   deleteProductByIdController,
   getProductByIdController,
-  updateProductByIdController,
-  getProductByCategoryIdController,
 };
