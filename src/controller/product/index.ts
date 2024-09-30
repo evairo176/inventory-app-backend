@@ -58,7 +58,7 @@ const getAllProductController = async (req: Request, res: Response) => {
   const query = req.query;
   try {
     let queryParams: any = {};
-    if (query?.categoryId) {
+    if (query?.categoryId && query?.categoryId !== "all") {
       queryParams = { categoryId: query?.categoryId };
     }
 

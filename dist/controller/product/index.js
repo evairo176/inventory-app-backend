@@ -59,7 +59,7 @@ const getAllProductController = (req, res) => __awaiter(void 0, void 0, void 0, 
     const query = req.query;
     try {
         let queryParams = {};
-        if (query === null || query === void 0 ? void 0 : query.categoryId) {
+        if ((query === null || query === void 0 ? void 0 : query.categoryId) && (query === null || query === void 0 ? void 0 : query.categoryId) !== "all") {
             queryParams = { categoryId: query === null || query === void 0 ? void 0 : query.categoryId };
         }
         let product = yield lib_1.db.product.findMany({
