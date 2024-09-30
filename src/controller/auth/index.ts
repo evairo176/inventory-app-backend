@@ -4,7 +4,6 @@ import jwt from "jsonwebtoken";
 import { db, generateToken } from "../../lib";
 import { sendResponse } from "../../utils";
 import expressAsyncHandler from "express-async-handler";
-import { logout } from "../../middleware/auth";
 
 //----------------------------------------------
 // login controller

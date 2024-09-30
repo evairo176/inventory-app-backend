@@ -7,7 +7,7 @@ import {
 } from "@prisma/client";
 
 export type ExcelCategoryProps = {
-  imageurl: string;
+  imageUrl: string;
   title: string;
 };
 

@@ -24,7 +24,7 @@ const addCategoryController = async (req: Request, res: Response) => {
         description: body?.description,
         status: body?.status,
         slug: slug,
-        imageUrl: body?.imageurlUrl,
+        imageUrl: body?.imageUrl,
       },
     });
 
@@ -114,7 +114,7 @@ const addCategory = async (data: ExcelCategoryProps) => {
       data: {
         title: data?.title,
         slug: slug,
-        imageUrl: data?.imageurl,
+        imageUrl: data?.imageUrl,
         status: "ACTIVE",
       },
     });
@@ -240,7 +240,7 @@ const updateCategoryByIdController = async (req: Request, res: Response) => {
         title: body?.title,
         description: body?.description,
         slug: slug,
-        imageUrl: body?.imageurlUrl,
+        imageUrl: body?.imageUrl,
         status: body?.status,
       },
     });

@@ -2,10 +2,10 @@ import { Request, Response } from "express";
 import { generateSlug, sendResponse } from "../../utils";
 import { db } from "../../lib";
 import { ExcelBrandProps } from "../../types";
+import expressAsyncHandler from "express-async-handler";
 
-const addBrandController = async (req: Request, res: Response) => {
+const addBrandController = expressAsyncHandler(async (req: any, res: any) => {
   const body = req?.body;
-
   try {
     const slug = await generateSlug(body?.title);
     const checkSlug = await db.category.findFirst({
@@ -36,35 +36,37 @@ const addBrandController = async (req: Request, res: Response) => {
       error?.message
     );
   }
-};
+});
 
-const getAllBrandController = async (req: Request, res: Response) => {
-  try {
-    const brand = await db.brand.findMany({
-      orderBy: {
-        updatedAt: "desc",
-      },
-      where: {
-        status: {
-          not: "DELETED",
+const getAllBrandController = expressAsyncHandler(
+  async (req: any, res: any) => {
+    try {
+      const brand = await db.brand.findMany({
+        orderBy: {
+          updatedAt: "desc",
         },
-      },
-    });
+        where: {
+          status: {
+            not: "DELETED",
+          },
+        },
+      });
 
-    if (!brand) {
-      return sendResponse(res, 400, "Brand not found!");
+      if (!brand) {
+        return sendResponse(res, 404, "Brand not found!");
+      }
+
+      return sendResponse(res, 200, "Get all category successfully", brand);
+    } catch (error: any) {
+      return sendResponse(
+        res,
+        500,
+        "[GET_ALL_BRAND]: Internal Error",
+        error?.message
+      );
     }
-
-    return sendResponse(res, 200, "Get all category successfully", brand);
-  } catch (error: any) {
-    return sendResponse(
-      res,
-      500,
-      "[GET_ALL_BRAND]: Internal Error",
-      error?.message
-    );
   }
-};
+);
 
 const createBulkBrandsController = async (req: Request, res: Response) => {
   try {

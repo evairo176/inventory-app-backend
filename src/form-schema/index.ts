@@ -200,7 +200,7 @@ export const addProductSchema = z.object({
   alertQty: z.number(),
   productTax: z.number(),
   taxMethod: z.enum(["INCLUSIVE", "EXCLUSIVE"]), // Assuming taxMethod can be "inclusive" or "exclusive"
-  productImages: z.array(z.string()),
+  // productImages: z.array(z.string()),
   productThumbnail: z.string(),
   productDetails: z.string(),
   status: z.string().min(2, {

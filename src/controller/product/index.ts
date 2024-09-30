@@ -17,6 +17,9 @@ const addProductController = async (req: Request, res: Response) => {
     if (checkSlug) {
       return sendResponse(res, 400, "Slug is already exist");
     }
+    const productImages = Array.isArray(body?.productImages)
+      ? body?.productImages
+      : [body?.productImages];
 
     const product = await db.product.create({
       data: {
@@ -33,7 +36,7 @@ const addProductController = async (req: Request, res: Response) => {
         alertQty: body?.alertQty,
         productTax: body?.productTax,
         taxMethod: body?.taxMethod,
-        productImages: body?.productImages,
+        productImages: productImages,
         productThumbnail: body?.productThumbnail,
         productDetails: body?.productDetails,
         status: body?.status,
@@ -52,8 +55,9 @@ const addProductController = async (req: Request, res: Response) => {
 };
 
 const getAllProductController = async (req: Request, res: Response) => {
+  const query = req.query;
   try {
-    const product = await db.product.findMany({
+    let product = await db.product.findMany({
       orderBy: {
         updatedAt: "desc",
       },
@@ -61,6 +65,10 @@ const getAllProductController = async (req: Request, res: Response) => {
         status: {
           not: "DELETED",
         },
+        // Add conditional filtering based on categoryId
+        ...(query?.categoryId && query?.categoryId !== "all"
+          ? { categoryId: query?.categoryId as string }
+          : null),
       },
       include: {
         category: true,
@@ -68,7 +76,7 @@ const getAllProductController = async (req: Request, res: Response) => {
     });
 
     if (!product) {
-      return sendResponse(res, 400, "Product not found!");
+      return sendResponse(res, 200, "Product not found!", product);
     }
 
     return sendResponse(res, 200, "Get all product successfully", product);
@@ -190,6 +198,51 @@ const deleteProductByIdController = async (req: Request, res: Response) => {
   }
 };
 
+const getProductByCategoryIdController = async (
+  req: Request,
+  res: Response
+) => {
+  const params = req?.params;
+  try {
+    if (!params.categoryId) {
+      return sendResponse(res, 400, "Category Id not found");
+    }
+
+    const product = await db.product.findMany({
+      orderBy: {
+        updatedAt: "desc",
+      },
+      where: {
+        status: {
+          not: "DELETED",
+        },
+        categoryId: params.categoryId,
+      },
+      include: {
+        category: true,
+      },
+    });
+
+    if (!product) {
+      return sendResponse(res, 400, "Product not found!");
+    }
+
+    return sendResponse(
+      res,
+      200,
+      "Get product by category id successfully",
+      product
+    );
+  } catch (error: any) {
+    return sendResponse(
+      res,
+      500,
+      "[GET_PRODUCT_BY_ID]: Internal Error",
+      error?.message
+    );
+  }
+};
+
 const getProductByIdController = async (req: Request, res: Response) => {
   const params = req?.params;
   try {
@@ -298,4 +351,5 @@ export {
   deleteProductByIdController,
   getProductByIdController,
   updateProductByIdController,
+  getProductByCategoryIdController,
 };
