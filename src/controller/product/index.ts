@@ -57,6 +57,11 @@ const addProductController = async (req: Request, res: Response) => {
 const getAllProductController = async (req: Request, res: Response) => {
   const query = req.query;
   try {
+    let queryParams: any = {};
+    if (query?.categoryId) {
+      queryParams = { categoryId: query?.categoryId };
+    }
+
     let product = await db.product.findMany({
       orderBy: {
         updatedAt: "desc",
@@ -66,9 +71,7 @@ const getAllProductController = async (req: Request, res: Response) => {
           not: "DELETED",
         },
         // Add conditional filtering based on categoryId
-        ...(query?.categoryId && query?.categoryId !== "all"
-          ? { categoryId: query?.categoryId as string }
-          : null),
+        ...queryParams,
       },
       include: {
         category: true,
@@ -305,4 +308,6 @@ export {
   createBulkProductsController,
   deleteProductByIdController,
   getProductByIdController,
+  updateProductByIdController,
+  // getProductByCategoryIdController,
 };
