@@ -82,12 +82,7 @@ const getAllProductController = async (req: Request, res: Response) => {
       return sendResponse(res, 200, "Product not found!", product);
     }
 
-    return sendResponse(
-      res,
-      200,
-      "Get all product successfully " + JSON.stringify(queryParams),
-      product
-    );
+    return sendResponse(res, 200, "Get all product successfully", product);
   } catch (error: any) {
     return sendResponse(
       res,

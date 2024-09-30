@@ -76,7 +76,7 @@ const getAllProductController = (req, res) => __awaiter(void 0, void 0, void 0, 
         if (!product) {
             return (0, utils_1.sendResponse)(res, 200, "Product not found!", product);
         }
-        return (0, utils_1.sendResponse)(res, 200, "Get all product successfully " + JSON.stringify(queryParams), product);
+        return (0, utils_1.sendResponse)(res, 200, "Get all product successfully", product);
     }
     catch (error) {
         return (0, utils_1.sendResponse)(res, 500, "[GET_ALL_PRODUCT]: Internal Error", error === null || error === void 0 ? void 0 : error.message);
