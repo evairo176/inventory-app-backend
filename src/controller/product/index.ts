@@ -40,6 +40,8 @@ const addProductController = async (req: Request, res: Response) => {
         productThumbnail: body?.productThumbnail,
         productDetails: body?.productDetails,
         status: body?.status,
+        batchNumber: body?.batchNumber,
+        isFeatured: body?.isFeatured,
       },
     });
 
@@ -232,6 +234,7 @@ const getProductByIdController = async (req: Request, res: Response) => {
 const updateProductByIdController = async (req: Request, res: Response) => {
   const params = req?.params;
   const body = req?.body;
+
   try {
     if (!params.id) {
       return sendResponse(res, 400, "Product Id not found");
@@ -248,6 +251,7 @@ const updateProductByIdController = async (req: Request, res: Response) => {
     }
 
     const slug = await generateSlug(body?.name);
+
     const checkSlug = await db.product.findFirst({
       where: {
         slug: slug,
@@ -259,6 +263,36 @@ const updateProductByIdController = async (req: Request, res: Response) => {
 
     if (checkSlug) {
       return sendResponse(res, 400, "Slug is already exist");
+    }
+
+    // Check if there's any difference between the current data and the incoming update
+    const isDataUnchanged =
+      product.name === body?.name &&
+      product.productCode === body?.productCode &&
+      product.stockQty === body?.stockQty &&
+      product.supplierId === body?.supplierId &&
+      product.brandId === body?.brandId &&
+      product.categoryId === body?.categoryId &&
+      product.unitId === body?.unitId &&
+      product.productCost === body?.productCost &&
+      product.productPrice === body?.productPrice &&
+      product.alertQty === body?.alertQty &&
+      product.productTax === body?.productTax &&
+      product.taxMethod === body?.taxMethod &&
+      JSON.stringify(product.productImages) ===
+        JSON.stringify(body?.productImages) &&
+      product.productThumbnail === body?.productThumbnail &&
+      product.productDetails === body?.productDetails &&
+      product.status === body?.status &&
+      product.batchNumber === body?.batchNumber &&
+      product.isFeatured === body?.isFeatured;
+
+    if (isDataUnchanged) {
+      return sendResponse(
+        res,
+        400,
+        "No changes detected. Nothing was updated."
+      );
     }
 
     const productUpdate = await db.product.update({
@@ -283,6 +317,8 @@ const updateProductByIdController = async (req: Request, res: Response) => {
         productThumbnail: body?.productThumbnail,
         productDetails: body?.productDetails,
         status: body?.status,
+        batchNumber: body?.batchNumber,
+        isFeatured: body?.isFeatured,
       },
     });
 

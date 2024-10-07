@@ -210,7 +210,6 @@ export const addProductSchema = z.object({
 
 export const updateProductSchema = z.object({
   name: z.string(),
-  slug: z.string(),
   productCode: z.string(),
   stockQty: z.number(),
   supplierId: z.string(),
@@ -221,7 +220,7 @@ export const updateProductSchema = z.object({
   productPrice: z.number(),
   alertQty: z.number(),
   productTax: z.number(),
-  taxMethod: z.enum(["inclusive", "exclusive"]), // Assuming taxMethod can be "inclusive" or "exclusive"
+  taxMethod: z.enum(["INCLUSIVE", "EXCLUSIVE"]), // Assuming taxMethod can be "inclusive" or "exclusive"
   productImages: z.array(z.string()),
   productThumbnail: z.string(),
   productDetails: z.string(),
