@@ -22,6 +22,7 @@ import {
   getPermissionByIdController,
   updatePermissionByIdController,
 } from "./permission";
+import { createLineOrderController } from "./pos";
 import {
   addProductController,
   getAllProductController,
@@ -136,4 +137,7 @@ export {
   deleteWarehouseByIdController,
   getWarehouseByIdController,
   updateWarehouseByIdController,
+
+  //pos
+  createLineOrderController,
 };

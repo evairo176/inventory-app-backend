@@ -2,6 +2,7 @@ import { authRoutes } from "./auth";
 import { brandsRoutes } from "./brand";
 import { categoriesRoutes } from "./category";
 import { permissionsRoutes } from "./permission";
+import { posRoutes } from "./pos";
 import { productRoutes } from "./product";
 import { rolesRoutes } from "./role";
 import { suppliersRoutes } from "./supplier";
@@ -20,4 +21,5 @@ export {
   unitsRoutes,
   usersRoutes,
   warehousesRoutes,
+  posRoutes,
 };

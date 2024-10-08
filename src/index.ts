@@ -9,6 +9,7 @@ import {
   brandsRoutes,
   categoriesRoutes,
   permissionsRoutes,
+  posRoutes,
   productRoutes,
   rolesRoutes,
   suppliersRoutes,
@@ -57,6 +58,9 @@ app.use("/api/user", usersRoutes);
 
 // auth routes
 app.use("/api/auth", authRoutes);
+
+// pos routes
+app.use("/api/pos", posRoutes);
 
 // error handler
 app.use(notFound);

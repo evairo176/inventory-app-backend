@@ -13,28 +13,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-
 model Category {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  title  String
-  slug   String @unique
-  description  String?
-  imageUrl String?
-  status    String @default("ACTIVE")
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  slug        String  @unique
+  description String?
+  imageUrl    String?
+  status      String  @default("ACTIVE")
 
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
 
   products Product[]
 }
 
 model Brand {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   title     String
   imageUrl  String
-  slug      String @unique
-  status    String @default("ACTIVE")
+  slug      String   @unique
+  status    String   @default("ACTIVE")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -42,49 +40,49 @@ model Brand {
 }
 
 model Unit {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  title       String
-  abbreviation String  // Perbaiki ejaan dari "abrreviation" menjadi "abbreviation"
-  status    String @default("ACTIVE")
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  title        String
+  abbreviation String // Perbaiki ejaan dari "abrreviation" menjadi "abbreviation"
+  status       String   @default("ACTIVE")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   products Product[]
 }
 
 model Warehouse {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  slug      String @unique
-  country   String
-  state     String
-  city      String
-  phone     String
-  contactPerson     String
-  email     String
-  zipCode   String
-  status    String @default("ACTIVE")
-  imageUrl  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  slug          String   @unique
+  country       String
+  state         String
+  city          String
+  phone         String
+  contactPerson String
+  email         String
+  zipCode       String
+  status        String   @default("ACTIVE")
+  imageUrl      String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
   // products  Product[]
 }
 
 model Supplier {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   imageUrl    String
   companyName String
   vatNumber   String
-  email       String @unique
+  email       String   @unique
   phone       String
   address     String
   city        String
   state       String
   postalCode  String
   country     String
-  status      String @default("ACTIVE")
+  status      String   @default("ACTIVE")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -92,143 +90,207 @@ model Supplier {
 }
 
 model Banner {
-  id             String @id @default(auto()) @map("_id") @db.ObjectId
-  imageUrl       String
-  bannerLink     String
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  imageUrl   String
+  bannerLink String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
-
 model Product {
-  id             String @id @default(auto()) @map("_id") @db.ObjectId
-  name           String
-  slug           String @unique
-  productCode    String
-  stockQty       Int
-  productCost    Float
-  productPrice   Float
-  alertQty       Int
-  productTax     Float
-  taxMethod      String
-  expiryDate      DateTime?
+  id               String    @id @default(auto()) @map("_id") @db.ObjectId
+  name             String
+  slug             String    @unique
+  productCode      String
+  stockQty         Int
+  productCost      Float
+  productPrice     Float
+  alertQty         Int
+  productTax       Float
+  taxMethod        String
+  expiryDate       DateTime?
   batchNumber      String?
-  isFeatured      Boolean @default(false)
-  productImages  String[]
-  productThumbnail  String
-  productDetails String
-  status      String @default("ACTIVE")
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  isFeatured       Boolean   @default(false)
+  productImages    String[]
+  productThumbnail String
+  productDetails   String
+  status           String    @default("ACTIVE")
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 
-  supplierId     String @db.ObjectId
-  brandId        String @db.ObjectId
-  categoryId     String @db.ObjectId
-  unitId         String @db.ObjectId
+  supplierId String @db.ObjectId
+  brandId    String @db.ObjectId
+  categoryId String @db.ObjectId
+  unitId     String @db.ObjectId
   // warehouseId    String @db.ObjectId
 
   // warehouse      Warehouse @relation(fields: [warehouseId], references: [id])
-  supplier       Supplier  @relation(fields: [supplierId], references: [id])
-  brand          Brand     @relation(fields: [brandId], references: [id])
-  category       Category  @relation(fields: [categoryId], references: [id])
-  unit           Unit      @relation(fields: [unitId], references: [id])
+  supplier       Supplier        @relation(fields: [supplierId], references: [id])
+  brand          Brand           @relation(fields: [brandId], references: [id])
+  category       Category        @relation(fields: [categoryId], references: [id])
+  unit           Unit            @relation(fields: [unitId], references: [id])
+  lineOrderItems LineOrderItem[]
+  sales          Sale[]
 }
 
 model User {
-  id             String @id @default(auto()) @map("_id") @db.ObjectId
-  firstName      String
-  lastName       String
-  name           String?
-  email          String @unique
-  password       String
-  hashPassword   String?
-  phone          String?
-  status         String @default("ACTIVE")
-  inviteSent     Boolean @default(false)
-  imageUrl       String?
-  
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  firstName    String
+  lastName     String
+  name         String?
+  email        String  @unique
+  password     String
+  hashPassword String?
+  phone        String?
+  status       String  @default("ACTIVE")
+  inviteSent   Boolean @default(false)
+  imageUrl     String?
+
   // Foreign key to Role
-  roleId         String? @db.ObjectId
-  role           Role? @relation(fields: [roleId], references: [id])
+  roleId String? @db.ObjectId
+  role   Role?   @relation(fields: [roleId], references: [id])
+  customer Customer[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([roleId], name: "idx_roleId")
-  
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
 }
 
 model Role {
-  id             String @id @default(auto()) @map("_id") @db.ObjectId
-  displayName    String // Human-friendly name for UI
-  roleName       String @unique // Programmatic name for code
-  description    String?
-  status      String @default("ACTIVE")
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  displayName String // Human-friendly name for UI
+  roleName    String  @unique // Programmatic name for code
+  description String?
+  status      String  @default("ACTIVE")
 
   // Permissions
-  permissions    RolePermission[] 
+  permissions RolePermission[]
 
   // Relationships
-  users          User[]
-  roleMenus      RoleMenu[] // Add this line for the opposite relation
+  users     User[]
+  roleMenus RoleMenu[] // Add this line for the opposite relation
 
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Permission {
-  id             String @id @default(auto()) @map("_id") @db.ObjectId
-  module         String @default("default")
+  id             String  @id @default(auto()) @map("_id") @db.ObjectId
+  module         String  @default("default")
   displayName    String // Human-friendly name for UI
-  permissionName       String @unique // Programmatic name for code
+  permissionName String  @unique // Programmatic name for code
   description    String?
-  status    String @default("ACTIVE")
-  
-  // RolePermission relation
-  roles          RolePermission[]
+  status         String  @default("ACTIVE")
 
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  // RolePermission relation
+  roles RolePermission[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model RolePermission {
-  id             String @id @default(auto()) @map("_id") @db.ObjectId
-  roleId         String @db.ObjectId
-  permissionId   String @db.ObjectId
-  role           Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
-  permission     Permission @relation(fields: [permissionId], references: [id])
-  
-  @@index([roleId, permissionId], name: "idx_role_permission")
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  roleId       String     @db.ObjectId
+  permissionId String     @db.ObjectId
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id])
 
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([roleId, permissionId], name: "idx_role_permission")
 }
 
 model Menu {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
   name     String // Name of the menu item
   path     String // Path for routing
   icon     String? // Optional icon for UI
   parentId String? @db.ObjectId
-  parent   Menu? @relation("SubMenu", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  children Menu[] @relation("SubMenu")
-  status    String @default("ACTIVE")
+  parent   Menu?   @relation("SubMenu", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  children Menu[]  @relation("SubMenu")
+  status   String  @default("ACTIVE")
 
   // RoleMenu relation
-  roles    RoleMenu[]
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  roles     RoleMenu[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
 
 model RoleMenu {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  roleId   String @db.ObjectId
-  menuId   String @db.ObjectId
-  role     Role @relation(fields: [roleId], references: [id])
-  menu     Menu @relation(fields: [menuId], references: [id])
-  
-  @@index([roleId, menuId], name: "idx_role_menu")
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  roleId String @db.ObjectId
+  menuId String @db.ObjectId
+  role   Role   @relation(fields: [roleId], references: [id])
+  menu   Menu   @relation(fields: [menuId], references: [id])
 
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([roleId, menuId], name: "idx_role_menu")
 }
 
+model LineOrderItem {
+  id               String @id @default(auto()) @map("_id") @db.ObjectId
+  productId        String @db.ObjectId
+  orderId          String @db.ObjectId
+  name             String
+  price            Float
+  qty              Int
+  productThumbnail String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relationships
+  product   Product   @relation(fields: [productId], references: [id])
+  lineOrder LineOrder @relation(fields: [orderId], references: [id])
+}
+
+model LineOrder {
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  customerId   String @db.ObjectId
+  customerName String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  lineOrderItems LineOrderItem[]
+  sales          Sale[]
+}
+
+model Sale {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  orderId   String @db.ObjectId
+  productId String @db.ObjectId
+  qty       Int
+  salePrice Float
+  productName String
+  productImage String
+  customerName String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relationships
+  product   Product   @relation(fields: [productId], references: [id])
+  lineOrder LineOrder @relation(fields: [orderId], references: [id])
+}
+
+
+model Customer {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  additionalInfo String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relationships
+  user   User   @relation(fields: [userId], references: [id])
+  billingAddress  String
+  shippingAddress   String
+
+}

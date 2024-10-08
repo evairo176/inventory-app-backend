@@ -344,3 +344,21 @@ export const loginSchema = z.object({
       message: "Password must contain at least one symbol.",
     }),
 });
+
+// OrderLineItem schema
+const OrderLineItemSchema = z.object({
+  id: z.string().min(1, { message: "ID is required" }), // String, non-empty
+  name: z.string().min(1, { message: "Name is required" }), // String, non-empty
+  price: z.number().positive("Price must be a positive number"), // Positive number
+  qty: z.number().int().positive("Quantity must be a positive integer"), // Positive integer
+  productThumbnail: z.string().url("Must be a valid URL"), // Valid URL string
+});
+// CustomerData schema
+const CustomerDataSchema = z.object({
+  customerId: z.string().min(1, { message: "Customer ID is required" }), // String, non-empty
+  customerName: z.string().min(1, { message: "Customer name is required" }), // String, non-empty
+});
+export const createLineOrderSchema = z.object({
+  orderLineItems: z.array(OrderLineItemSchema),
+  customerData: CustomerDataSchema,
+});
