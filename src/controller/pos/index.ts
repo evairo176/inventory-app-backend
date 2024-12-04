@@ -1,6 +1,6 @@
 import expressAsyncHandler from "express-async-handler";
 import { db } from "../../lib";
-import { sendResponse } from "../../utils";
+import { generateOrderNumber, sendResponse } from "../../utils";
 
 //----------------------------------------------
 // create line order controller
@@ -15,25 +15,76 @@ interface OrderLineItem {
 
 interface CustomerData {
   customerId: string;
-  customerName: string;
 }
 
 export const createLineOrderController = expressAsyncHandler(
   async (req: any, res: any) => {
     try {
-      const orderItems: OrderLineItem[] = req.body?.orderLineItems;
+      const orderItems: OrderLineItem[] = req.body?.orderItems;
       const customerData: CustomerData = req.body?.customerData;
+
+      const orderType = "Sale";
+
+      const subTotal = orderItems.reduce(
+        (total, item) => total + item.price * item.qty,
+        0
+      );
+      const taxPercent = 10;
+      const tax = (taxPercent * subTotal) / 100;
+      const totalSum = subTotal + tax;
+      const orderAmount: number = totalSum;
+
+      const customerExisting = await db.customer.findFirst({
+        where: {
+          id: customerData.customerId,
+        },
+        include: {
+          user: {
+            select: {
+              name: true,
+              email: true,
+            },
+          },
+        },
+      });
+
+      if (!customerExisting) {
+        return sendResponse(res, 404, "Customer not found");
+      }
 
       const response = await db.$transaction(async (transaction) => {
         // create line order
         const lineOrder = await transaction.lineOrder.create({
           data: {
-            customerId: customerData.customerId,
-            customerName: customerData.customerName,
+            customerId: customerExisting?.id,
+            customerName: customerExisting?.user.name as string,
+            customerEmail: customerExisting?.user.email,
+            orderNumber: generateOrderNumber(),
+            orderAmount,
+            orderType,
           },
         });
 
         for (const item of orderItems) {
+          // Cek stock qty dari produk
+          const product = await transaction.product.findUnique({
+            where: {
+              id: item.id,
+            },
+            select: {
+              stockQty: true,
+            },
+          });
+
+          // Jika stok kosong atau kurang dari qty yang dipesan, kembalikan error
+          if (!product || product.stockQty < item.qty) {
+            throw new Error(
+              `Insufficient stock for product: ${item.name}. Available: ${
+                product?.stockQty ?? 0
+              }, requested: ${item.qty}`
+            );
+          }
+
           // update product stock qty
           await transaction.product.update({
             where: {
@@ -47,7 +98,7 @@ export const createLineOrderController = expressAsyncHandler(
           });
 
           // create line order item
-          const lineOrderItem = await transaction.lineOrderItem.create({
+          await transaction.lineOrderItem.create({
             data: {
               orderId: lineOrder.id,
               productId: item.id,
@@ -67,7 +118,8 @@ export const createLineOrderController = expressAsyncHandler(
               salePrice: item.price,
               productName: item.name,
               productImage: item.productThumbnail,
-              customerName: customerData.customerName,
+              customerName: customerExisting.user.name as string,
+              customerEmail: customerExisting.user.email as string,
             },
           });
         }
@@ -78,8 +130,30 @@ export const createLineOrderController = expressAsyncHandler(
         lineOrder: response,
       });
     } catch (error: any) {
-      return res.status(500).json({
-        message: "Internal Server Error",
+      return sendResponse(res, 500, "Internal Server Error", {
+        error: error?.message,
+      });
+    }
+  }
+);
+
+//----------------------------------------------
+// get orders controller
+//----------------------------------------------
+export const getOrderController = expressAsyncHandler(
+  async (req: any, res: any) => {
+    try {
+      const orders = await db.lineOrder.findMany({
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+
+      return sendResponse(res, 200, "get Line Order Successfully", {
+        lineOrder: orders,
+      });
+    } catch (error: any) {
+      return sendResponse(res, 500, "Internal Server Error", {
         error: error?.message,
       });
     }

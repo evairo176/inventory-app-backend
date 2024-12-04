@@ -1,5 +1,9 @@
 import express from "express";
-import { createLineOrderController, loginController } from "../../controller";
+import {
+  createLineOrderController,
+  getOrderController,
+  loginController,
+} from "../../controller";
 import { validate } from "../../middleware";
 import { createLineOrderSchema } from "../../form-schema";
 
@@ -11,3 +15,6 @@ posRoutes.post(
   validate(createLineOrderSchema),
   createLineOrderController
 );
+
+// get orders
+posRoutes.get("/orders", getOrderController);

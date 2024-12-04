@@ -18,6 +18,8 @@ import {
   warehousesRoutes,
 } from "./routes";
 import { Logger } from "./utils";
+import { customersRoutes } from "./routes/customer";
+import { analyticRoutes } from "./routes/analytic";
 
 dotenv.config();
 
@@ -61,6 +63,12 @@ app.use("/api/auth", authRoutes);
 
 // pos routes
 app.use("/api/pos", posRoutes);
+
+// pos routes
+app.use("/api/customer", customersRoutes);
+
+// analytic routes
+app.use("/api/analytic", analyticRoutes);
 
 // error handler
 app.use(notFound);

@@ -248,11 +248,25 @@ model LineOrderItem {
   product   Product   @relation(fields: [productId], references: [id])
   lineOrder LineOrder @relation(fields: [orderId], references: [id])
 }
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  DELIVERED
+  FAILED
+}
 
+enum OrderType {
+  Sale
+}
 model LineOrder {
   id           String @id @default(auto()) @map("_id") @db.ObjectId
   customerId   String @db.ObjectId
   customerName String
+  customerEmail String?
+  orderNumber  String @unique
+  orderAmount  Int 
+  orderType    OrderType @default(Sale)
+  status       OrderStatus @default(DELIVERED)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -270,6 +284,7 @@ model Sale {
   productName String
   productImage String
   customerName String
+  customerEmail String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

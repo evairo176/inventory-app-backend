@@ -1,3 +1,4 @@
+import { getAnalyticController } from "./analytic";
 import { loginController } from "./auth";
 import {
   addBrandController,
@@ -15,6 +16,7 @@ import {
   getCategoryByIdController,
   updateCategoryByIdController,
 } from "./category";
+import { createCustomerController, getAllCustomerController } from "./customer";
 import {
   addPermissionController,
   getAllPermissionController,
@@ -22,7 +24,7 @@ import {
   getPermissionByIdController,
   updatePermissionByIdController,
 } from "./permission";
-import { createLineOrderController } from "./pos";
+import { createLineOrderController, getOrderController } from "./pos";
 import {
   addProductController,
   getAllProductController,
@@ -140,4 +142,12 @@ export {
 
   //pos
   createLineOrderController,
+  getOrderController,
+
+  //customer
+  createCustomerController,
+  getAllCustomerController,
+
+  //analytic
+  getAnalyticController,
 };

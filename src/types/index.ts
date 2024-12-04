@@ -1,6 +1,7 @@
 import {
   Role as PrismaRole,
   User as PrismaUser,
+  Customer as PrismaCustomer,
   Permission as PrismaPermission,
   RolePermission as PrismaRolePermission,
   RoleMenu as PrismaRoleMenu,
@@ -90,6 +91,11 @@ export type RolePermission = PrismaRolePermission & {
 // Define the User type
 export type User = PrismaUser & {
   role: Role;
+};
+
+// Define the customer type
+export type Customer = PrismaCustomer & {
+  user: User;
 };
 
 // Define the RoleMenu type
