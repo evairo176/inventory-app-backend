@@ -18,6 +18,14 @@ import {
 } from "./category";
 import { createCustomerController, getAllCustomerController } from "./customer";
 import {
+  addMainCategoryController,
+  createBulkMainCategoryController,
+  deleteMainCategoryByIdController,
+  getAllMainCategoryController,
+  getMainCategoryByIdController,
+  updateMainCategoryByIdController,
+} from "./main-category";
+import {
   addPermissionController,
   getAllPermissionController,
   deletePermissionByIdController,
@@ -40,6 +48,14 @@ import {
   getRoleByIdController,
   updateRoleByIdController,
 } from "./role";
+import {
+  addSubCategoryController,
+  createBulkSubCategoryController,
+  deleteSubCategoryByIdController,
+  getAllSubCategoryController,
+  getSubCategoryByIdController,
+  updateSubCategoryByIdController,
+} from "./sub-category";
 import {
   addSupplierController,
   getAllSupplierController,
@@ -150,4 +166,20 @@ export {
 
   //analytic
   getAnalyticController,
+
+  //main category
+  addMainCategoryController,
+  getAllMainCategoryController,
+  createBulkMainCategoryController,
+  deleteMainCategoryByIdController,
+  getMainCategoryByIdController,
+  updateMainCategoryByIdController,
+
+  // sub category
+  addSubCategoryController,
+  getAllSubCategoryController,
+  createBulkSubCategoryController,
+  deleteSubCategoryByIdController,
+  getSubCategoryByIdController,
+  updateSubCategoryByIdController,
 };

@@ -29,7 +29,7 @@ const addProductController = async (req: Request, res: Response) => {
         stockQty: body?.stockQty,
         supplierId: body?.supplierId,
         brandId: body?.brandId,
-        categoryId: body?.categoryId,
+        subCategoryId: body?.subCategoryId,
         unitId: body?.unitId,
         productCost: body?.productCost,
         productPrice: body?.productPrice,
@@ -60,8 +60,8 @@ const getAllProductController = async (req: Request, res: Response) => {
   const query = req.query;
   try {
     let queryParams: any = {};
-    if (query?.categoryId && query?.categoryId !== "all") {
-      queryParams = { categoryId: query?.categoryId };
+    if (query?.subCategoryId && query?.subCategoryId !== "all") {
+      queryParams = { subCategoryId: query?.subCategoryId };
     }
 
     let product = await db.product.findMany({
@@ -72,11 +72,11 @@ const getAllProductController = async (req: Request, res: Response) => {
         status: {
           not: "DELETED",
         },
-        // Add conditional filtering based on categoryId
+        // Add conditional filtering based on subCategoryId
         ...queryParams,
       },
       include: {
-        category: true,
+        subCategory: true,
       },
     });
 
@@ -141,7 +141,7 @@ const addProduct = async (data: ExcelProductProps) => {
         stockQty: data?.stockQty,
         supplierId: data?.supplierId,
         brandId: data?.brandId,
-        categoryId: data?.categoryId,
+        subCategoryId: data?.subCategoryId,
         unitId: data?.unitId,
         productCost: data?.productCost,
         productPrice: data?.productPrice,
@@ -272,7 +272,7 @@ const updateProductByIdController = async (req: Request, res: Response) => {
       product.stockQty === body?.stockQty &&
       product.supplierId === body?.supplierId &&
       product.brandId === body?.brandId &&
-      product.categoryId === body?.categoryId &&
+      product.subCategoryId === body?.subCategoryId &&
       product.unitId === body?.unitId &&
       product.productCost === body?.productCost &&
       product.productPrice === body?.productPrice &&
@@ -306,7 +306,7 @@ const updateProductByIdController = async (req: Request, res: Response) => {
         stockQty: body?.stockQty,
         supplierId: body?.supplierId,
         brandId: body?.brandId,
-        categoryId: body?.categoryId,
+        subCategoryId: body?.subCategoryId,
         unitId: body?.unitId,
         productCost: body?.productCost,
         productPrice: body?.productPrice,
@@ -345,5 +345,5 @@ export {
   deleteProductByIdController,
   getProductByIdController,
   updateProductByIdController,
-  // getProductByCategoryIdController,
+  // getProductBySubCategoryIdController,
 };

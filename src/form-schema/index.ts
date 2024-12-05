@@ -415,3 +415,29 @@ export const updateCustomerSchema = z.object({
   shippingAddress: z.string().optional(),
   billingAddress: z.string().optional(),
 });
+
+export const addMainCategorySchema = z.object({
+  title: z
+    .string({ required_error: "Title is required" })
+    .min(3, { message: "Title must be at least 3 characters" }),
+});
+
+export const updateMainCategorySchema = z.object({
+  title: z
+    .string({ required_error: "Title is required" })
+    .min(3, { message: "Title must be at least 3 characters" }),
+});
+
+export const addSubCategorySchema = z.object({
+  title: z
+    .string({ required_error: "Title is required" })
+    .min(3, { message: "Title must be at least 3 characters" }),
+  categoryId: z.string({ required_error: "Category Id is required" }),
+});
+
+export const updateSubCategorySchema = z.object({
+  title: z
+    .string({ required_error: "Title is required" })
+    .min(3, { message: "Title must be at least 3 characters" }),
+  categoryId: z.string({ required_error: "Category Id is required" }),
+});

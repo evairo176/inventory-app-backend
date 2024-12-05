@@ -147,6 +147,7 @@ export const getOrderController = expressAsyncHandler(
         orderBy: {
           createdAt: "desc",
         },
+        take: 3,
       });
 
       return sendResponse(res, 200, "get Line Order Successfully", {

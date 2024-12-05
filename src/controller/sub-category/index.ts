@@ -1,18 +1,19 @@
+import { Request, Response } from "express";
 import { generateSlug, sendResponse } from "../../utils";
 import { db } from "../../lib";
-import { ExcelCategoryProps } from "../../types";
+import { ExcelSubCategoryProps } from "../../types";
 import expressAsyncHandler from "express-async-handler";
 
 //----------------------------------------------
-// add category
+// add sub category
 //----------------------------------------------
-const addCategoryController = expressAsyncHandler(
+const addSubCategoryController = expressAsyncHandler(
   async (req: any, res: any) => {
     const body = req?.body;
 
     try {
       const slug = await generateSlug(body?.title);
-      const checkSlug = await db.category.findFirst({
+      const checkSlug = await db.subCategory.findFirst({
         where: {
           slug: slug,
         },
@@ -22,23 +23,25 @@ const addCategoryController = expressAsyncHandler(
         return sendResponse(res, 400, "Slug is already exist");
       }
 
-      const category = await db.category.create({
+      const category = await db.subCategory.create({
         data: {
-          mainCategoryId: body?.mainCategoryId,
           title: body?.title,
-          description: body?.description,
-          status: body?.status,
           slug: slug,
-          imageUrl: body?.imageUrl,
+          categoryId: body?.categoryId,
         },
       });
 
-      return sendResponse(res, 200, "Create category successfully", category);
+      return sendResponse(
+        res,
+        200,
+        "Create Sub category successfully",
+        category
+      );
     } catch (error: any) {
       return sendResponse(
         res,
         500,
-        "[CREATE_CATEGORY]: Internal Error",
+        "[CREATE_SUB_CATEGORY]: Internal Error",
         error?.message
       );
     }
@@ -46,32 +49,32 @@ const addCategoryController = expressAsyncHandler(
 );
 
 //----------------------------------------------
-// get all category by id
+// get all sub category
 //----------------------------------------------
-const getAllCategoryController = expressAsyncHandler(
+const getAllSubCategoryController = expressAsyncHandler(
   async (req: any, res: any) => {
     try {
-      const category = await db.category.findMany({
+      const subCategory = await db.subCategory.findMany({
         orderBy: {
           updatedAt: "desc",
         },
-        where: {
-          status: {
-            not: "DELETED",
-          },
-        },
       });
 
-      if (!category) {
-        return sendResponse(res, 400, "Category not found!");
+      if (!subCategory) {
+        return sendResponse(res, 400, "Sub category not found!");
       }
 
-      return sendResponse(res, 200, "Get all category successfully", category);
+      return sendResponse(
+        res,
+        200,
+        "Get all sub category successfully",
+        subCategory
+      );
     } catch (error: any) {
       return sendResponse(
         res,
         500,
-        "[GET_ALL_CATEGORY]: Internal Error",
+        "[GET_ALL_SUB_CATEGORY]: Internal Error",
         error?.message
       );
     }
@@ -79,13 +82,13 @@ const getAllCategoryController = expressAsyncHandler(
 );
 
 //----------------------------------------------
-// add bulk category
+// create bulk sub category
 //----------------------------------------------
-const createBulkCategoriesController = expressAsyncHandler(
+const createBulkSubCategoryController = expressAsyncHandler(
   async (req: any, res: any) => {
     try {
       const body = req?.body;
-      console.log({ body });
+
       let categories = [];
 
       for (const category of body?.categories) {
@@ -96,24 +99,24 @@ const createBulkCategoriesController = expressAsyncHandler(
       return sendResponse(
         res,
         200,
-        "Create Bulk category successfully",
+        "Create Bulk sub category successfully",
         categories
       );
     } catch (error: any) {
       return sendResponse(
         res,
         500,
-        "[CREATE_BULK_CATEGORY]: Internal Error",
+        "[CREATE_BULK_MAIN_CATEGORY]: Internal Error",
         error?.message
       );
     }
   }
 );
 
-const addCategory = async (data: ExcelCategoryProps) => {
+const addCategory = async (data: ExcelSubCategoryProps) => {
   try {
     const slug = await generateSlug(data?.title);
-    const checkSlug = await db.category.findFirst({
+    const checkSlug = await db.subCategory.findFirst({
       where: {
         slug: slug,
       },
@@ -126,13 +129,11 @@ const addCategory = async (data: ExcelCategoryProps) => {
       };
     }
 
-    const category = await db.category.create({
+    const category = await db.subCategory.create({
       data: {
-        mainCategoryId: data?.mainCategoryId,
         title: data?.title,
         slug: slug,
-        imageUrl: data?.imageUrl,
-        status: "ACTIVE",
+        categoryId: data?.categoryId,
       },
     });
 
@@ -151,27 +152,27 @@ const addCategory = async (data: ExcelCategoryProps) => {
 };
 
 //----------------------------------------------
-// delete category by id
+// delete sub category by id
 //----------------------------------------------
-const deleteCategoryByIdController = expressAsyncHandler(
+const deleteSubCategoryByIdController = expressAsyncHandler(
   async (req: any, res: any) => {
     const params = req?.params;
     try {
       if (!params.id) {
-        return sendResponse(res, 400, "Category Id not found");
+        return sendResponse(res, 400, "Sub Category Id not found");
       }
 
-      const category = await db.category.findFirst({
+      const category = await db.subCategory.findFirst({
         where: {
           id: params.id,
         },
       });
 
       if (!category) {
-        return sendResponse(res, 400, "Category not found");
+        return sendResponse(res, 400, "Sub category not found");
       }
 
-      const deleteCategory = await db.category.delete({
+      const deleteCategory = await db.subCategory.delete({
         where: {
           id: params.id,
         },
@@ -180,14 +181,14 @@ const deleteCategoryByIdController = expressAsyncHandler(
       return sendResponse(
         res,
         200,
-        "Delete category successfully",
+        "Delete sub category successfully",
         deleteCategory
       );
     } catch (error: any) {
       return sendResponse(
         res,
         500,
-        "[DELETE_CATEGORY]: Internal Error",
+        "[DELETE_MAIN_CATEGORY]: Internal Error",
         error?.message
       );
     }
@@ -195,37 +196,37 @@ const deleteCategoryByIdController = expressAsyncHandler(
 );
 
 //----------------------------------------------
-// get category by id
+// get sub category by id
 //----------------------------------------------
-const getCategoryByIdController = expressAsyncHandler(
+const getSubCategoryByIdController = expressAsyncHandler(
   async (req: any, res: any) => {
     const params = req?.params;
     try {
       if (!params.id) {
-        return sendResponse(res, 400, "Category Id not found");
+        return sendResponse(res, 400, "Sub category Id not found");
       }
 
-      const category = await db.category.findFirst({
+      const category = await db.subCategory.findFirst({
         where: {
           id: params.id,
         },
       });
 
       if (!category) {
-        return sendResponse(res, 400, "Category not found");
+        return sendResponse(res, 400, "Sub category not found");
       }
 
       return sendResponse(
         res,
         200,
-        "Get category by id successfully",
+        "Get sub category by id successfully",
         category
       );
     } catch (error: any) {
       return sendResponse(
         res,
         500,
-        "[GET_CATEGORY_BY_ID]: Internal Error",
+        "[GET_MAIN_CATEGORY_BY_ID]: Internal Error",
         error?.message
       );
     }
@@ -233,31 +234,32 @@ const getCategoryByIdController = expressAsyncHandler(
 );
 
 //----------------------------------------------
-// update category by id
+// update sub category by id
 //----------------------------------------------
-const updateCategoryByIdController = expressAsyncHandler(
+const updateSubCategoryByIdController = expressAsyncHandler(
   async (req: any, res: any) => {
     const params = req?.params;
     const body = req?.body;
     try {
       if (!params.id) {
-        return sendResponse(res, 400, "Category Id not found");
+        return sendResponse(res, 400, "Sub category Id not found");
       }
 
-      const category = await db.category.findFirst({
+      const category = await db.subCategory.findFirst({
         where: {
           id: params.id,
         },
       });
 
       if (!category) {
-        return sendResponse(res, 400, "Category not found");
+        return sendResponse(res, 400, "Sub category not found");
       }
 
       const slug = await generateSlug(body?.title);
-      const checkSlug = await db.category.findFirst({
+      const checkSlug = await db.subCategory.findFirst({
         where: {
           slug: slug,
+
           NOT: {
             id: params.id, // Exclude the current category from the check
           },
@@ -268,31 +270,28 @@ const updateCategoryByIdController = expressAsyncHandler(
         return sendResponse(res, 400, "Slug is already exist");
       }
 
-      const categoryUpdate = await db.category.update({
+      const categoryUpdate = await db.subCategory.update({
         where: {
           id: params.id,
         },
         data: {
           title: body?.title,
-          description: body?.description,
           slug: slug,
-          imageUrl: body?.imageUrl,
-          status: body?.status,
-          mainCategoryId: body?.mainCategoryId,
+          categoryId: body?.categoryId,
         },
       });
 
       return sendResponse(
         res,
         200,
-        "Update category by id successfully",
+        "Update sub category by id successfully",
         categoryUpdate
       );
     } catch (error: any) {
       return sendResponse(
         res,
         500,
-        "[UPDATE_CATEGORY_BY_ID]: Internal Error",
+        "[UPDATE_MAIN_CATEGORY_BY_ID]: Internal Error",
         error?.message
       );
     }
@@ -300,10 +299,10 @@ const updateCategoryByIdController = expressAsyncHandler(
 );
 
 export {
-  addCategoryController,
-  getAllCategoryController,
-  createBulkCategoriesController,
-  deleteCategoryByIdController,
-  getCategoryByIdController,
-  updateCategoryByIdController,
+  addSubCategoryController,
+  getAllSubCategoryController,
+  createBulkSubCategoryController,
+  deleteSubCategoryByIdController,
+  getSubCategoryByIdController,
+  updateSubCategoryByIdController,
 };

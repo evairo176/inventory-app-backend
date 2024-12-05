@@ -13,6 +13,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model MainCategory{
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  slug        String  @unique
+  categories Category[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
 model Category {
   id          String  @id @default(auto()) @map("_id") @db.ObjectId
   title       String
@@ -21,10 +31,25 @@ model Category {
   imageUrl    String?
   status      String  @default("ACTIVE")
 
+  mainCategoryId String @db.ObjectId
+  mainCategory MainCategory @relation(fields: [mainCategoryId],references: [id])
+
+  subCategories SubCategory[]
+
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
+}
 
-  products Product[]
+model SubCategory{
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  slug        String  @unique
+  categoryId  String @db.ObjectId
+  category Category @relation(fields: [categoryId],references: [id])
+
+  products    Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
 }
 
 model Brand {
@@ -120,14 +145,14 @@ model Product {
 
   supplierId String @db.ObjectId
   brandId    String @db.ObjectId
-  categoryId String @db.ObjectId
+  subCategoryId String @db.ObjectId
   unitId     String @db.ObjectId
   // warehouseId    String @db.ObjectId
 
   // warehouse      Warehouse @relation(fields: [warehouseId], references: [id])
   supplier       Supplier        @relation(fields: [supplierId], references: [id])
   brand          Brand           @relation(fields: [brandId], references: [id])
-  category       Category        @relation(fields: [categoryId], references: [id])
+  subCategory    SubCategory     @relation(fields: [subCategoryId], references: [id])
   unit           Unit            @relation(fields: [unitId], references: [id])
   lineOrderItems LineOrderItem[]
   sales          Sale[]

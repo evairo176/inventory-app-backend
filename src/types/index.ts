@@ -10,6 +10,16 @@ import {
 export type ExcelCategoryProps = {
   imageUrl: string;
   title: string;
+  mainCategoryId: string;
+};
+
+export type ExcelMainCategoryProps = {
+  title: string;
+};
+
+export type ExcelSubCategoryProps = {
+  title: string;
+  categoryId: string;
 };
 
 export type ExcelBrandProps = {
@@ -58,7 +68,7 @@ export type ExcelProductProps = {
   stockQty: number;
   supplierId: string;
   brandId: string;
-  categoryId: string;
+  subCategoryId: string;
   unitId: string;
   productCost: number;
   productPrice: number;

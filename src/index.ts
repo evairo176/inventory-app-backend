@@ -8,10 +8,12 @@ import {
   authRoutes,
   brandsRoutes,
   categoriesRoutes,
+  mainCategoriesRoutes,
   permissionsRoutes,
   posRoutes,
   productRoutes,
   rolesRoutes,
+  subCategoriesRoutes,
   suppliersRoutes,
   unitsRoutes,
   usersRoutes,
@@ -69,6 +71,12 @@ app.use("/api/customer", customersRoutes);
 
 // analytic routes
 app.use("/api/analytic", analyticRoutes);
+
+// main category routes
+app.use("/api/main-category", mainCategoriesRoutes);
+
+// sub category routes
+app.use("/api/sub-category", subCategoriesRoutes);
 
 // error handler
 app.use(notFound);

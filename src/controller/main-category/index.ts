@@ -1,18 +1,19 @@
+import { Request, Response } from "express";
 import { generateSlug, sendResponse } from "../../utils";
 import { db } from "../../lib";
-import { ExcelCategoryProps } from "../../types";
+import { ExcelMainCategoryProps } from "../../types";
 import expressAsyncHandler from "express-async-handler";
 
 //----------------------------------------------
-// add category
+// add main category
 //----------------------------------------------
-const addCategoryController = expressAsyncHandler(
+const addMainCategoryController = expressAsyncHandler(
   async (req: any, res: any) => {
     const body = req?.body;
 
     try {
       const slug = await generateSlug(body?.title);
-      const checkSlug = await db.category.findFirst({
+      const checkSlug = await db.mainCategory.findFirst({
         where: {
           slug: slug,
         },
@@ -22,23 +23,24 @@ const addCategoryController = expressAsyncHandler(
         return sendResponse(res, 400, "Slug is already exist");
       }
 
-      const category = await db.category.create({
+      const category = await db.mainCategory.create({
         data: {
-          mainCategoryId: body?.mainCategoryId,
           title: body?.title,
-          description: body?.description,
-          status: body?.status,
           slug: slug,
-          imageUrl: body?.imageUrl,
         },
       });
 
-      return sendResponse(res, 200, "Create category successfully", category);
+      return sendResponse(
+        res,
+        200,
+        "Create Main Categories successfully",
+        category
+      );
     } catch (error: any) {
       return sendResponse(
         res,
         500,
-        "[CREATE_CATEGORY]: Internal Error",
+        "[CREATE_MAIN_CATEGORIES]: Internal Error",
         error?.message
       );
     }
@@ -46,32 +48,32 @@ const addCategoryController = expressAsyncHandler(
 );
 
 //----------------------------------------------
-// get all category by id
+// get all main category
 //----------------------------------------------
-const getAllCategoryController = expressAsyncHandler(
+const getAllMainCategoryController = expressAsyncHandler(
   async (req: any, res: any) => {
     try {
-      const category = await db.category.findMany({
+      const mainCategory = await db.mainCategory.findMany({
         orderBy: {
           updatedAt: "desc",
         },
-        where: {
-          status: {
-            not: "DELETED",
-          },
-        },
       });
 
-      if (!category) {
-        return sendResponse(res, 400, "Category not found!");
+      if (!mainCategory) {
+        return sendResponse(res, 400, "Main Categories not found!");
       }
 
-      return sendResponse(res, 200, "Get all category successfully", category);
+      return sendResponse(
+        res,
+        200,
+        "Get all main categories successfully",
+        mainCategory
+      );
     } catch (error: any) {
       return sendResponse(
         res,
         500,
-        "[GET_ALL_CATEGORY]: Internal Error",
+        "[GET_ALL_MAIN_CATEGORIES]: Internal Error",
         error?.message
       );
     }
@@ -79,13 +81,13 @@ const getAllCategoryController = expressAsyncHandler(
 );
 
 //----------------------------------------------
-// add bulk category
+// create bulk main category
 //----------------------------------------------
-const createBulkCategoriesController = expressAsyncHandler(
+const createBulkMainCategoryController = expressAsyncHandler(
   async (req: any, res: any) => {
     try {
       const body = req?.body;
-      console.log({ body });
+
       let categories = [];
 
       for (const category of body?.categories) {
@@ -96,24 +98,24 @@ const createBulkCategoriesController = expressAsyncHandler(
       return sendResponse(
         res,
         200,
-        "Create Bulk category successfully",
+        "Create Bulk main category successfully",
         categories
       );
     } catch (error: any) {
       return sendResponse(
         res,
         500,
-        "[CREATE_BULK_CATEGORY]: Internal Error",
+        "[CREATE_BULK_MAIN_CATEGORY]: Internal Error",
         error?.message
       );
     }
   }
 );
 
-const addCategory = async (data: ExcelCategoryProps) => {
+const addCategory = async (data: ExcelMainCategoryProps) => {
   try {
     const slug = await generateSlug(data?.title);
-    const checkSlug = await db.category.findFirst({
+    const checkSlug = await db.mainCategory.findFirst({
       where: {
         slug: slug,
       },
@@ -126,13 +128,10 @@ const addCategory = async (data: ExcelCategoryProps) => {
       };
     }
 
-    const category = await db.category.create({
+    const category = await db.mainCategory.create({
       data: {
-        mainCategoryId: data?.mainCategoryId,
         title: data?.title,
         slug: slug,
-        imageUrl: data?.imageUrl,
-        status: "ACTIVE",
       },
     });
 
@@ -151,9 +150,9 @@ const addCategory = async (data: ExcelCategoryProps) => {
 };
 
 //----------------------------------------------
-// delete category by id
+// delete main category by id
 //----------------------------------------------
-const deleteCategoryByIdController = expressAsyncHandler(
+const deleteMainCategoryByIdController = expressAsyncHandler(
   async (req: any, res: any) => {
     const params = req?.params;
     try {
@@ -161,17 +160,17 @@ const deleteCategoryByIdController = expressAsyncHandler(
         return sendResponse(res, 400, "Category Id not found");
       }
 
-      const category = await db.category.findFirst({
+      const category = await db.mainCategory.findFirst({
         where: {
           id: params.id,
         },
       });
 
       if (!category) {
-        return sendResponse(res, 400, "Category not found");
+        return sendResponse(res, 400, "Main Category not found");
       }
 
-      const deleteCategory = await db.category.delete({
+      const deleteCategory = await db.mainCategory.delete({
         where: {
           id: params.id,
         },
@@ -180,14 +179,14 @@ const deleteCategoryByIdController = expressAsyncHandler(
       return sendResponse(
         res,
         200,
-        "Delete category successfully",
+        "Delete main category successfully",
         deleteCategory
       );
     } catch (error: any) {
       return sendResponse(
         res,
         500,
-        "[DELETE_CATEGORY]: Internal Error",
+        "[DELETE_MAIN_CATEGORY]: Internal Error",
         error?.message
       );
     }
@@ -195,37 +194,37 @@ const deleteCategoryByIdController = expressAsyncHandler(
 );
 
 //----------------------------------------------
-// get category by id
+// get main category by id
 //----------------------------------------------
-const getCategoryByIdController = expressAsyncHandler(
+const getMainCategoryByIdController = expressAsyncHandler(
   async (req: any, res: any) => {
     const params = req?.params;
     try {
       if (!params.id) {
-        return sendResponse(res, 400, "Category Id not found");
+        return sendResponse(res, 400, "Main Category Id not found");
       }
 
-      const category = await db.category.findFirst({
+      const category = await db.mainCategory.findFirst({
         where: {
           id: params.id,
         },
       });
 
       if (!category) {
-        return sendResponse(res, 400, "Category not found");
+        return sendResponse(res, 400, "Main Category not found");
       }
 
       return sendResponse(
         res,
         200,
-        "Get category by id successfully",
+        "Get main category by id successfully",
         category
       );
     } catch (error: any) {
       return sendResponse(
         res,
         500,
-        "[GET_CATEGORY_BY_ID]: Internal Error",
+        "[GET_MAIN_CATEGORY_BY_ID]: Internal Error",
         error?.message
       );
     }
@@ -233,29 +232,29 @@ const getCategoryByIdController = expressAsyncHandler(
 );
 
 //----------------------------------------------
-// update category by id
+// update main category by id
 //----------------------------------------------
-const updateCategoryByIdController = expressAsyncHandler(
+const updateMainCategoryByIdController = expressAsyncHandler(
   async (req: any, res: any) => {
     const params = req?.params;
     const body = req?.body;
     try {
       if (!params.id) {
-        return sendResponse(res, 400, "Category Id not found");
+        return sendResponse(res, 400, "Main Category Id not found");
       }
 
-      const category = await db.category.findFirst({
+      const category = await db.mainCategory.findFirst({
         where: {
           id: params.id,
         },
       });
 
       if (!category) {
-        return sendResponse(res, 400, "Category not found");
+        return sendResponse(res, 400, "Main Category not found");
       }
 
       const slug = await generateSlug(body?.title);
-      const checkSlug = await db.category.findFirst({
+      const checkSlug = await db.mainCategory.findFirst({
         where: {
           slug: slug,
           NOT: {
@@ -268,31 +267,27 @@ const updateCategoryByIdController = expressAsyncHandler(
         return sendResponse(res, 400, "Slug is already exist");
       }
 
-      const categoryUpdate = await db.category.update({
+      const categoryUpdate = await db.mainCategory.update({
         where: {
           id: params.id,
         },
         data: {
           title: body?.title,
-          description: body?.description,
           slug: slug,
-          imageUrl: body?.imageUrl,
-          status: body?.status,
-          mainCategoryId: body?.mainCategoryId,
         },
       });
 
       return sendResponse(
         res,
         200,
-        "Update category by id successfully",
+        "Update main category by id successfully",
         categoryUpdate
       );
     } catch (error: any) {
       return sendResponse(
         res,
         500,
-        "[UPDATE_CATEGORY_BY_ID]: Internal Error",
+        "[UPDATE_MAIN_CATEGORY_BY_ID]: Internal Error",
         error?.message
       );
     }
@@ -300,10 +295,10 @@ const updateCategoryByIdController = expressAsyncHandler(
 );
 
 export {
-  addCategoryController,
-  getAllCategoryController,
-  createBulkCategoriesController,
-  deleteCategoryByIdController,
-  getCategoryByIdController,
-  updateCategoryByIdController,
+  addMainCategoryController,
+  getAllMainCategoryController,
+  createBulkMainCategoryController,
+  deleteMainCategoryByIdController,
+  getMainCategoryByIdController,
+  updateMainCategoryByIdController,
 };
