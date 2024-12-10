@@ -60,6 +60,9 @@ const getAllCategoryController = expressAsyncHandler(
             not: "DELETED",
           },
         },
+        include: {
+          mainCategory: true,
+        },
       });
 
       if (!category) {

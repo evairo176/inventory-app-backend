@@ -58,6 +58,9 @@ const getAllSubCategoryController = expressAsyncHandler(
         orderBy: {
           updatedAt: "desc",
         },
+        include: {
+          category: true,
+        },
       });
 
       if (!subCategory) {
