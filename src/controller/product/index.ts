@@ -72,7 +72,7 @@ const getAllProductController = async (req: Request, res: Response) => {
         status: {
           not: "DELETED",
         },
-        // Add conditional filtering based on subCategoryId
+        // Add conditional filtering based on subCategoryId dd
         ...queryParams,
       },
       include: {
