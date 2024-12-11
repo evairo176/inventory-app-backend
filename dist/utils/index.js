@@ -3,7 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendResponse = exports.Logger = exports.generateSlug = void 0;
+exports.generateOrderNumber = exports.sendResponse = exports.Logger = exports.generateSlug = void 0;
+const generate_order_number_1 = require("./generate-order-number");
+Object.defineProperty(exports, "generateOrderNumber", { enumerable: true, get: function () { return generate_order_number_1.generateOrderNumber; } });
 const generate_slug_1 = require("./generate-slug");
 Object.defineProperty(exports, "generateSlug", { enumerable: true, get: function () { return generate_slug_1.generateSlug; } });
 const logger_1 = __importDefault(require("./logger"));

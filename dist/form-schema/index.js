@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginSchema = exports.updateInviteSentSchema = exports.updateUserSchema = exports.addUserSchema = exports.updatePermissionSchema = exports.addPermissionSchema = exports.updateRoleSchema = exports.addRoleSchema = exports.updateProductSchema = exports.addProductSchema = exports.updateUnitSchema = exports.addUnitSchema = exports.updateSupplierSchema = exports.addSupplierSchema = exports.updateWarehouseSchema = exports.addWarehouseSchema = exports.updateBrandSchema = exports.addBrandSchema = exports.updateCategorySchema = exports.addCategorySchema = void 0;
+exports.updateSubCategorySchema = exports.addSubCategorySchema = exports.updateMainCategorySchema = exports.addMainCategorySchema = exports.updateCustomerSchema = exports.createCustomersSchema = exports.createLineOrderSchema = exports.loginSchema = exports.updateInviteSentSchema = exports.updateUserSchema = exports.addUserSchema = exports.updatePermissionSchema = exports.addPermissionSchema = exports.updateRoleSchema = exports.addRoleSchema = exports.updateProductSchema = exports.addProductSchema = exports.updateUnitSchema = exports.addUnitSchema = exports.updateSupplierSchema = exports.addSupplierSchema = exports.updateWarehouseSchema = exports.addWarehouseSchema = exports.updateBrandSchema = exports.addBrandSchema = exports.updateCategorySchema = exports.addCategorySchema = void 0;
 const zod_1 = require("zod");
 exports.addCategorySchema = zod_1.z.object({
     title: zod_1.z
@@ -188,7 +188,7 @@ exports.addProductSchema = zod_1.z.object({
     stockQty: zod_1.z.number(),
     supplierId: zod_1.z.string(),
     brandId: zod_1.z.string(),
-    categoryId: zod_1.z.string(),
+    subCategoryId: zod_1.z.string(),
     unitId: zod_1.z.string(),
     productCost: zod_1.z.number(),
     productPrice: zod_1.z.number(),
@@ -204,18 +204,17 @@ exports.addProductSchema = zod_1.z.object({
 });
 exports.updateProductSchema = zod_1.z.object({
     name: zod_1.z.string(),
-    slug: zod_1.z.string(),
     productCode: zod_1.z.string(),
     stockQty: zod_1.z.number(),
     supplierId: zod_1.z.string(),
     brandId: zod_1.z.string(),
-    categoryId: zod_1.z.string(),
+    subCategoryId: zod_1.z.string(),
     unitId: zod_1.z.string(),
     productCost: zod_1.z.number(),
     productPrice: zod_1.z.number(),
     alertQty: zod_1.z.number(),
     productTax: zod_1.z.number(),
-    taxMethod: zod_1.z.enum(["inclusive", "exclusive"]), // Assuming taxMethod can be "inclusive" or "exclusive"
+    taxMethod: zod_1.z.enum(["INCLUSIVE", "EXCLUSIVE"]), // Assuming taxMethod can be "inclusive" or "exclusive"
     productImages: zod_1.z.array(zod_1.z.string()),
     productThumbnail: zod_1.z.string(),
     productDetails: zod_1.z.string(),
@@ -330,4 +329,94 @@ exports.loginSchema = zod_1.z.object({
         .regex(/[^A-Za-z0-9]/, {
         message: "Password must contain at least one symbol.",
     }),
+});
+// OrderLineItem schema
+const OrderLineItemSchema = zod_1.z.object({
+    id: zod_1.z.string().min(1, { message: "ID is required" }), // String, non-empty
+    name: zod_1.z.string().min(1, { message: "Name is required" }), // String, non-empty
+    price: zod_1.z.number().positive("Price must be a positive number"), // Positive number
+    qty: zod_1.z.number().int().positive("Quantity must be a positive integer"), // Positive integer
+    productThumbnail: zod_1.z.string().url("Must be a valid URL"), // Valid URL string
+});
+// CustomerData schema
+const CustomerDataSchema = zod_1.z.object({
+    customerId: zod_1.z.string().min(1, { message: "Customer ID is required" }), // String, non-empty
+});
+exports.createLineOrderSchema = zod_1.z.object({
+    orderItems: zod_1.z.array(OrderLineItemSchema),
+    customerData: CustomerDataSchema,
+});
+exports.createCustomersSchema = zod_1.z.object({
+    firstName: zod_1.z.string().min(2, {
+        message: "First Name must be at least 2 characters.",
+    }),
+    lastName: zod_1.z.string().min(2, {
+        message: "Last Name must be at least 2 characters.",
+    }),
+    email: zod_1.z.string().email(),
+    phone: zod_1.z.string(),
+    imageUrl: zod_1.z.string().optional(),
+    password: zod_1.z
+        .string()
+        .min(8, {
+        message: "Password must be at least 8 characters.",
+    })
+        .regex(/[A-Z]/, {
+        message: "Password must contain at least one uppercase letter.",
+    })
+        .regex(/[a-z]/, {
+        message: "Password must contain at least one lowercase letter.",
+    })
+        .regex(/[0-9]/, {
+        message: "Password must contain at least one number.",
+    })
+        .regex(/[^A-Za-z0-9]/, {
+        message: "Password must contain at least one symbol.",
+    }),
+    roleId: zod_1.z.string(),
+    status: zod_1.z.string().min(2, {
+        message: "status must be at least 2 characters.",
+    }),
+    additionalInfo: zod_1.z.string().optional(),
+    shippingAddress: zod_1.z.string().optional(),
+    billingAddress: zod_1.z.string().optional(),
+});
+exports.updateCustomerSchema = zod_1.z.object({
+    firstName: zod_1.z.string().min(2, {
+        message: "First Name must be at least 2 characters.",
+    }),
+    lastName: zod_1.z.string().min(2, {
+        message: "Last Name must be at least 2 characters.",
+    }),
+    email: zod_1.z.string().email(),
+    phone: zod_1.z.string(),
+    imageUrl: zod_1.z.string().optional(),
+    status: zod_1.z.string().min(2, {
+        message: "status must be at least 2 characters.",
+    }),
+    additionalInfo: zod_1.z.string().optional(),
+    shippingAddress: zod_1.z.string().optional(),
+    billingAddress: zod_1.z.string().optional(),
+});
+exports.addMainCategorySchema = zod_1.z.object({
+    title: zod_1.z
+        .string({ required_error: "Title is required" })
+        .min(3, { message: "Title must be at least 3 characters" }),
+});
+exports.updateMainCategorySchema = zod_1.z.object({
+    title: zod_1.z
+        .string({ required_error: "Title is required" })
+        .min(3, { message: "Title must be at least 3 characters" }),
+});
+exports.addSubCategorySchema = zod_1.z.object({
+    title: zod_1.z
+        .string({ required_error: "Title is required" })
+        .min(3, { message: "Title must be at least 3 characters" }),
+    categoryId: zod_1.z.string({ required_error: "Category Id is required" }),
+});
+exports.updateSubCategorySchema = zod_1.z.object({
+    title: zod_1.z
+        .string({ required_error: "Title is required" })
+        .min(3, { message: "Title must be at least 3 characters" }),
+    categoryId: zod_1.z.string({ required_error: "Category Id is required" }),
 });

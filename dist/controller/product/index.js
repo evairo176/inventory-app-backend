@@ -35,7 +35,7 @@ const addProductController = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 stockQty: body === null || body === void 0 ? void 0 : body.stockQty,
                 supplierId: body === null || body === void 0 ? void 0 : body.supplierId,
                 brandId: body === null || body === void 0 ? void 0 : body.brandId,
-                categoryId: body === null || body === void 0 ? void 0 : body.categoryId,
+                subCategoryId: body === null || body === void 0 ? void 0 : body.subCategoryId,
                 unitId: body === null || body === void 0 ? void 0 : body.unitId,
                 productCost: body === null || body === void 0 ? void 0 : body.productCost,
                 productPrice: body === null || body === void 0 ? void 0 : body.productPrice,
@@ -46,6 +46,8 @@ const addProductController = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 productThumbnail: body === null || body === void 0 ? void 0 : body.productThumbnail,
                 productDetails: body === null || body === void 0 ? void 0 : body.productDetails,
                 status: body === null || body === void 0 ? void 0 : body.status,
+                batchNumber: body === null || body === void 0 ? void 0 : body.batchNumber,
+                isFeatured: body === null || body === void 0 ? void 0 : body.isFeatured,
             },
         });
         return (0, utils_1.sendResponse)(res, 200, "Create product successfully", product);
@@ -59,8 +61,8 @@ const getAllProductController = (req, res) => __awaiter(void 0, void 0, void 0, 
     const query = req.query;
     try {
         let queryParams = {};
-        if ((query === null || query === void 0 ? void 0 : query.categoryId) && (query === null || query === void 0 ? void 0 : query.categoryId) !== "all") {
-            queryParams = { categoryId: query === null || query === void 0 ? void 0 : query.categoryId };
+        if ((query === null || query === void 0 ? void 0 : query.subCategoryId) && (query === null || query === void 0 ? void 0 : query.subCategoryId) !== "all") {
+            queryParams = { subCategoryId: query === null || query === void 0 ? void 0 : query.subCategoryId };
         }
         let product = yield lib_1.db.product.findMany({
             orderBy: {
@@ -70,7 +72,7 @@ const getAllProductController = (req, res) => __awaiter(void 0, void 0, void 0, 
                     not: "DELETED",
                 } }, queryParams),
             include: {
-                category: true,
+                subCategory: true,
             },
         });
         if (!product) {
@@ -120,7 +122,7 @@ const addProduct = (data) => __awaiter(void 0, void 0, void 0, function* () {
                 stockQty: data === null || data === void 0 ? void 0 : data.stockQty,
                 supplierId: data === null || data === void 0 ? void 0 : data.supplierId,
                 brandId: data === null || data === void 0 ? void 0 : data.brandId,
-                categoryId: data === null || data === void 0 ? void 0 : data.categoryId,
+                subCategoryId: data === null || data === void 0 ? void 0 : data.subCategoryId,
                 unitId: data === null || data === void 0 ? void 0 : data.unitId,
                 productCost: data === null || data === void 0 ? void 0 : data.productCost,
                 productPrice: data === null || data === void 0 ? void 0 : data.productPrice,
@@ -221,6 +223,29 @@ const updateProductByIdController = (req, res) => __awaiter(void 0, void 0, void
         if (checkSlug) {
             return (0, utils_1.sendResponse)(res, 400, "Slug is already exist");
         }
+        // Check if there's any difference between the current data and the incoming update
+        const isDataUnchanged = product.name === (body === null || body === void 0 ? void 0 : body.name) &&
+            product.productCode === (body === null || body === void 0 ? void 0 : body.productCode) &&
+            product.stockQty === (body === null || body === void 0 ? void 0 : body.stockQty) &&
+            product.supplierId === (body === null || body === void 0 ? void 0 : body.supplierId) &&
+            product.brandId === (body === null || body === void 0 ? void 0 : body.brandId) &&
+            product.subCategoryId === (body === null || body === void 0 ? void 0 : body.subCategoryId) &&
+            product.unitId === (body === null || body === void 0 ? void 0 : body.unitId) &&
+            product.productCost === (body === null || body === void 0 ? void 0 : body.productCost) &&
+            product.productPrice === (body === null || body === void 0 ? void 0 : body.productPrice) &&
+            product.alertQty === (body === null || body === void 0 ? void 0 : body.alertQty) &&
+            product.productTax === (body === null || body === void 0 ? void 0 : body.productTax) &&
+            product.taxMethod === (body === null || body === void 0 ? void 0 : body.taxMethod) &&
+            JSON.stringify(product.productImages) ===
+                JSON.stringify(body === null || body === void 0 ? void 0 : body.productImages) &&
+            product.productThumbnail === (body === null || body === void 0 ? void 0 : body.productThumbnail) &&
+            product.productDetails === (body === null || body === void 0 ? void 0 : body.productDetails) &&
+            product.status === (body === null || body === void 0 ? void 0 : body.status) &&
+            product.batchNumber === (body === null || body === void 0 ? void 0 : body.batchNumber) &&
+            product.isFeatured === (body === null || body === void 0 ? void 0 : body.isFeatured);
+        if (isDataUnchanged) {
+            return (0, utils_1.sendResponse)(res, 400, "No changes detected. Nothing was updated.");
+        }
         const productUpdate = yield lib_1.db.product.update({
             where: {
                 id: params.id,
@@ -232,7 +257,7 @@ const updateProductByIdController = (req, res) => __awaiter(void 0, void 0, void
                 stockQty: body === null || body === void 0 ? void 0 : body.stockQty,
                 supplierId: body === null || body === void 0 ? void 0 : body.supplierId,
                 brandId: body === null || body === void 0 ? void 0 : body.brandId,
-                categoryId: body === null || body === void 0 ? void 0 : body.categoryId,
+                subCategoryId: body === null || body === void 0 ? void 0 : body.subCategoryId,
                 unitId: body === null || body === void 0 ? void 0 : body.unitId,
                 productCost: body === null || body === void 0 ? void 0 : body.productCost,
                 productPrice: body === null || body === void 0 ? void 0 : body.productPrice,
@@ -243,6 +268,8 @@ const updateProductByIdController = (req, res) => __awaiter(void 0, void 0, void
                 productThumbnail: body === null || body === void 0 ? void 0 : body.productThumbnail,
                 productDetails: body === null || body === void 0 ? void 0 : body.productDetails,
                 status: body === null || body === void 0 ? void 0 : body.status,
+                batchNumber: body === null || body === void 0 ? void 0 : body.batchNumber,
+                isFeatured: body === null || body === void 0 ? void 0 : body.isFeatured,
             },
         });
         return (0, utils_1.sendResponse)(res, 200, "Update product by id successfully", productUpdate);
