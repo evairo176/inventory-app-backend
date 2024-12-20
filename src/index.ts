@@ -22,6 +22,10 @@ import {
 import { Logger } from "./utils";
 import { customersRoutes } from "./routes/customer";
 import { analyticRoutes } from "./routes/analytic";
+import { decrypt, decryptAES128CBC, encrypt } from "./utils/crypto-js";
+// const CryptoJS = require("crypto-js");
+// const MD5 = require("crypto-js/md5");
+// var ReverseMd5 = require("reverse-md5");
 
 dotenv.config();
 
@@ -81,6 +85,22 @@ app.use("/api/sub-category", subCategoriesRoutes);
 // error handler
 app.use(notFound);
 app.use(errorHandler);
+
+// var chiperText =
+//   "FLLqEqBzM/x8MUej3WFSLZuAxNgLSUG6WPFvUJ2Pdn1XbhMHq03DtXgXWKGzGWar";
+// var key = "y0uc@nts3eMe!...";
+// var iv = "";
+
+// key = CryptoJS.enc.Utf8.parse(key);
+// iv = CryptoJS.enc.Utf8.parse(iv);
+
+// var decrypted = CryptoJS.AES.decrypt(chiperText, key, {
+//   iv: iv,
+//   mode: CryptoJS.mode.CBC,
+//   padding: CryptoJS.pad.Pkcs7,
+// }).toString(CryptoJS.enc.Utf8);
+
+// console.log(decrypted); // TEST50
 
 app.listen(port, () => {
   Logger.log(`[server]: Server is running at http://localhost:${port}`);
