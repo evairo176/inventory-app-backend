@@ -441,3 +441,27 @@ export const updateSubCategorySchema = z.object({
     .min(3, { message: "Title must be at least 3 characters" }),
   categoryId: z.string({ required_error: "Category Id is required" }),
 });
+
+export const addAdvertSchema = z.object({
+  title: z
+    .string({ required_error: "Title is required" })
+    .min(3, { message: "Title must be at least 3 characters" }),
+  description: z
+    .string({ required_error: "Content is required" })
+    .min(1, { message: "Content must be at least 1 characters" }),
+  status: z.enum(["ACTIVE", "DISABLED"]),
+  imageUrl: z.string({ required_error: "Content is required" }).optional(),
+  link: z.string({ required_error: "Link is required" }),
+});
+
+export const updateAdvertSchema = z.object({
+  title: z
+    .string({ required_error: "Title is required" })
+    .min(3, { message: "Title must be at least 3 characters" }),
+  description: z
+    .string({ required_error: "Content is required" })
+    .min(1, { message: "Content must be at least 1 characters" }),
+  status: z.enum(["ACTIVE", "DISABLED"]),
+  imageUrl: z.string({ required_error: "Content is required" }).optional(),
+  link: z.string({ required_error: "Link is required" }),
+});

@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import { errorHandler, notFound } from "./middleware";
 import {
   authRoutes,
+  advertRoutes,
   brandsRoutes,
   categoriesRoutes,
   mainCategoriesRoutes,
@@ -81,6 +82,9 @@ app.use("/api/main-category", mainCategoriesRoutes);
 
 // sub category routes
 app.use("/api/sub-category", subCategoriesRoutes);
+
+// advert routes
+app.use("/api/advert", advertRoutes);
 
 // error handler
 app.use(notFound);

@@ -1,6 +1,14 @@
 import { getAnalyticController } from "./analytic";
 import { loginController } from "./auth";
 import {
+  addAdvertController,
+  createBulkAdvertController,
+  deleteAdvertByIdController,
+  getAllAdvertController,
+  getAdvertByIdController,
+  updateAdvertByIdController,
+} from "./advert";
+import {
   addBrandController,
   getAllBrandController,
   createBulkBrandsController,
@@ -182,4 +190,12 @@ export {
   deleteSubCategoryByIdController,
   getSubCategoryByIdController,
   updateSubCategoryByIdController,
+
+  // advert
+  addAdvertController,
+  getAllAdvertController,
+  createBulkAdvertController,
+  deleteAdvertByIdController,
+  getAdvertByIdController,
+  updateAdvertByIdController,
 };

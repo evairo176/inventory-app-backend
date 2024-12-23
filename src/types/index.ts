@@ -5,6 +5,7 @@ import {
   Permission as PrismaPermission,
   RolePermission as PrismaRolePermission,
   RoleMenu as PrismaRoleMenu,
+  AdvertSize,
 } from "@prisma/client";
 
 export type ExcelCategoryProps = {
@@ -79,6 +80,21 @@ export type ExcelProductProps = {
   productThumbnail: string;
   productDetails: string;
   status: string;
+};
+
+export type ExcelBannerProps = {
+  title: string;
+  imageUrl: string;
+  status: string;
+  link: string;
+};
+
+export type ExcelAdvertProps = {
+  title: string;
+  imageUrl: string;
+  status: string;
+  link: string;
+  size: AdvertSize;
 };
 
 // Define the Role type with related fields

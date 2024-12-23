@@ -1,4 +1,5 @@
 import { authRoutes } from "./auth";
+import { advertRoutes } from "./advert";
 import { brandsRoutes } from "./brand";
 import { categoriesRoutes } from "./category";
 import { mainCategoriesRoutes } from "./main-category";
@@ -26,4 +27,5 @@ export {
   posRoutes,
   mainCategoriesRoutes,
   subCategoriesRoutes,
+  advertRoutes,
 };
