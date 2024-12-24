@@ -70,4 +70,48 @@ const getAllHomeAdvertController = expressAsyncHandler(
   }
 );
 
-export { getAllHomeBannerController, getAllHomeAdvertController };
+//----------------------------------------------
+// get populate main category
+//----------------------------------------------
+const getPopulateMainCategoryController = expressAsyncHandler(
+  async (req: any, res: any) => {
+    try {
+      const mainCategory = await db.mainCategory.findMany({
+        orderBy: {
+          updatedAt: "desc",
+        },
+        include: {
+          categories: {
+            include: {
+              subCategories: true,
+            },
+          },
+        },
+      });
+
+      if (!mainCategory) {
+        return sendResponse(res, 400, "Main Categories not found!");
+      }
+
+      return sendResponse(
+        res,
+        200,
+        "Get all main categories successfully",
+        mainCategory
+      );
+    } catch (error: any) {
+      return sendResponse(
+        res,
+        500,
+        "[GET_POPULATE_MAIN_CATEGORIES]: Internal Error",
+        error?.message
+      );
+    }
+  }
+);
+
+export {
+  getAllHomeBannerController,
+  getAllHomeAdvertController,
+  getPopulateMainCategoryController,
+};

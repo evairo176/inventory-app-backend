@@ -11,3 +11,5 @@ exports.homeRoutes = express_1.default.Router();
 exports.homeRoutes.get("/banner", controller_1.getAllHomeBannerController);
 // get all home advert
 exports.homeRoutes.get("/advert", controller_1.getAllHomeAdvertController);
+// get populate main category
+exports.homeRoutes.get("/populate-main-category", controller_1.getPopulateMainCategoryController);

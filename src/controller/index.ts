@@ -97,7 +97,11 @@ import {
   getWarehouseByIdController,
   updateWarehouseByIdController,
 } from "./warehouse";
-import { getAllHomeAdvertController, getAllHomeBannerController } from "./home";
+import {
+  getAllHomeAdvertController,
+  getAllHomeBannerController,
+  getPopulateMainCategoryController,
+} from "./home";
 
 export {
   // start auth
@@ -203,4 +207,5 @@ export {
   // home
   getAllHomeBannerController,
   getAllHomeAdvertController,
+  getPopulateMainCategoryController,
 };

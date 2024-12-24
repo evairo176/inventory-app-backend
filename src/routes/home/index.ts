@@ -3,6 +3,7 @@ import express from "express";
 import {
   getAllHomeAdvertController,
   getAllHomeBannerController,
+  getPopulateMainCategoryController,
 } from "../../controller";
 
 export const homeRoutes = express.Router();
@@ -12,3 +13,6 @@ homeRoutes.get("/banner", getAllHomeBannerController);
 
 // get all home advert
 homeRoutes.get("/advert", getAllHomeAdvertController);
+
+// get populate main category
+homeRoutes.get("/populate-main-category", getPopulateMainCategoryController);

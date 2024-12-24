@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllHomeAdvertController = exports.getAllHomeBannerController = void 0;
+exports.getPopulateMainCategoryController = exports.getAllHomeAdvertController = exports.getAllHomeBannerController = void 0;
 const utils_1 = require("../../utils");
 const lib_1 = require("../../lib");
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
@@ -66,3 +66,30 @@ const getAllHomeAdvertController = (0, express_async_handler_1.default)((req, re
     }
 }));
 exports.getAllHomeAdvertController = getAllHomeAdvertController;
+//----------------------------------------------
+// get populate main category
+//----------------------------------------------
+const getPopulateMainCategoryController = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const mainCategory = yield lib_1.db.mainCategory.findMany({
+            orderBy: {
+                updatedAt: "desc",
+            },
+            include: {
+                categories: {
+                    include: {
+                        subCategories: true,
+                    },
+                },
+            },
+        });
+        if (!mainCategory) {
+            return (0, utils_1.sendResponse)(res, 400, "Main Categories not found!");
+        }
+        return (0, utils_1.sendResponse)(res, 200, "Get all main categories successfully", mainCategory);
+    }
+    catch (error) {
+        return (0, utils_1.sendResponse)(res, 500, "[GET_POPULATE_MAIN_CATEGORIES]: Internal Error", error === null || error === void 0 ? void 0 : error.message);
+    }
+}));
+exports.getPopulateMainCategoryController = getPopulateMainCategoryController;
