@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateSubCategorySchema = exports.addSubCategorySchema = exports.updateMainCategorySchema = exports.addMainCategorySchema = exports.updateCustomerSchema = exports.createCustomersSchema = exports.createLineOrderSchema = exports.loginSchema = exports.updateInviteSentSchema = exports.updateUserSchema = exports.addUserSchema = exports.updatePermissionSchema = exports.addPermissionSchema = exports.updateRoleSchema = exports.addRoleSchema = exports.updateProductSchema = exports.addProductSchema = exports.updateUnitSchema = exports.addUnitSchema = exports.updateSupplierSchema = exports.addSupplierSchema = exports.updateWarehouseSchema = exports.addWarehouseSchema = exports.updateBrandSchema = exports.addBrandSchema = exports.updateCategorySchema = exports.addCategorySchema = void 0;
+exports.updateAdvertSchema = exports.addAdvertSchema = exports.updateSubCategorySchema = exports.addSubCategorySchema = exports.updateMainCategorySchema = exports.addMainCategorySchema = exports.updateCustomerSchema = exports.createCustomersSchema = exports.createLineOrderSchema = exports.loginSchema = exports.updateInviteSentSchema = exports.updateUserSchema = exports.addUserSchema = exports.updatePermissionSchema = exports.addPermissionSchema = exports.updateRoleSchema = exports.addRoleSchema = exports.updateProductSchema = exports.addProductSchema = exports.updateUnitSchema = exports.addUnitSchema = exports.updateSupplierSchema = exports.addSupplierSchema = exports.updateWarehouseSchema = exports.addWarehouseSchema = exports.updateBrandSchema = exports.addBrandSchema = exports.updateCategorySchema = exports.addCategorySchema = void 0;
 const zod_1 = require("zod");
 exports.addCategorySchema = zod_1.z.object({
     title: zod_1.z
@@ -419,4 +419,24 @@ exports.updateSubCategorySchema = zod_1.z.object({
         .string({ required_error: "Title is required" })
         .min(3, { message: "Title must be at least 3 characters" }),
     categoryId: zod_1.z.string({ required_error: "Category Id is required" }),
+});
+exports.addAdvertSchema = zod_1.z.object({
+    title: zod_1.z
+        .string({ required_error: "Title is required" })
+        .min(3, { message: "Title must be at least 3 characters" }),
+    status: zod_1.z.enum(["ACTIVE", "DISABLED"]),
+    type: zod_1.z.enum(["BANNER", "ADVERT"]),
+    size: zod_1.z.enum(["FULL", "HALF", "QUARTER"]),
+    imageUrl: zod_1.z.string({ required_error: "Image is required" }),
+    link: zod_1.z.string({ required_error: "Link is required" }),
+});
+exports.updateAdvertSchema = zod_1.z.object({
+    title: zod_1.z
+        .string({ required_error: "Title is required" })
+        .min(3, { message: "Title must be at least 3 characters" }),
+    status: zod_1.z.enum(["ACTIVE", "DISABLED"]),
+    type: zod_1.z.enum(["BANNER", "ADVERT"]),
+    size: zod_1.z.enum(["FULL", "HALF", "QUARTER"]),
+    imageUrl: zod_1.z.string({ required_error: "Image is required" }),
+    link: zod_1.z.string({ required_error: "Link is required" }),
 });

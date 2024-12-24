@@ -1,8 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.subCategoriesRoutes = exports.mainCategoriesRoutes = exports.posRoutes = exports.warehousesRoutes = exports.usersRoutes = exports.unitsRoutes = exports.suppliersRoutes = exports.rolesRoutes = exports.productRoutes = exports.permissionsRoutes = exports.categoriesRoutes = exports.brandsRoutes = exports.authRoutes = void 0;
+exports.homeRoutes = exports.advertRoutes = exports.subCategoriesRoutes = exports.mainCategoriesRoutes = exports.posRoutes = exports.warehousesRoutes = exports.usersRoutes = exports.unitsRoutes = exports.suppliersRoutes = exports.rolesRoutes = exports.productRoutes = exports.permissionsRoutes = exports.categoriesRoutes = exports.brandsRoutes = exports.authRoutes = void 0;
 const auth_1 = require("./auth");
 Object.defineProperty(exports, "authRoutes", { enumerable: true, get: function () { return auth_1.authRoutes; } });
+const advert_1 = require("./advert");
+Object.defineProperty(exports, "advertRoutes", { enumerable: true, get: function () { return advert_1.advertRoutes; } });
 const brand_1 = require("./brand");
 Object.defineProperty(exports, "brandsRoutes", { enumerable: true, get: function () { return brand_1.brandsRoutes; } });
 const category_1 = require("./category");
@@ -27,3 +29,5 @@ const user_1 = require("./user");
 Object.defineProperty(exports, "usersRoutes", { enumerable: true, get: function () { return user_1.usersRoutes; } });
 const warehouse_1 = require("./warehouse");
 Object.defineProperty(exports, "warehousesRoutes", { enumerable: true, get: function () { return warehouse_1.warehousesRoutes; } });
+const home_1 = require("./home");
+Object.defineProperty(exports, "homeRoutes", { enumerable: true, get: function () { return home_1.homeRoutes; } });

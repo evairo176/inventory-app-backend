@@ -97,6 +97,7 @@ import {
   getWarehouseByIdController,
   updateWarehouseByIdController,
 } from "./warehouse";
+import { getAllHomeAdvertController, getAllHomeBannerController } from "./home";
 
 export {
   // start auth
@@ -198,4 +199,8 @@ export {
   deleteAdvertByIdController,
   getAdvertByIdController,
   updateAdvertByIdController,
+
+  // home
+  getAllHomeBannerController,
+  getAllHomeAdvertController,
 };

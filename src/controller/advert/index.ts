@@ -2,23 +2,27 @@ import { generateSlug, sendResponse } from "../../utils";
 import { db } from "../../lib";
 import { ExcelAdvertProps, ExcelCategoryProps } from "../../types";
 import expressAsyncHandler from "express-async-handler";
+import { AdvertSize, AdvertType } from "@prisma/client";
 
 //----------------------------------------------
 // add advert
 //----------------------------------------------
 const addAdvertController = expressAsyncHandler(async (req: any, res: any) => {
   const body = req?.body;
-
+  console.log({ body });
   try {
     const advert = await db.advert.create({
       data: {
         ...body,
         status: body?.status === "ACTIVE" ? true : false,
+        type: body?.type as AdvertType,
+        size: body?.size as AdvertSize,
       },
     });
 
     return sendResponse(res, 200, "Create advert successfully", advert);
   } catch (error: any) {
+    console.log(error);
     return sendResponse(
       res,
       500,

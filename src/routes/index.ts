@@ -12,6 +12,7 @@ import { suppliersRoutes } from "./supplier";
 import { unitsRoutes } from "./unit";
 import { usersRoutes } from "./user";
 import { warehousesRoutes } from "./warehouse";
+import { homeRoutes } from "./home";
 
 export {
   authRoutes,
@@ -28,4 +29,5 @@ export {
   mainCategoriesRoutes,
   subCategoriesRoutes,
   advertRoutes,
+  homeRoutes,
 };

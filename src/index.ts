@@ -19,6 +19,7 @@ import {
   unitsRoutes,
   usersRoutes,
   warehousesRoutes,
+  homeRoutes,
 } from "./routes";
 import { Logger } from "./utils";
 import { customersRoutes } from "./routes/customer";
@@ -85,6 +86,9 @@ app.use("/api/sub-category", subCategoriesRoutes);
 
 // advert routes
 app.use("/api/advert", advertRoutes);
+
+// home routes
+app.use("/api/home", homeRoutes);
 
 // error handler
 app.use(notFound);

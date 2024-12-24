@@ -13,6 +13,9 @@ const routes_1 = require("./routes");
 const utils_1 = require("./utils");
 const customer_1 = require("./routes/customer");
 const analytic_1 = require("./routes/analytic");
+// const CryptoJS = require("crypto-js");
+// const MD5 = require("crypto-js/md5");
+// var ReverseMd5 = require("reverse-md5");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 5000;
@@ -51,9 +54,25 @@ app.use("/api/analytic", analytic_1.analyticRoutes);
 app.use("/api/main-category", routes_1.mainCategoriesRoutes);
 // sub category routes
 app.use("/api/sub-category", routes_1.subCategoriesRoutes);
+// advert routes
+app.use("/api/advert", routes_1.advertRoutes);
+// home routes
+app.use("/api/home", routes_1.homeRoutes);
 // error handler
 app.use(middleware_1.notFound);
 app.use(middleware_1.errorHandler);
+// var chiperText =
+//   "FLLqEqBzM/x8MUej3WFSLZuAxNgLSUG6WPFvUJ2Pdn1XbhMHq03DtXgXWKGzGWar";
+// var key = "y0uc@nts3eMe!...";
+// var iv = "";
+// key = CryptoJS.enc.Utf8.parse(key);
+// iv = CryptoJS.enc.Utf8.parse(iv);
+// var decrypted = CryptoJS.AES.decrypt(chiperText, key, {
+//   iv: iv,
+//   mode: CryptoJS.mode.CBC,
+//   padding: CryptoJS.pad.Pkcs7,
+// }).toString(CryptoJS.enc.Utf8);
+// console.log(decrypted); // TEST50
 app.listen(port, () => {
     utils_1.Logger.log(`[server]: Server is running at http://localhost:${port}`);
 });
